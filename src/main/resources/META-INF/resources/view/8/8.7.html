@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		8.7、多数据源下的工作流
+	</div>
+	<div class="subTitleDiv addArrow">
+		没有多数据源时，一如既往正常使用
+	</div>
+	<div class="subTitleDiv addArrow">
+		多数据源下，如果你不做下面的改动，则工作流处理时操作的是“默认数据源”
+	</div>
+	<div class="subContentDiv">
+		<div>
+		（1）在edk4jConfig.properties中添加“工作流默认数据源”
+		</div>
+		<div style="padding-left:0.64rem;">
+			#workFlow config<br>
+			application.defaultWorkFlowDataSourceName = 多数据源中某一个数据源名称
+		</div>
+		<div>
+			（2）在涉及到工作流的bpm中，要对操作工作流表的action设置dataSourceName属性
+		</div>
+	</div>
+</body>
+</html>

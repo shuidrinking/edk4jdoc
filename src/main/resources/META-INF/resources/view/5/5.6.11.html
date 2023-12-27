@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.11、edk4j内置图像处理工具
+	</div>
+	<div class="subTitleDiv">
+		该工具一般用于生成图形验证码等场景。
+	</div>
+	<div class="subTitleDiv">
+		类：com.edk4j.core.util.ImageUtil
+	</div>
+	<div class="subTitleDiv">
+		方法清单：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:12rem;">
+					public static BufferedImage createSimpleImage(String seed, int perCharWidth, int height)
+				</td>
+				<td style="color:#3f5fbf">
+					生成简易图片
+					<br>seed ：图片文字内容
+					<br>width ：每个字母的宽度
+					<br>height：图片高度
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static BufferedImage createStandardImage(String seed, int perCharWidth, int height)
+				</td>
+				<td style="color:#3f5fbf">
+					根据文字内容生成标准图片
+					<br>seed ：图片文字内容
+					<br>width ：每个字母的宽度
+					<br>height：图片高度
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static BufferedImage createComplexImage(String seed, int perCharWidth, int height)
+				</td>
+				<td style="color:#3f5fbf">
+					根据文字内容生成复杂模式图片，文本随机倾斜
+					<br>seed ：图片文字内容
+					<br>width ：每个字母的宽度
+					<br>height：图片高度
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getImageEncodeString(BufferedImage, bufferedImage)
+				</td>
+				<td style="color:#3f5fbf">
+					获得图片的编码，在浏览器中可以使用下面的方法显示图片
+					<br>&lt;img src=&quot;data:image/png;base64,本方法获得的内容&quot;/&gt;
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static void writeImageToHttpResponse(BufferedImage bufferedImage, HttpServletResponse response)
+				</td>
+				<td style="color:#3f5fbf">
+					将图片写到客户端，如果不用上面的方法显示图片，就用这个方法，这是传统方法
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static BufferedImage createThumbImageBuffer(String originalFileAbsPath, int minWidth)
+				</td>
+				<td style="color:#3f5fbf">
+					按照指定像素的宽度生成缩略图，获取缩略图BufferedImage
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static boolean createThumbImageAndSave(String originalFileAbsPath, String thumbFileAbsPath, int minWidth)
+				</td>
+				<td style="color:#3f5fbf">
+					按照指定宽度生成缩略图并保存到指定位置，可覆盖
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

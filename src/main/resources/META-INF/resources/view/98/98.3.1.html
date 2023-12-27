@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		98.3.1、mysql大数据分页查询
+	</div>
+	<div class="contentDiv">
+		<p style="text-indent:0.32rem;">
+			对于Mysql数据库而言，用大SQL子查询配合limit实现分页的手法，对资源需求十分奢侈，mysql对子查询支持很差，所以不能这样做。
+		</p>
+		<p style="text-indent:0.32rem;color:#ff0000;">
+			如果遇到大表，百万级以上数据时，不要使用EDK中自带的“分页查询数据列表”组件（QueryDataListByPageUsingSQLAction），正确的做法如下：
+		</p>
+		<div style="padding-left:0.64rem;">
+			（1）使用“查询数据明细”的组件查询总数，并缓存；<br/>
+			（2）根据具体业务场景，定制分页SQL，与“分页查询数据列表”组件类似，context中已经有了“起始行号”和“页大小”字段，所以定制分页SQL不是什么难事；<br/>
+			（3）使用“查询数据列表”组件（QueryDataListUsingSQLAction）做不分页查询（分页的工作由上面的定制SQL完成）；
+		</div>
+		<div style="padding-left:0.64rem;">
+		<label style="font-weight:bold;">如下面，使用传统分页和定制分页，定制分页效率是高很多的：</label><br>
+			SQL代码1：平均用时6.6秒 SELECT * FROM cdb_posts ORDER BY pid LIMIT 1000000 , 30<br/>
+			SQL代码2：平均用时0.6秒 SELECT * FROM cdb_posts WHERE pid >= (SELECT pid FROM cdb_posts ORDER BY pid LIMIT 1000000 , 1) LIMIT 30
+		</div>
+		<p style="text-indent:0.32rem;">
+			难点就在于“定制分页SQL”，这个SQL的思路，一般都是：先找出走索引的条件，在这些条件上按分页查出主线目标数据，再利用jion做其他数据连带查询。
+		</p>
+	</div>
+</body>
+</html>

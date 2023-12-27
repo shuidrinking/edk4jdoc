@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<style type="text/css">
+		ol{
+    		list-style-position: inside;
+    		list-style-type: none;
+    		counter-reset: sectioncounter 0
+		}
+		ol li:before {
+			content: "（" counter(sectioncounter)"）";
+			counter-increment: sectioncounter;
+			margin-left:0.32rem;
+			height:0.4rem;
+			line-height:0.4rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.11、总结
+	</div>
+	<div class="subTitleDiv">
+		要用edk4j开发，掌握下面的8个步骤做到就可以了，每个步骤都很简单，很迅速就可以入手：
+	</div>
+	<div class="subContentDiv">
+		<ol>
+			<li>搭建开发环境 </li>
+			<li>初始化数据库 </li>
+			<li>理清楚配置文件 </li>
+			<li>按说明建立文件目录 </li>
+			<li>编写修改配置文件 </li>
+			<li>熟悉edk4j的运行机制时序图 </li>
+			<li>熟悉edk4j的几大要素 </li>
+			<li>熟悉edk4j中提供的一些组件和Action </li>
+		</ol>
+	</div>
+</body>
+</html>

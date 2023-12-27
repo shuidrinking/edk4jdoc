@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		23.3、将TCP/WebService通信纳入链路跟踪
+	</div>
+	<div class="tabTitleDiv">定制化TCP/WebService统一通信类</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p><b>TCP通信类和WebService通信类集成链路跟踪的方式类似，以TCP通信类CallLocalSocketServerApi集成为例。</b></p>
+		<p><b>这里仅展示集成链路跟踪的关键代码:</b></p>
+		<div class="contentDiv">
+			<pre class="prettyprint language-java" id="codeShow1" style="font-weight:bold;font-size:0.14rem;line-height:0.14rem;">
+import com.edk4j.track.engine.zipkin.report.ISpanProcessor;
+import com.edk4j.track.constant.EdkTraceConstant;
+@Service
+public class CallLocalSocketServerApi {
+	/**
+	 * 分布式链路跟踪组件
+	 */
+	@Autowired
+	private ISpanProcessor autowiredSpanProcessor;
+	private static ISpanProcessor spanProcessor;
+	
+	//省略其他代码...
+	@PostConstruct
+	public void init() {
+		//省略其他代码...
+		
+		//将自动注入的对象引用赋值给静态变量
+		CallLocalSocketServerApi.spanProcessor = autowiredSpanProcessor;
+	}
+	
+	//省略其他代码...
+	
+	private static String doSocketCall(String requestFormat, String charSet) throws IntegrationException{
+		//省略其他代码...
+		
+		//链路跟踪数据标签map
+		Map&lt;String, String&gt; tagMap = new HashMap&lt;String, String&gt;(4);
+		try{
+			//组织链路跟踪数据标签
+			tagMap.put("requestSocketApi", requestServerInfoSb.toString());
+			tagMap.put("requestFormat", requestFormatString);
+			//【启动】链路跟踪
+			spanProcessor.startClientTrack(EdkTraceConstant.SOCKET_CLIENT_SPAN_NAME, EdkTraceConstant.ANNOTATION_CS, tagMap);
+			
+			//省略调用底层api的代码...
+			
+			//将答复报文加入链路跟踪
+			spanProcessor.addTagToCurrentTrack("responseFormat", responseFormat);
+
+			//省略其他代码...
+		}
+		catch(SocketTimeoutException e) {
+			//出现异常时将错误信息加入链路数据标签
+			String errorStackTrace = BaseExceptionHandler.getErrorStack(e);
+			spanProcessor.addTagToCurrentTrack(EdkTraceConstant.ERROR_TAG_NAME, errorStackTrace);
+			//省略其他代码...
+		}
+		catch(Exception e){
+			String errorStackTrace = BaseExceptionHandler.getErrorStack(e);
+			spanProcessor.addTagToCurrentTrack(EdkTraceConstant.ERROR_TAG_NAME, errorStackTrace);
+			//省略其他代码...
+		}
+		finally {
+			//省略其他代码...
+			
+			//【结束】链路跟踪，【注意，跟踪是有头有尾的动作，有开始就要有结束】
+			spanProcessor.finishTrack(EdkTraceConstant.ANNOTATION_CR);
+		}
+	}
+}
+			</pre>
+		</div>
+		<p><b>经过以上代码配置，EDK的TCP通信类CallLocalSocketServerApi就纳入了全局链路跟踪。</b></p>
+	</div>
+</body>
+</html>

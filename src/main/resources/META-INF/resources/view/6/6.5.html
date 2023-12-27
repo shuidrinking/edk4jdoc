@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		6.5、释要规范
+	</div>
+	<div class="subTitleDiv addArrow">
+		1、严格遵守java规范，不要自己发明javadoc规范以外的@标签
+	</div>
+	<div class="subContentDiv">
+		自己随意发明的@标签，会导致生成文档的工具无法识别。<br>
+		javadoc官方说明：<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javadoc.html" target="_blank">https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javadoc.html</a>
+	</div>
+	<div class="subTitleDiv addArrow">
+		2、代码中的注释
+	</div>
+	<div class="subContentDiv">
+		<div style="color:#3f5fbf;">
+			/**<br/>
+			&nbsp;* 类、方法、类变量中这样注释<br/>
+			&nbsp;*/<br/>
+		</div>
+		<div style="color:#3f7f5f;">
+			/*<br/>
+			&nbsp;* 代码块这样注释<br/>
+			&nbsp;*/<br/>
+		</div>
+		<div style="color:#3f7f5f;">
+			//一行代码这样注释<br/>
+		</div>
+	</div>
+	<div class="subTitleDiv addArrow">
+		3、设置的注释模板（以Eclipse为例）
+	</div>
+	<div class="subContentDiv">
+		<img src="../../image/business/6/6.5-1.png"/><br/>
+		<label style="font-weight:bold;">设置完模板后，在类上或者方法上打入 /** 再回车就会自动按模板生成注释内容</label><br/>
+		例如下面的<br/>
+		（1）类注释<br/>
+		<div style="color:#3f5fbf;">
+		/**<br/>
+		&nbsp;* 具体功能注释多行时可以换行,注释中还可以用其他html标签<br/>
+		&nbsp;* @author 姓名(括号内填写email地址)<br/>
+		&nbsp;* @version ${date} <br/>
+		&nbsp;*/<br/>
+		 </div>
+		 随便打开一个jdk里的源码类,看看人家是怎么写的<br/>
+		不要发明一些标准jdk规范里没有的@注释,否则导出javaDocs不会生效!<br/>
+		
+		（2）方法注释<br/>
+		<div style="color:#3f5fbf;">
+		 /**<br/>
+		 &nbsp;* 具体功能，可以把方法中的算法概要写在这里 <br/>
+		 &nbsp;* @param 有复杂的或需要注意的参数，要写全<br/>
+		 &nbsp;* ...<br/>
+		 &nbsp;* @param <br/>
+		 &nbsp;* @return 返回了什么东西，写清楚<br/>
+		 &nbsp;*/<br/>
+		 </div>
+		
+	</div>
+</body>
+</html>

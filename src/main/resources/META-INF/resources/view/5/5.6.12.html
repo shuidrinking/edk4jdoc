@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.12、edk4j内置压缩及解压工具
+	</div>
+	<div class="subTitleDiv addArrow">
+		1、字符串压缩解压工具
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.util.DataCompressUtil
+	</div>
+	<div class="subContentDiv">
+		该类是字符串的压缩和解压工具，用于在网络传输大数据的场景中，压缩以便节省传输成本。<br>
+		方法清单:
+	</div>
+	<div class="subContentDiv">
+		<table>
+			<tbody>
+				<tr>
+					<td style="width:10rem;">
+						public static Object getStringCompressedByte(Object unCompressedObject, String charSet)
+					</td>
+					<td style="color:#3f5fbf">
+						按照指定编码，压缩字符串
+						<br>如果你的项目中没有配置压缩线，则默认压缩线是15K，如果传入的字符串大于15K则会压缩，然后返回压缩后的byte数组，否则将字符串返回！
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static Object getUncompressedString(Object compressedObject, String charSet)
+					</td>
+					<td style="color:#3f5fbf">
+						按指定编码解压字符串
+						<br>如果传入的参数是String，则无需解压，原样返回，如果是byte数组，则解压缩为String字符串
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="subTitleDiv addArrow">
+		2、文件压缩解压工具
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.util.FileCompressUtil
+	</div>
+	<div class="subContentDiv">
+		方法清单：
+	</div>
+	<div class="subContentDiv">
+		<table>
+			<tbody>
+				<tr>
+					<td style="width:12rem;">
+						public static void unCompressZip(String archiveFilePath, String unCompressedToPath)
+					</td>
+					<td style="color:#3f5fbf">
+						解压缩zip文件
+						<br>@param archiveFilePath 压缩包地址
+						<br>@param unCompressedToPath 解压后保存地址
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static void compressFolder(String sourceFolderPath, String targetFilePath, String archiveFormat)
+					</td>
+					<td style="color:#3f5fbf">
+						压缩文件夹
+						<br>@param sourceFolderPath 要被压缩的目录
+						<br>@param targetFilePath 压缩后的结果文件绝对路径文件名
+						<br>@param 压缩文件的格式，目前支持 jar, zip, 7z, tar
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static void compressFiles(List&lt;String&gt; sourceFilePathList, String targetFilePath, String archiveFormat)
+					</td>
+					<td style="color:#3f5fbf">
+						压缩多个文件
+						<br>@param sourceFilePathList 多个原文件的地址列表
+						<br>@param targetFilePath 压缩后的结果文件绝对路径文件名
+						<br>@param archiveFormat 压缩文件的格式，目前支持 jar, zip, 7z, tar
+					</td>
+				</tr>
+				<tr>
+					<td style="height:40.4pt; vertical-align:top; width:213.05pt">
+						public static void compressOneFile(String sourceFilePath, String targetFilePath, String archiveFormat)
+					</td>
+					<td style="color:#3f5fbf">
+						压缩单个文件
+						<br>@param sourceFilePath 要被压缩的文件
+						<br>@param targetFilePath 压缩后的结果文件绝对路径文件名
+						<br>@param archiveFormat 压缩文件的格式，目前支持 jar, zip, 7z, tar
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

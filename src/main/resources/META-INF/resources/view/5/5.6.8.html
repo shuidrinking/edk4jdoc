@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.8、edk4j内置数据检查工具
+	</div>
+	<div class="subTitleDiv">
+		该工具内的方法，是使用正则表达式实现的，您可以在项目中借助正则表达式开发跟完善的数据检查工具。
+	</div>
+	<div class="subTitleDiv">
+		类：com.edk4j.core.util.DataCheckUtil
+	</div>
+	<div class="subTitleDiv">
+		方法如下：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:6rem;">
+					public static boolean isContainChinese(String str)
+				</td>
+				<td style="color:#3f5fbf">
+					判定是否包含中文
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static boolean isAllChinese(String str)
+				</td>
+				<td style="color:#3f5fbf">
+					判定是否全部为中文
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static boolean isLetterDigit(String str)
+				</td>
+				<td style="color:#3f5fbf">
+					判定是否由26个英文字母（不限大小写）加数字组成
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static boolean isAccount(String str)
+				</td>
+				<td style="color:#3f5fbf">
+					判定是否以字母（无论大小写）开头，以字母、数字、下划线组成
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static boolean isAccountx(String str)
+				</td>
+				<td style="color:#3f5fbf">
+					验证是否以字母开头包含字母数字和一些特殊符号（点、横杠、下划线）
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static boolean isInteger(String str)
+				</td>
+				<td style="color:#3f5fbf">
+					判定是否为整数
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static boolean Is2FixedDecimal(String str)
+				</td>
+				<td style="color:#3f5fbf">
+					判定是否为保留两位小数的正小数
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static boolean IsIPV4(String str)
+				</td>
+				<td style="color:#3f5fbf">
+					判定是否正确的4位IP地址
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

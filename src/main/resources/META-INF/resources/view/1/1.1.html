@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<style type="text/css">
+		@font-face {
+			font-family: YouSheBiaoTiYuan;
+			src: url('../../css/YouSheBiaoTiYuan.otf');
+		}
+		body{
+			letter-spacing: 0.03rem;
+		}
+		ol{
+			list-style-position: inside;
+			list-style-type: none;
+			counter-reset: sectioncounter 0
+		}
+		ol li:before {
+			content: "（" counter(sectioncounter)"）";
+			counter-increment: sectioncounter;
+			margin-left:0.32rem;
+			height:0.4rem;
+			line-height:0.4rem;
+		}
+		@keyframes introani1{
+			0%{opacity:0;top:-1.4rem}
+			60%{opacity:0.6;top:2.8rem}
+			100%{opacity:1;top: 2.5rem;}
+		}
+		@keyframes introani2{
+			0%{opacity:0;top:-1.4rem}
+			70%{opacity:0.6;top:2rem;}
+			100%{opacity:1;top: 1.3rem;}
+		}
+		@keyframes introani3{
+			0%{opacity:0;top:-1.4rem}
+			80%{opacity:0.6;top:0.8rem;}
+			100%{opacity:1;top: 0rem;}
+		}
+		#intro1{
+			position: absolute;
+			width:4.5rem;
+			left:0.2rem;
+			z-index: 1;
+			float: left;
+			opacity:0;
+			animation-name: introani1;
+			animation-duration: 0.3s;
+			animation-delay: 0s;
+			animation-fill-mode: forwards;
+		}
+		#intro2{
+			position: absolute;
+			width:4.5rem;
+			left:0.2rem;
+			z-index: 2;
+			float: left;
+			opacity:0;
+			animation-name: introani2;
+			animation-duration: 0.3s;
+			animation-delay: 1s;
+			animation-fill-mode: forwards;
+		}
+		#intro3{
+			position: absolute;
+			width:4.5rem;
+			left:0.2rem;
+			z-index: 3;
+			float: left;
+			opacity:0;
+			animation-name: introani3;
+			animation-duration: 0.3s;
+			animation-delay: 2s;
+			animation-fill-mode: forwards;
+		}
+		.slideShine{
+			position: absolute;
+			/*彩色方案*/
+			background:#002260 -webkit-linear-gradient(300deg,#cd1b21,#25fbf1 50%,#ff0 90%,#db8513) no-repeat 0 0; 
+			/*银光方案
+			background:#002260 -webkit-linear-gradient(120deg,transparent, #f1f1f1, transparent) no-repeat 0 0;*/
+			background-size:20% 100%;
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			width:3rem;
+			text-align: center;
+			z-index:4;
+			left: 0.3rem;
+			font-family: YouSheBiaoTiYuan;
+			top: 2.2rem;
+			font-size:0.2rem;
+		}
+		.slideShine {
+			animation-name: slideShine;
+			animation-duration: 3s;
+			animation-timing-function: linear;
+			animation-delay: 1.6s;
+			animation-iteration-count: infinite;
+			animation-direction: normal;
+			animation-fill-mode: none;
+			animation-play-state: running;
+			opacity:0;
+		}
+		@keyframes slideShine {
+			0% {background-position: 0 0;}
+			80% {background-position: 0 0;}
+			100% {background-position: 100% 100%;}
+		}
+	</style>
+	<script type="text/javascript">
+		function init(){
+			setTimeout("$('edkTitle').style.opacity=1;", 1600);
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		1.1、“edk4j开发平台”是什么
+	</div>
+	<div class="tabTitleDiv">平台概要</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv" style="font-weight:bold;">
+		全称：“edk4j开发平台”<br>
+		英文名：enterprise development kit for java<br>
+		简称：edk4j<br>
+		简介：零编码或少量编码就可以快速构建并开发应用程序的“低代码”极速Java开发平台。通过图形化、可视化的开发IDE，进行拖拽、组合、调取程序组件的方式来开发应用程序。
+	</div>
+	<div class="tabTitleDiv">edk4j是“低代码极速开发平台”</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<p style="text-indent:0.28rem;">
+		2014 年，著名的咨询公司Forrester Research提出了“零代码”和“低代码”的概念：只需用很少甚至几乎不需要代码就可以快速开发出系统，并可以将其快速配置和部署的一种技术和工具。<br>
+		</p>
+		<p style="text-indent:0.28rem;">
+			“低代码平台”就是将逻辑功能沉淀为技术组件，通过可视化的开发工具等便捷的形式直接复用，以达到在不写代码或者少写代码的低成本基础上，实现产能最大化。“低代码”、“零代码”是未来软件行业发展的新趋势。<br>
+		</p>
+		<p style="text-indent:0.28rem;">
+			edk4j开发团队与时俱进，推出Java低代码极速开发平台——“edk4j开发平台”。
+		</p>
+	</div>
+	<div class="tabTitleDiv">edk4j定位于“基础设施型平台”</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv" style="display:flex;">
+		<div style="position:relative;text-align:center;display:inline-block;height:4.2rem;width:5rem;">
+			<img id="intro3" src="../../image/business/1/1.1-1-3.gif">
+			<img id="intro2" src="../../image/business/1/1.1-1-2.png">
+			<img id="intro1" src="../../image/business/1/1.1-1-1.gif">
+			<div id="edkTitle" class="slideShine">
+				EDK4j
+			</div>
+		</div>
+		<div style="display:inline-block;padding-top:0.5rem;width:calc(100vw - 6rem);">
+			<div style="text-indent:0.32rem">
+				目前市面上已有的java低代码开发平台，例如：JEPasS、JavaFast、Jeeplus、Jeecg等，它们的共同特点是 ：
+			</div>
+			<ol>
+				<li>组合使用SpringBoot、Mybatis等开源框架；</li>
+				<li>提炼出一些比较通用的功能性模块代码，便于项目开发中复用；</li>
+				<li>这种所谓的“低代码”仅仅是方便开发过程中省去这些功能的建设，但是这些功能包都有使用局限；</li>
+				<li>在他们官方网站上都有使用范围说明，一般都用来做“OA、CRM、CMS、ERP”等后台管理性质的web系统； </li>
+				<li>其中的“自动代码生成”，也仅仅是对数据模型的增删改刷操作；</li>
+				<li>要使用这些平台做开发，仍然需要手工编写所有代码。</li>
+			</ol>
+			<div style="text-indent:0.32rem">
+				“edk4j开发平台”与Spring、Hibernate等开源框架所处的层面一样，是“基础设施型”的开发平台，
+				而不是“功能包型”的框架，换句话说，我们拿“edk4j开发平台”能够开发跟他们功能一样的功能包，
+				而他们反过来就不行，“edk4j开发平台”是开发平台里更底层一级的，没有使用范围的局限性。
+			</div>
+		</div>
+	</div>
+</body>
+</html>

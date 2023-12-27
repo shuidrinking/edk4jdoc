@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		16.4、webService接口调用
+	</div>
+	<div class="tabTitleDiv">底层组件</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		edk4j中提供的底层组件类：com.edk4j.integration.WebServiceCallApi<br/>
+		该类的提供了按socket调用、按常规的axis调用、按http调用，酌情选用方法，我们首推axis方式调用！
+	</div>
+	<div class="tabTitleDiv">推荐调用方法</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="item addArrow">axis方式调用的方法</div>
+		<div class="subContentDiv">
+			<p><span style="color:#3f5fbf">/* </span><span style="color:#3f5fbf">使用</span><span style="color:#3f5fbf">axis</span><span style="color:#3f5fbf">调用</span><span style="color:#3f5fbf">webservice</span><span style="color:#3f5fbf">接口</span></p>
+			<p><span style="color:#3f5fbf">* </span><strong><span style="color:#7f9fbf">@param</span></strong><span style="color:#3f5fbf"> useVirtualFormat </span><span style="color:#3f5fbf">是否使用虚拟报文</span></p>
+			<p><span style="color:#3f5fbf">* </span><strong><span style="color:#7f9fbf">@param</span></strong><span style="color:#3f5fbf"> responseVirtualFormatFileName </span><span style="color:#3f5fbf">虚拟返回报文在构件路径中的相对位置</span></p>
+			<p><span style="color:#3f5fbf">* </span><strong><span style="color:#7f9fbf">@param</span></strong><span style="color:#3f5fbf"> url </span><span style="color:#3f5fbf">接口的</span><span style="color:#3f5fbf">httpurl</span><span style="color:#3f5fbf">全地址</span></p>
+			<p><span style="color:#3f5fbf">* </span><strong><span style="color:#7f9fbf">@param</span></strong><span style="color:#3f5fbf"> nameSpace </span><span style="color:#3f5fbf">命名空间</span></p>
+			<p><span style="color:#3f5fbf">* </span><strong><span style="color:#7f9fbf">@param</span></strong><span style="color:#3f5fbf"> operationName </span><span style="color:#3f5fbf">服务名</span></p>
+			<p><span style="color:#3f5fbf">* </span><strong><span style="color:#7f9fbf">@param</span></strong><span style="color:#3f5fbf"> charset </span><span style="color:#3f5fbf">请求编码格式</span></p>
+			<p><span style="color:#3f5fbf">* </span><strong><span style="color:#7f9fbf">@param</span></strong><span style="color:#3f5fbf"> timeOutSeconds </span><span style="color:#3f5fbf">超时秒数</span></p>
+			<p><span style="color:#3f5fbf">* </span><strong><span style="color:#7f9fbf">@param</span></strong><span style="color:#3f5fbf"> requestFormatModel </span><span style="color:#3f5fbf">请求报文的实体类对象</span></p>
+			<p><span style="color:#3f5fbf">* </span><strong><span style="color:#7f9fbf">@param</span></strong><span style="color:#3f5fbf"> responseFormatModelClazz </span><span style="color:#3f5fbf">返回报文的实体类的</span><span style="color:#3f5fbf">Class</span></p>
+			<p><span style="color:#3f5fbf">* @return </span><span style="color:#3f5fbf">返回答复报文的实体类对象*/</span></p>
+			axisCallWebService(boolean useVirtualFormat, String responseVirtualFormatFileName, String url, String nameSpace, String operationName, String charset, int timeOutSeconds, Object requestFormatModel, Class&lt;T&gt; responseFormatModelClazz)
+		</div>
+	</div>
+</body>
+</html>

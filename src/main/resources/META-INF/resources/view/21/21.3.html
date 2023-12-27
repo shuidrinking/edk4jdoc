@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		21.3、打jar包分离第三方依赖
+	</div>
+	<div class="tabTitleDiv">方式一：在pom中使用spring的maven插件实现</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<pre class="prettyprint lang-xml" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+	&lt;!-- 用本方法打包后，启动命令中需要设置参数-Dloader.path ： java -jar xxxx.jar -Dloader.path=依赖包所在文件夹绝对路径 --&gt;
+	......
+	&lt;properties&gt;
+		&lt;!-- 抽取所有第三方依赖包后存储到该文件夹 --&gt;
+		&lt;project.build.dist.lib.directory&gt;/edk4j_projects_lib&lt;/project.build.dist.lib.directory&gt;
+		&lt;project.build.encoding&gt;UTF-8&lt;/project.build.encoding&gt;
+		&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+		&lt;java.version&gt;1.8&lt;/java.version&gt;
+		&lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;
+		&lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;
+	&lt;/properties&gt;
+	
+	......
+	
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;!--打包时去除第三方依赖--&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+				&lt;version&gt;2.7.12&lt;/version&gt;
+				&lt;executions&gt;
+					&lt;execution&gt;
+						&lt;goals&gt;
+							&lt;goal&gt;repackage&lt;/goal&gt;
+						&lt;/goals&gt;
+					&lt;/execution&gt;
+				&lt;/executions&gt;
+				&lt;configuration&gt;
+					&lt;executable&gt;true&lt;/executable&gt;
+					&lt;layout&gt;ZIP&lt;/layout&gt;
+					&lt;!-- 
+					这里是填写需要包含进去的jar，如果没有则nothing
+					 --&gt;
+					&lt;includes&gt;
+						&lt;include&gt;
+							&lt;groupId&gt;nothing&lt;/groupId&gt;
+							&lt;artifactId&gt;nothing&lt;/artifactId&gt;
+						&lt;/include&gt;
+					&lt;/includes&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt; 
+			&lt;!--拷贝依赖到jar外面的lib目录 --&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.1.2&lt;/version&gt;
+				&lt;executions&gt;
+					&lt;execution&gt;
+						&lt;id&gt;copy-dependencies&lt;/id&gt;
+						&lt;phase&gt;package&lt;/phase&gt;
+						&lt;goals&gt;
+							&lt;goal&gt;copy-dependencies&lt;/goal&gt;
+						&lt;/goals&gt;
+						&lt;configuration&gt;
+							&lt;!--指定的依赖路径 --&gt;
+							&lt;outputDirectory&gt;${project.build.dist.lib.directory}/${project.artifactId}/&lt;/outputDirectory&gt;
+							&lt;excludeTransitive&gt;false&lt;/excludeTransitive&gt;
+							&lt;stripVersion&gt;false&lt;/stripVersion&gt;
+							&lt;includeScope&gt;runtime&lt;/includeScope&gt;
+						&lt;/configuration&gt;
+					&lt;/execution&gt;
+				&lt;/executions&gt;
+			&lt;/plugin&gt;
+			&lt;!-- properties中申明了maven约定的变量，下面的插件可以省略不写
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.11.0&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;${maven.compiler.source}&lt;/source&gt;
+					&lt;target&gt;${maven.compiler.target}&lt;/target&gt;
+					&lt;encoding&gt;${project.build.sourceEncoding}&lt;/encoding&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+			--&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.1.2&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;skipTests&gt;true&lt;/skipTests&gt;
+					&lt;!-- 要排除的jar --&gt;
+					&lt;!-- &lt;packagingExcludes&gt;WEB-INF/lib/**/*.jar&lt;/packagingExcludes&gt; --&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+...
+</pre>
+	</div>
+	<div class="tabTitleDiv">方式二：在pom中使用maven原生插件实现</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<pre class="prettyprint lang-xml" id="codeShow2" style="font-weight:bold;color:#3f7f5f;">
+	&lt;!-- 用本方法打包后，正常启动： java -jar xxxx.jar  --&gt;
+	......
+	&lt;properties&gt;
+		&lt;!-- 第三方依赖包与项目包分离时，依赖包和资源包的存储根目录 --&gt;
+		&lt;project.build.dist.directory&gt;/edk4j-project-dist&lt;/project.build.dist.directory&gt;
+		&lt;!-- jdk及编码设置 --&gt;
+		&lt;java.version&gt;1.8&lt;/java.version&gt;
+		&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+		&lt;project.build.encoding&gt;UTF-8&lt;/project.build.encoding&gt;
+		&lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;
+		&lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;
+		&lt;spring-boot.version&gt;2.7.18&lt;/spring-boot.version&gt;
+		&lt;spring-framework.version&gt;5.3.31&lt;/spring-framework.version&gt;
+		&lt;mysql.version&gt;8.0.30&lt;/mysql.version&gt;
+		&lt;tomcat.version&gt;9.0.83&lt;/tomcat.version&gt;
+	&lt;/properties&gt;
+	......
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.11.0&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;${maven.compiler.source}&lt;/source&gt;
+					&lt;target&gt;${maven.compiler.target}&lt;/target&gt;
+					&lt;encoding&gt;${project.build.encoding}&lt;/encoding&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-resources-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.3.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;encoding&gt;${project.build.encoding}&lt;/encoding&gt;
+					&lt;charset&gt;${project.build.encoding}&lt;/charset&gt;
+				&lt;/configuration&gt;
+				&lt;!-- 将配置文件、静态资源与jar分离复制到外部 --&gt;
+				&lt;executions&gt;
+					&lt;execution&gt;
+						&lt;id&gt;copy-resources&lt;/id&gt;
+						&lt;phase&gt;package&lt;/phase&gt;
+						&lt;goals&gt;
+							&lt;goal&gt;copy-resources&lt;/goal&gt;
+						&lt;/goals&gt;
+						&lt;configuration&gt;
+							&lt;resources&gt;
+								&lt;resource&gt;
+									&lt;directory&gt;src/main/resources&lt;/directory&gt;
+								&lt;/resource&gt;
+							&lt;/resources&gt;
+							&lt;outputDirectory&gt;${project.build.dist.directory}/${project.artifactId}/resources&lt;/outputDirectory&gt;
+						&lt;/configuration&gt;
+					&lt;/execution&gt;
+				&lt;/executions&gt;
+			&lt;/plugin&gt;
+			&lt;!-- 不将第三方依赖包打入jar --&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
+				&lt;configuration&gt;
+					&lt;!-- 把target/classes/下的文件导入到jar内 --&gt;
+					&lt;classesDirectory&gt;target/classes/&lt;/classesDirectory&gt;
+					&lt;finalName&gt;${project.artifactId}-${project.version}&lt;/finalName&gt;
+					&lt;archive&gt;
+						&lt;manifest&gt;
+							&lt;!-- 配置加入依赖包 --&gt;
+							&lt;addClasspath&gt;true&lt;/addClasspath&gt;
+							&lt;!-- 在mf中制定依赖包相对于项目jar的位置 --&gt;
+							&lt;classpathPrefix&gt;lib/&lt;/classpathPrefix&gt;
+							&lt;useUniqueVersions&gt;false&lt;/useUniqueVersions&gt;
+							&lt;!-- 指定项目启动入口类 --&gt;
+							&lt;mainClass&gt;com.ApplicationBoot&lt;/mainClass&gt;
+						&lt;/manifest&gt;
+						&lt;manifestEntries&gt;
+							&lt;!-- 在mf中指定配置文件相对于项目jar的位置，不指定也没关系，因为项目的jar里已经包含了配置文件 --&gt;
+							&lt;!-- 如果项目jar里不包含且此处未指定那么可借助启动命令设置配置文件所在位置\-\-spring.config.additional-location --&gt;
+							&lt;Class-Path&gt;resources/&lt;/Class-Path&gt;
+						&lt;/manifestEntries&gt;
+					&lt;/archive&gt;
+					&lt;!-- 项目打包为jar后的输出目录 --&gt;
+					&lt;outputDirectory&gt;${project.build.dist.directory}/${project.artifactId}/&lt;/outputDirectory&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+			&lt;!--拷贝依赖到jar外面的lib目录 --&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.1.2&lt;/version&gt;
+				&lt;executions&gt;
+					&lt;execution&gt;
+						&lt;id&gt;copy-dependencies&lt;/id&gt;
+						&lt;phase&gt;package&lt;/phase&gt;
+						&lt;goals&gt;
+							&lt;goal&gt;copy-dependencies&lt;/goal&gt;
+						&lt;/goals&gt;
+						&lt;configuration&gt;
+							&lt;!--指定将依赖包抽取到指定目录 --&gt;
+							&lt;outputDirectory&gt;${project.build.dist.directory}/${project.artifactId}/lib&lt;/outputDirectory&gt;
+							&lt;!--是否拷贝间接依赖的jar--&gt;
+							&lt;excludeTransitive&gt;false&lt;/excludeTransitive&gt;
+							&lt;!--是否去掉依赖jar的版本号--&gt;
+							&lt;stripVersion&gt;false&lt;/stripVersion&gt;
+							&lt;!--包含jar的scope范围，可以根据需要调整--&gt;
+							&lt;includeScope&gt;runtime&lt;/includeScope&gt;
+						&lt;/configuration&gt;
+					&lt;/execution&gt;
+				&lt;/executions&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+</pre>
+	</div>
+</body>
+</html>

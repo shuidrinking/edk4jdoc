@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.9、EDK中的缓存管理
+	</div>
+	<div class="subTitleDiv addArrow">
+		缓存配置
+	</div>
+	<div class="subContentDiv">
+		查看前面章节， application-{profile}.properties和edk4jConfig.properties中，关于缓存配置的说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		普通缓存和二级缓存如何设置
+	</div>
+	<div class="subContentDiv">
+		<div>
+			在edk4jConfig.properties配置文件中，cache.providerName 这条配置的取值可以有个三个：
+		</div>
+		<div class="subContentDiv">
+			<div class="item">
+				（1）只用ehCache：这种情况下，缓存只是进程缓存，也就是说，缓存内容只在单台服务器中有效，不能在集群中共享（edk不支持ehcache集群）
+			</div>
+			<div class="item">
+				（2）只用redis：这种情况下，缓存内容被保存在redis服务器，因此应用服务器集群的场景下，缓存是通用的。
+			</div>
+			<div class="item">
+				（3）启用二级缓存，即同时启用redi和ehCache：
+			</div>
+			<div class="subContentDiv" style="padding-left:0.32rem;">
+				ehcache负责缓存到本地，redis同步缓存ehcache中的内容，当ehcache的缓存内容发生变化时，会通过MQ服务器通知所有集群服务器进行缓存更新。
+				<br>在获取缓存值时，先尝试从ehcache中获取，获取不到时再通过redis获取。
+				<br>二级缓存会加快程序运行速度，毕竟和redis缓存服务器做交互时，会消耗交互时间和数据处理时间。
+			</div>
+		</div>
+	</div>
+	<div class="subTitleDiv addArrow">
+		如果启用二级缓存时，必须进行MQ的配置，使用MQ的方法，请阅读后面章节“20、消息总线专题”
+	</div>
+</body>
+</html>

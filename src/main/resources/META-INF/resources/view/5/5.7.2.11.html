@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		“AES/CBC/PKCS5Padding解密”Action说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		组件：<img src='../../image/icons/action/aesdec.png' style='margin-right:0.1rem;'>AES/CBC/PKCS5Padding解密
+	</div>
+	<div class="subTitleDiv addArrow">
+		备注或算法描述：基于AES/CBC/PKCS5Padding模式的transformation
+	</div>
+	<div class="subTitleDiv addArrow">
+		实现类：com.edk4j.core.action.AESDecryptViaCBCAction
+	</div>
+	<div class="subTitleDiv addArrow">
+		属性清单：
+	</div>
+	<table class="across">
+		<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:3rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+		<thead>
+			<tr>
+				<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style='text-align:center;'>1</td><td>charset</td><td>编码方式</td><td></td><td>UTF-8</td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>2</td><td>base64Standard</td><td>base64编码标准</td><td></td><td>RFC4648_Basic</td><td style='text-align:center;'>false</td><td>RFC4648_Basic<br>RFC2045_MIME<br>RFC4648_Url</td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>3</td><td>keyDataCellId</td><td>保存密钥的字段</td><td></td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>4</td><td>ivDataCellId</td><td>保存iv值的字段</td><td></td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>5</td><td>sourceDataCellId</td><td>源数据域</td><td></td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>6</td><td>resultDataCellId</td><td>存放结果的数据域</td><td></td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.8.3、图形验证码生成及检查
+	</div>
+	<div class="subTitleDiv addArrow">
+		该功能采用传统三层模式（即controller-service-dao）开发，内置于edk4j内核中。
+	</div>
+	<div class="subTitleDiv addArrow">
+		本文给出的功能可以不使用，然后模仿<a href="javascript:window.open('../102/102.1.html', null, getWindowOpenFeature(200, 200));">edk4j-demos技术点样例项目</a>里的图片验证码生成的样例进行编写
+	</div>
+	<div class="subTitleDiv addArrow">
+		功能清单：
+	</div>
+	<div class="subContentDiv">
+		<div class="item">
+			（1）生成图形验证码
+		</div>
+		<div class="subContentDiv">
+			请求地址：http://host:port/youSystemName/imageCode/getCode<br>
+			参数： {}
+		</div>
+		<div class="item">
+			（2）检查图形验证码
+		</div>
+		<div class="subContentDiv">
+			请求地址：http://host:port/youSystemName/imageCode/checkCode<br>
+			参数： { "key":"缓存验证码的key","checkCode":"前台输入验证码"}
+		</div>
+	</div>
+</body>
+</html>

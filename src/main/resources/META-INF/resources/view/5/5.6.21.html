@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.21、edk4j内置AES加解密工具
+	</div>
+	<div class="subTitleDiv addArrow">
+		加密方案说明
+	</div>
+	<div class="subContentDiv">
+		基于AES分组链接模式（Cipher Block Chaining）加解密工具<br>
+		<label style="font-weight:bold;">本工具默认的transformation方案为 AES/CBC/PKCS5Padding</label><br>
+		AES/CBC/PKCS5Padding要求key和iv 必须要128bit，即：16位字符串。因此请求端或者web前端也必须遵守这个规则。<br><br>
+		<label style="font-weight:bold;">transformation有下面这些，他们的名称及秘钥长度要求如下：</label><br>
+		AES/CBC/NoPadding (128bit)<br>
+		AES/CBC/PKCS5Padding (128bit)<label style="color:#ff0000;">（这是本类默认的transformation）</label><br>
+		AES/ECB/NoPadding (128bit)<br>
+		AES/ECB/PKCS5Padding (128bit)<br>
+		DES/CBC/NoPadding (56bit)<br>
+		DES/CBC/PKCS5Padding (56bit)<br>
+		DES/ECB/NoPadding (56bit)<br>
+		DES/ECB/PKCS5Padding (56bit)<br>
+		DESede/CBC/NoPadding (168bit)<br>
+		DESede/CBC/PKCS5Padding (168bit)<br>
+		DESede/ECB/NoPadding (168bit)<br>
+		DESede/ECB/PKCS5Padding (168bit)<br>
+		RSA/ECB/PKCS1Padding (1024bit, 2048bit)<br>
+		RSA/ECB/OAEPWithSHA-1AndMGF1Padding (1024bit, 2048bit)<br>
+		RSA/ECB/OAEPWithSHA-256AndMGF1Padding (1024bit, 2048bit)<br>
+	</div>
+	<div class="subTitleDiv addArrow">
+		秘钥长度限制说明
+	</div>
+	<div class="subContentDiv">
+		如果密钥大于128, 会抛出java.security.InvalidKeyException: Illegal key size 异常. 因为密钥长度是受限制的。<br>
+		java运行时环境读到的是受限的policy文件. 文件位于${java_home}/jre/lib/security, 这种限制是因为美国对软件出口的控制。
+		 处理办法: 在官方网站下载JCE无限制权限策略文件<br><br>
+		JDK7的下载地址: http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html<br>
+		JDK8的下载地址: http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html<br>
+	</div>
+	<div class="subContentDiv">
+		下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt<br>
+		如果安装了JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件<br>
+		如果安装了JDK，还要将两个jar文件也放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件
+	</div>
+	<div class="subTitleDiv addArrow">
+		类：com.edk4j.core.util.AESUtil
+	</div>
+	<div class="subTitleDiv addArrow">
+		特别说明：在本类的方法中，有参数是“base64执行标准”，这些标准只能是com.edk4j.core.util.Base64Util类中的常量，其常量清单如下：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:8rem;">
+					public static final String Standard_Basic = "RFC4648_Basic";
+				</td>
+				<td style="color:#3f5fbf">
+					本类的常量，意义为RFC4648 Basic基础标准
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static final String Standard_MIME = "RFC2045_MIME";
+				</td>
+				<td style="color:#3f5fbf">
+					本类的常量，意义为RFC2045 MIME标准
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static final String Standard_Url = "RFC4648_Url";
+				</td>
+				<td style="color:#3f5fbf">
+					本类的常量，意义为RFC4648 Url安全标准
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="subTitleDiv addArrow">
+		方法清单：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:10rem;">
+					public static String encrypt(String key, String iv, String base64Standard, String data) 
+				</td>
+				<td style="color:#3f5fbf">
+					使用默认transformation方案以及UTF-8编码，实施【加密】，参数说明：<br>
+					key：秘钥<br>
+					iv：秘钥增强向量<br>
+					base64Standard： base64的执行标准<br>
+					data：待加密的明文字符串
+				</td>
+			</tr>
+			<tr>
+				<td>
+					 public static String decrypt(String key, String iv, String base64Standard, String data)
+				</td>
+				<td style="color:#3f5fbf">
+					使用默认transformation方案以及UTF-8编码，实施【解密】，参数说明：<br>
+					key：秘钥<br>
+					iv：秘钥增强向量<br>
+					base64Standard： base64的执行标准<br>
+					data：带解密的密文字符串
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String encrypt(String transformation, String key, String iv, String charset, String base64Standard, String data)
+				</td>
+				<td style="color:#3f5fbf">
+					使用【指定的】transformation方案以及指定的字符串编码名称，实施【加密】，参数说明：<br>
+					transformation：transformation名称<br>
+					key：秘钥<br>
+					iv：秘钥增强向量<br>
+					charset：指定的编码名称，如UTF-8<br>
+					base64Standard： base64的执行标准<br>
+					data：待加密的明文字符串
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String decrypt(String transformation, String key, String iv, String charset, String base64Standard, String data)
+				</td>
+				<td style="color:#3f5fbf">
+					使用【指定的】transformation方案以及指定的字符串编码名称，实施【解密】，参数说明：<br>
+					transformation：transformation名称<br>
+					key：秘钥<br>
+					iv：秘钥增强向量<br>
+					charset：指定的编码名称，如UTF-8<br>
+					base64Standard： base64的执行标准<br>
+					data：待解密的密文字符串
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

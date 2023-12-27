@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		12.2、sessionContext专题
+	</div>
+	<div class="subTitleDiv addArrow">
+		1、保存在哪里
+	</div>
+	<div class="subContentDiv">
+		<p style="text-indent:0.32rem;">对于单机形态的系统而言，session只会保存在本机内存中，简单的系统直接保存在servletSession中，稍微复杂的系统自己设计了数据结构，例如使用hashMap等保存起来。</p>
+		<p style="text-indent:0.32rem;">edk4j中的session是采用context数据结构处理的，一个session对应一个Context的对象，称为sessionContext，支持单机和集群的服务器形态，sessionContext是保存在“缓存服务器”中的，对于缓存服务器,前面章节有介绍。对于集群服务器而言，必须保存在Redis中，否则集群节点之间不能共享session。</p>
+	</div>
+	<div class="subTitleDiv addArrow">
+		2、会话管理时序图
+	</div>
+	<div class="subContentDiv">
+		<img src="../../image/business/12/12.2-1.jpg"/>
+	</div>
+	<div class="subTitleDiv addArrow">
+		3、怎么创建会话
+	</div>
+	<div class="subContentDiv">
+		<p>客户第一个请求到达mvcController时，就需要在preHandle方法中调用SessionService.createSessionContext方法创建，创建后便产生了客户端和服务器交互的凭据requestToken，有两种方式完成这个动作：</p>
+		<p>（1）借助cookie，当创建完sessionContext后，用requestToken字段，将requestToken的值保存到cookie中，客户端读取cookie从而获得。</p>
+		<p>（2）专门做一个交易，客户一进来就先调用这个交易，获得requestToken。但是这样做有问题，如果你把对这个交易的请求只放在首页，没放在其他页面，那么客户如果收藏了其他页面的URL，下次绕开首页直接进入收藏页面时，就获取不到requestToken了。</p>
+		<p style="text-indent:0.32rem;"> <strong><span style="background-color:#f1c40f">createSessionContext</span></strong><strong><span style="background-color:#f1c40f">的方法里，除了生产sessionContext</span></strong><strong><span style="background-color:#f1c40f">外，还产生session</span></strong><strong><span style="background-color:#f1c40f">数据的key</span></strong><strong><span style="background-color:#f1c40f">，这些key</span></strong><strong><span style="background-color:#f1c40f">都会作为key</span></strong><strong><span style="background-color:#f1c40f">缓存到缓存服务器，key</span></strong><strong><span style="background-color:#f1c40f">以及他们</span></strong>分别都保存的内容清单：</p>
+		<p>（1）sessionToken：不保存，该字段用户客户请求时的必传参数，用于验证客户session信息，传输过程中叫做requestToken，不带session字样</p>
+		<p>（2）encryptedSessionToken：缓存值为 sessionContextKey</p>
+		<p>（3）sessionContextKey：缓存值为sessionContext</p>
+		<p>（4）ssoSessionContextKey：SSO（单点登录）场景下，该字段才会有值，该key生成的过程是调用SessionService.getSSOControlSessionContextKey方法生成的，使用客户信息生成的客户唯一标识。缓存的值为当前的encryptedSessionToken，每次客户登录后都会更新该缓存，所以后面登录的会把前面登录的剔下线。</p>
+		<p style="text-indent:0.32rem;"><span style="background-color:#f1c40f"> </span><strong><span style="background-color:#f1c40f">sesiom</span></strong><strong><span style="background-color:#f1c40f">的一竿子数据都保存在sessionContext</span></strong><strong><span style="background-color:#f1c40f">中，除了包括上面的4</span></strong><strong><span style="background-color:#f1c40f">个字段外，还有两个字段：</span></strong></p>
+		<p>（1）sessionCustInfo</p>
+		<p>（2）sessionUserLoginFlag</p>
+		<p style="text-indent:0.32rem;">缓存服务器中，除了缓存上面说的字段外，还会单独拎出几个字段的<strong>值，</strong>与sessionContext平行的保存到缓存服务器上，而没有保存在sessionContext里，sessionContext里的这几个字段中保存的是缓存服务器上的key！这些字段是可以在edk4jConfig.properties里配置的，拎出来的原因是：这些数据本身的特点是要么一产生就不变，要么量很大会频繁的变，携带在sessionContext里会严重浪费与缓存服务器交互的成本，所以这几个字段的缓存维护由各个交易自己维护，<strong><span style="background-color:#f1c40f">sessionDynamicData</span></strong>维护方法见前5.6章节面讲的关于动态数据域的章节！</p>
+		<p style="text-indent:0.32rem;">创建后，需要把sessionContext跟交易的具体context链接起来，详见样例MvcController中的做法。</p>
+	</div>
+	<div class="subTitleDiv addArrow">
+		4、怎么更新会话数据
+	</div>
+	<div class="subContentDiv">
+		<p style="text-indent:0.32rem;">在MvcController的postHandle方法中，调用SessionService.updateSessionContext方法，对sessionContext进行更新。对于平行缓存的字段，在你的businessLogic里自行维护。</p>
+	</div>
+	<div class="subTitleDiv addArrow">
+		5、怎么获得会话数据
+	</div>
+	<div class="subContentDiv">
+		<p style="text-indent:0.32rem;">确保sessionContext被创建的情况下，你就可以在MvcController的preHandle方法中，使用前台客户端传来的requestToken，调用SessionService.getSessionContextBySessionToken方法获得。</p>
+	</div>
+	<div class="subTitleDiv addArrow">
+		6、怎么销毁会话
+	</div>
+	<div class="subContentDiv">
+		<p style="text-indent:0.32rem;">sessionContext，是客户发起第一次请求的时候创建，当客户关闭浏览器，离开时销毁。客户退出登录时不能销毁，因为人家退出登录了，网页还是开着的，你就不能把会话销毁掉。</p>
+		<p style="text-indent:0.32rem;">如果前台js有对window.onclose事件的监听，那么当发生时，就可以在MvcController的preHandle方法中，调用SessionService的destorySessionWhenClientExit方法，销毁之。</p>
+		<p style="text-indent:0.32rem;">如果没有人工触发销毁的动作，在会话超时后有系统自动销毁，超时时间是在edk4jConfig.properties中配置的cache.sessionCacheExpireSeconds的值</p>
+	</div>
+</body>
+</html>

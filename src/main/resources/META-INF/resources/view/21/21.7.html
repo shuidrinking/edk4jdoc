@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		21.7、mvn打javadoc插件配置
+	</div>
+<pre class="prettyprint lang-xml" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+<properties>
+		<java.version>1.8</java.version>
+		<project.build.encoding>UTF-8</project.build.encoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+</properties>
+<plugins>
+	<!-- mvn命令中加入参数-Dmaven.javadoc.skip=true 可以跳过生成文档 -->
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-javadoc-plugin</artifactId>
+		<version>3.6.3</version>
+		<!-- 屏蔽jdk1.8及更高 版本，在生成javaDoc时的注释格式检查 -->
+		<configuration>
+			<!-- javadoc 3.0.0以前的版本需要该属性 -->
+			<additionalparam>-Xdoclint:none</additionalparam>
+			<!-- javadoc 3.0.0以后的版本需要该属性 -->
+			<doclint>none</doclint>
+			<charset>${project.build.encoding}</charset>
+			<docencoding>${project.build.encoding}</docencoding>
+			<encoding>${project.build.encoding}</encoding>
+		</configuration>
+		<executions>
+			<execution>
+				<id>attach-javadocs</id>
+				<goals>
+					<goal>jar</goal>
+				</goals>
+			</execution>
+		</executions>
+	</plugin>
+</plugins>
+</pre>
+</body>
+</html>

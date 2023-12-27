@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.1、edk4j内置字符串处理工具
+	</div>
+	<div class="subTitleDiv">
+		类：com.edk4j.core.util.StringUtil
+	</div>
+	<div class="subTitleDiv">
+		方法清单：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:12rem;">
+					public static boolean isBlank(CharSequence cs)
+				</td>
+				<td style="color:#3f5fbf">
+				判定字符串是否为空
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String leftPadding(String orgString, int formatLength, String leftPaddingChar, String prefix)
+				</td>
+				<td style="color:#3f5fbf">
+					左边填充字符串至目标结果
+					<br>orgString 原字符串
+					<br>formatLength 格式化的长度，实际序列号长度不足时左边补leftPaddingChar，超过时截掉[后]面多余长度
+					<br>leftPaddingChar 左补的字母
+					<br>prefix 前缀,补完后,再在结果里补充前缀,实际返回结果的长度=prefix.length+formatLength
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String rightPadding(String orgString, int formatLength, String paddingChar, String prefix)
+				</td>
+				<td style="color:#3f5fbf">
+					右边填充字符串至目标结果
+					<br>orgString 原字符串
+					<br>formatLength 格式化的长度，实际序列号长度不足时右边补paddingChar，超过时截掉[后]面多余长度
+					<br>paddingChar 右补的字母
+					<br>prefix 前缀,补完后,再在结果里补充前缀,实际返回结果的长度=prefix.length+formatLength
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String parseTemplateByContext(Context context, String templateContent)
+				</td>
+				<td style="color:#3f5fbf">
+					用context里的字段的真实值，将字符串中的${}占位符，使用真实值替换
+					<br>context
+					<br>templateContent 要被处理的字符串
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String encodeByMD5(String sourceStr)
+				</td>
+				<td style="color:#3f5fbf">
+					对字符串进行md5加密，加密结果为32位小写。<br>【注意】如果你需要16位大写或者16位小写或者32位大写，那么你需要在项目中自行时间工具类处理。
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String nvl(Object value)
+				</td>
+				<td style="color:#3f5fbf">
+					如果是空值，则以空字符串取代
+				</td>
+			</tr>
+			<tr>
+				<td style="height:14.4pt; vertical-align:top; width:310.2pt">
+					public static String nvl(Object valueString, String newValue)
+				</td>
+				<td style="color:#3f5fbf">
+					如果是空值，则以指定字符串取代
+				</td>
+			</tr>
+			<tr>
+				<td style="height:33.7pt; vertical-align:top; width:310.2pt">
+					public static String convertChinesePunctuationToEnglish(String sourceString)
+				</td>
+				<td style="color:#3f5fbf">
+					将字符串里面的中文全角字符转换为相应的英文字符
+				</td>
+			</tr>
+			<tr>
+				<td style="height:20.75pt; vertical-align:top; width:310.2pt">
+					public static String capitalize(String src)
+				</td>
+				<td style="color:#3f5fbf">
+					首字母大写，首字母后的字符小写
+				</td>
+			</tr>
+			<tr>
+				<td style="height:20.5pt; vertical-align:top; width:310.2pt">
+					public static String toCamelCase(String src)
+				</td>
+				<td style="color:#3f5fbf">
+					下划线组合串转驼峰式字符串,首字母是小写
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		17.1、文件上传怎么做
+	</div>
+	<div class="subTitleDiv addArrow">
+		（1）前端提交上传文件
+	</div>
+	<div class="subContentDiv">
+		<div>
+			<label style="font-weight:bold;">前端使用form方式提交</label><br/>
+			文件上传是要用form提交的，enctype="multipart/form-data"
+		</div>
+		<div>
+			<label style="font-weight:bold;">前端使用ajax方式提交</label><br/>
+			此时必须使用支持html5和js2.0标准的浏览器，否则，不能用json方式上传文件<br/>
+			在js里借助FormData对象上传，样例代码如下：<br/>
+			<div class="addBorder">
+				var fileObject = $("file").files[0];<br/>
+			    var formData = new FormData();<br/>
+			    formData.append('file', fileObject);<br/>
+			    然后把formData作为ajax调用的参数提交。
+		    </div>
+		</div>
+	</div>
+	<div class="subTitleDiv addArrow">
+		（2）在business.properties中做好规则配置
+	</div>
+	<div class="subContentDiv addBorder">
+		<pre class="prettyprint language-properties" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+#buffer大小
+multiPartResolver.bufferSize=10
+#最大上传文件大小
+multiPartResolver.maxFileSize=1024
+#文件上传临时目录
+multiPartResolver.tempFileRootPath=/home/fileUpload/temps
+#文件上传后保存的目录
+multiPartResolver.uploadFileRootPath=/home/fileUpload/uploads
+#fileUploadSettings  format: servicePath,maxFileSize,fileType
+#if param is null,then the format will be: servicePath,null,fileType
+#max size unit = KB
+#具体的请求上传的规则设定，格式为：相对文件夹,最大kb，只允许的文件类型正则表达式
+/test/uploadFile=fileUploadDemo,200,^(txt|html)$
+		</pre>
+	</div>
+	<div class="subTitleDiv addArrow">
+		（3）上传的文件保存位置
+	</div>
+	<div class="subContentDiv">
+		例如在20180306号上传调用了/test/uploadFile，上传了文件aaa.html，那么在/home/fileUpload/uploads/fileUploadDemo/20180306/ 文件夹中能找到刚上传的文件，但是文件名并不是aaa.html，而是HHmmssSSS+3位随机数.html
+	</div>
+	<div class="subTitleDiv addArrow">
+		（4）如何从context中获得提交的上传文件信息
+	</div>
+	<div class="subContentDiv">
+		上传成功后，context里会文件的字段信息，例如前端里提交了一个name="oneFile" 的文件，context里会有id为oneFile的数据域<br/>
+		值为com.edk4j.core.file.model.MultipartFile 类型的对象。<br>
+		<a>该类有以下属性，可以调用相应的get方法获得：</a>
+	</div>
+	<div class="subContentDiv">
+		<pre class="prettyprint language-java" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+/**
+ * 表单提交字段名
+ */
+private String fieldName;
+/**
+  * 上传后保存的文件绝对路径,也就是uploadPath + finalFileName
+  */
+private String savedFileName;
+/**
+  * 客户端的原始文件名
+  */
+private String originalFileName;
+		</pre>
+		<a>该类有以下方法可以操作上传文件：</a>
+		<table>
+			<colgroup>
+				<col style="width:6rem;"/><col/>
+			</colgroup>
+			<tbody>
+				<tr><td>getSize() </td><td>获得文件大小，单位为byte</td></tr>
+				<tr><td>moveSavedFileTo(String  目标绝对路径)</td><td>将上传的文件“转移”到指定位置</td></tr>
+				<tr><td>copySavedFileTo(String  目标绝对路径)</td><td>将上传的文件“复制”到指定位置</td></tr>
+				<tr><td>deleteSavedFile()</td><td>删除上传的文件</td></tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="subTitleDiv addArrow">
+		（5）文件上传的样例
+	</div>
+	<div class="subContentDiv">
+		请仔细阅读<a href="javascript:window.open('../102/102.1.html', null, getWindowOpenFeature(200, 200));">edk4j-demos（技术点样例项目）</a>中的文件mvcConfig/fileModule/uploadFileMvc.edk4jMvc
+	</div>
+</body>
+</html>

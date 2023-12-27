@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		“格式化工单数据”Action说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		组件：<img src='../../image/icons/action/a035.png' style='margin-right:0.1rem;'>格式化工单数据
+	</div>
+	<div class="subTitleDiv addArrow">
+		备注或算法描述：该组件是“将工作流业务数据保存到数据库中”的前置动作，否则工单数据中如果有Listx类型的字段将不能正确的保存到数据库表中
+	</div>
+	<div class="subTitleDiv addArrow">
+		实现类：com.edk4j.workflow.action.FormatListValueInBusinessDataAction
+	</div>
+	<div class="subTitleDiv addArrow">
+		属性清单：
+	</div>
+	<table class="across">
+		<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:3rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+		<thead>
+			<tr>
+				<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style='text-align:center;'>1</td><td>businessDataListIdContext</td><td>工单数据列表id</td><td>请将值设置为工单数据列表的id，不需要指定其中的具体字段。【注意】，如果工单数据列表中没有Listx类型的字段，不需要调用本组件。</td><td>wfBusinessDataList</td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

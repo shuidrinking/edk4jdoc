@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		19.8、附录1：quartz.properties文件详解
+	</div>
+	<div class="contentDiv">
+		<pre class="prettyprint language-properties" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+#============================================================================
+# quartz基础配置
+#============================================================================
+org.quartz.scheduler.instanceName: 集群组名，根据项目要求起名
+org.quartz.scheduler.instanceId: AUTO这个必须设置为AUTO
+org.quartz.scheduler.instanceIdGenerator.class: com.edk4j.taskengine.util.IPInstanceIdGenerator这个类名不能改，不然引擎不能正确调度
+org.quartz.scheduler.skipUpdateCheck: true
+#interrrupt all jobs when call scheduler.shutdown(false),it will not wait for jobs finished
+org.quartz.scheduler.interruptJobsOnShutdown:true这个值必须设置为true，否则对于暴力关停不能生效
+# batchTriggerAcquisitionMaxCount is the max count of acquired triggers once when acquire triggers
+# see QuartzSchedulerThread.runStdSchedulerFactory.instantiate on line 664 and about batchTriggerAcquisitionMaxCount
+org.quartz.scheduler.batchTriggerAcquisitionMaxCount:10每次从任务库获取可调度的任务的最大数，这个值根据具体的业务系统情况去设置
+# idleWaitTime is used to get triggers.nextfiretime in idleWaitTime millions future
+org.quartz.scheduler.idleWaitTime:300000单位毫秒，是查询待触发任务的未来时间范围
+#============================================================================
+# Configure jmx , use jconsole to check it
+#============================================================================
+org.quartz.scheduler.jmx.export: false关闭JMX
+#============================================================================
+# Configure rmi不开启rmi，taskEngine里有openAPI提供任务管理接口
+#============================================================================
+org.quartz.scheduler.rmi.export: false关闭RMI，下面三个至也没啥意义了
+org.quartz.scheduler.rmi.createRegistry: true
+org.quartz.scheduler.rmi.registryHost: localhost
+org.quartz.scheduler.rmi.registryPort: 1099
+#org.quartz.scheduler.wrapJobExecutionInUserTransaction : false
+#client settings
+#org.quartz.scheduler.rmi.proxy : true
+#org.quartz.scheduler.rmi.registryHost : localhost
+#org.quartz.scheduler.rmi.registryPort : 1099
+#============================================================================
+# Configure ThreadPool
+#============================================================================
+org.quartz.threadPool.class: org.quartz.simpl.SimpleThreadPool这个不要改了，就用默认的线程池
+org.quartz.threadPool.threadCount: 10线程池的容量
+org.quartz.threadPool.threadPriority: 5线程优先级
+#============================================================================
+# Configure JobStore
+# see JobStoreSupport.acquireNextTriggers about misfireThreshold
+# misfireThreshold use to refire the misfired trigger in misfireThreshold millions ago
+#============================================================================
+org.quartz.jobStore.misfireThreshold: 60000单位毫秒，任务库在获取待触发任务时，指定过去多少时间内错过了触发的也要取出来
+org.quartz.jobStore.clusterCheckinInterval:120000单位毫秒，是服务器签到周期，尤其在集群情况下相当重要
+#org.quartz.jobStore.class: org.quartz.simpl.RAMJobStore
+#TaskStoreSupport is local implemented
+org.quartz.jobStore.class: org.quartz.impl.jdbcjobstore.TaskStoreSupport这是引擎中的任务库管理类，主要是在服务器异常情况下报警，而不对任务自动处理，需要对任务自动处理时，用下面quartz自带的就好了
+#org.quartz.jobStore.class:org.quartz.impl.jdbcjobstore.JobStoreCMT
+#org.quartz.jobStore.class:org.quartz.impl.jdbcjobstore.JobStoreTX
+org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate这个值也用默认的就好了
+org.quartz.jobStore.useProperties: false没有自定义的扩展属性
+org.quartz.jobStore.dataSource: myDS数据库的命名空间，下面可以配置多个，这里指定要用哪一个
+org.quartz.jobStore.tablePrefix: QRTZ_quartz的数据库表前缀，这个值不要改，或者不要这个配置了，它的默认值就是QRTZ_
+org.quartz.jobStore.isClustered: true打开集群
+#============================================================================
+# Configure Datasources
+# 【注意】jndi和自带连接池机制二选一
+#============================================================================
+
+#jndi配置只有一条如下
+org.quartz.dataSource.myDS.jndiURL:java:comp/env/jdbc/taskEngine JNDI 这里指定了以后就不需要底下的JDBC配置了
+
+#数据库连接池配置有下面这些配置项，连接池默认采用c3p0，spring-boot2.7中抛弃了c3p0并删除了quartz对c3p0的依赖，我们使用spring-boot中默认的hikaricp
+#this class is too old : org.quartz.dataSource.myDS.connectionProvider.class=org.quartz.utils.HikariCpPoolingConnectionProvider
+#we do not use "org.quartz.dataSource.myDS.connectionProvider.class" but we can use "org.quartz.dataSource.myDS.provider" and then it can find been from spring ioc
+org.quartz.dataSource.myDS.provider=hikaricp
+org.quartz.dataSource.myDS.driver= com.mysql.cj.jdbc.Driver
+org.quartz.dataSource.myDS.URL= jdbc:mysql://xxx.xxx.xxx.xxx:3306/my_quartz_db?useUnicode=true&charSet=utf8mb4&useSSL=true
+org.quartz.dataSource.myDS.user= xxxxx
+org.quartz.dataSource.myDS.password= xxxxx
+org.quartz.dataSource.myDS.maxConnections= 5
+
+		</pre>
+	</div>
+</body>
+</html>

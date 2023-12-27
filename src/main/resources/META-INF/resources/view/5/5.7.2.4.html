@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		“生成随机字符串”Action说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		组件：<img src='../../image/icons/action/a046.png' style='margin-right:0.1rem;'>生成随机字符串
+	</div>
+	<div class="subTitleDiv addArrow">
+		备注或算法描述：
+	</div>
+	<div class="subTitleDiv addArrow">
+		实现类：com.edk4j.core.action.GenerateRandomStringAction
+	</div>
+	<div class="subTitleDiv addArrow">
+		属性清单：
+	</div>
+	<table class="across">
+		<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:3rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+		<thead>
+			<tr>
+				<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style='text-align:center;'>1</td><td>length</td><td>字符串长度</td><td></td><td>6</td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>2</td><td>prefix</td><td>字符串前缀</td><td></td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>3</td><td>scope</td><td>随机种子</td><td>请指定要取值的范围，例如abcdefg，则会从这7个字符中生成随机数。如果为空时，默认取值范围为0-9a-zA-Z一共62个字符</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>4</td><td>seperator</td><td>各随机字母间的分隔符</td><td></td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>5</td><td>targetField</td><td>存放生成的随机串数据域</td><td></td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

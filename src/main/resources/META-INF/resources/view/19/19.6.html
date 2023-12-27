@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		19.6、编写任务逻辑
+	</div>
+	<div class="tabTitleDiv">在任务定义SQL中申明执行逻辑在哪里</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		任务可以放到一个注解了@service的bean中执行，也可以放到一个edk4j的业务逻辑里执行，在我们的demo中有两个任务，就是针对这两种情况的演示，脚本见上一节（19.5）。
+	</div>
+	<div class="tabTitleDiv">任务逻辑在spring标注的服务类中</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		任务配置脚本中这两个字段的值怎么设置：<br/>
+		Task_Execute_Class_Name = 'com.edk4j.taskengine.executor.TaskExecutorDisallowConcurrentViaQuartzAndSpring'<br/>
+		Task_Biz = 'testTaskEngineService'<br/><br/>
+		
+		其中Task_Biz字段的值，要等于你Service的<label style="background-color:#ffff00;">beanName</label>，也就是注解中的value属性值@Service(value="beanName")<br/><br/>
+		
+		编写任务执行的service类，这个类<label style="color:#ff0000">必须实现</label>接口com.edk4j.taskengine.core.SpringTaskExecuteServiceInterface
+	</div>
+	<div class="tabTitleDiv">任务在bpm中</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		任务配置脚本中这两个字段的值怎么设置：<br/>
+		Task_Execute_Class_Name= 'com.edk4j.taskengine.executor.TaskExecutorDisallowConcurrentViaEdk4jBpm''<br/>
+		Task_Biz='businessLogicGroupId.businessLogicId'<br/><br/>
+		
+		其中Task_Biz字段的值，就是业务逻辑的id：<label style="background-color:#00ff00;">businessLogicGroupId.businessLogicId</label>（模块id.具体逻辑id）<br/>
+	</div>
+</body>
+</html>

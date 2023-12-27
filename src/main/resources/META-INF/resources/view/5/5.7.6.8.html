@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		“执行存储过程”Action说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		组件：<img src='../../image/icons/action/a025.png' style='margin-right:0.1rem;'>执行存储过程
+	</div>
+	<div class="subTitleDiv addArrow">
+		备注或算法描述：
+	</div>
+	<div class="subTitleDiv addArrow">
+		实现类：com.edk4j.core.repository.jdbc.ExecuteProcedureAction
+	</div>
+	<div class="subTitleDiv addArrow">
+		属性清单：
+	</div>
+	<table class="across">
+		<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:3rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+		<thead>
+			<tr>
+				<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style='text-align:center;'>1</td><td>dataSourceName</td><td>数据源名称</td><td></td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>2</td><td>newTransactionFlag</td><td>使用独立事务</td><td>请选择事务类型，unuse:不使用事务；true:独立事务；false:沿用当前事务</td><td>false</td><td style='text-align:center;'>true</td><td>unuse<br>false<br>true</td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>3</td><td>procedureName</td><td>存储过程名称</td><td></td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>4</td><td>inputParamFieldList</td><td>输入参在context中对应的DataCell的id</td><td>多个字段时，请注意顺序保持一致。</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>5</td><td>outputParamFieldList</td><td>输出参数在context中对应的DataCell的id</td><td>多个字段时，请注意顺序保持一致。</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>6</td><td>outputResultSetFieldList</td><td>输出游标结果集在context中的Listx的id</td><td>多个列表时，请注意顺序保持一致。【特别注意】多个列表id之间使用双竖线||分隔，每个列表中的列名用中括号包裹，各个字段用逗号“,”分隔。例如：listx1[field1, field2] || listx2[fielda, fieldb, fieldc]</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

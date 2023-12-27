@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../../css/dom.css"/>
+	<script type="text/javascript" src="../../../javascript/core/domUtil.js"></script>
+	<style>
+		blockquote {
+		    padding: 0.1rem;
+		    border-left: 0.1rem solid #eee;
+		    font-size:0.2rem;
+		    margin-left:0.05rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		Activiti 数据库表结构 ACT_RU_JOB
+	</div>
+	<div class="contentDiv">
+		<blockquote>
+			<p>运行时定时任务数据表( act_ru_job )</p>
+		</blockquote>
+		<p style="padding:0.05rem;">
+		</p>
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"><col style="width:3rem;"><col style="width:2rem;"><col style="width:1rem;"><col style="width:1rem;"><col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>字段名称</th>
+					<th>字段描述</th>
+					<th>数据类型</th>
+					<th>主键</th>
+					<th>为空</th>
+					<th>取值说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>ID_</td>
+					<td>标识</td>
+					<td>nvarchar(64)</td>
+					<td>√</td>
+					<td></td>
+					<td>标识</td>
+				</tr>
+				<tr>
+					<td>REV_</td>
+					<td>版本</td>
+					<td>int</td>
+					<td></td>
+					<td>√</td>
+					<td>版本</td>
+				</tr>
+				<tr>
+					<td>TYPE_</td>
+					<td>类型</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td></td>
+					<td>类型</td>
+				</tr>
+				<tr>
+					<td>LOCK_EXP_TIME_</td>
+					<td>锁定释放时间</td>
+					<td>datetime</td>
+					<td></td>
+					<td>√</td>
+					<td>锁定释放时间</td>
+				</tr>
+				<tr>
+					<td>LOCK_OWNER_</td>
+					<td>挂起者</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>挂起者</td>
+				</tr>
+				<tr>
+					<td>EXCLUSIVE_</td>
+					<td></td>
+					<td>bit</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>EXECUTION_ID_</td>
+					<td>执行实例ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>执行实例ID</td>
+				</tr>
+				<tr>
+					<td>PROCESS_INSTANCE_ID_</td>
+					<td>流程实例ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>流程实例ID</td>
+				</tr>
+				<tr>
+					<td>PROC_DEF_ID_</td>
+					<td>流程定义ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>流程定义ID</td>
+				</tr>
+				<tr>
+					<td>RETRIES_</td>
+					<td></td>
+					<td>int</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>EXCEPTION_STACK_ID_</td>
+					<td>异常信息ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>异常信息ID</td>
+				</tr>
+				<tr>
+					<td>EXCEPTION_MSG_</td>
+					<td>异常信息</td>
+					<td>nvarchar(4000)</td>
+					<td></td>
+					<td>√</td>
+					<td>异常信息</td>
+				</tr>
+				<tr>
+					<td>DUEDATE_</td>
+					<td>到期时间</td>
+					<td>datetime</td>
+					<td></td>
+					<td>√</td>
+					<td>到期时间</td>
+				</tr>
+				<tr>
+					<td>REPEAT_</td>
+					<td>重复</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>重复</td>
+				</tr>
+				<tr>
+					<td>HANDLER_TYPE_</td>
+					<td>处理类型</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>处理类型</td>
+				</tr>
+				<tr>
+					<td>HANDLER_CFG_</td>
+					<td></td>
+					<td>nvarchar(4000)</td>
+					<td></td>
+					<td>√</td>
+					<td>标识</td>
+				</tr>
+
+
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

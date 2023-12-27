@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="../../css/dom.css" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		19.13.2、服务器限制任务登记（server_forbid_tasks）
+	</div>
+	<table class="across">
+		<colgroup>
+			<col style="width:3rem;"/>
+			<col style="width:2rem;"/>
+			<col style="width:2rem;"/>
+			<col style="width:1rem;"/>
+			<col style="width:1rem;"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>字段名</th>
+				<th>中文名</th>
+				<th>数据类型</th>
+				<th>是否主键</th>
+				<th>不能为空</th>
+				<th>字段注释</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Task_Group</td>
+				<td>任务分组</td>
+				<td>VARCHAR2(100)</td>
+				<td>TRUE</td>
+				<td>TRUE</td>
+				<td>任务分组</td>
+			</tr>
+			<tr>
+				<td class="TD2">Task_Id</td>
+				<td class="TD2">任务ID</td>
+				<td class="TD2">VARCHAR2(100)</td>
+				<td class="TD2">TRUE</td>
+				<td class="TD2">TRUE</td>
+				<td class="TD2">任务ID</td>
+			</tr>
+			<tr>
+				<td>Task_Forbid_Server_Ip</td>
+				<td>禁止执行的服务器Ip</td>
+				<td>VARCHAR2(30)</td>
+				<td>TRUE</td>
+				<td>TRUE</td>
+				<td>禁止执行的服务器Ip</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

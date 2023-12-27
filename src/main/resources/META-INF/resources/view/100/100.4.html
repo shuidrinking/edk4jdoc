@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/sdTabControl.css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/sdImageViewer.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/SDTabControl.js"></script>
+	<script type="text/javascript" src="../../javascript/components/SDImageViewer.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		100.4、如何创建edk4j项目
+	</div>
+	<div style="margin:0.05rem;">
+		<div id="tabs" class="sd_tab">
+			<div class="sd_tab_in" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),1);">方式一：直接创建新项目</div>
+			<div class="sd_tab_out" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),2);">方式二：改造旧项目</div>
+		</div>
+		<div id="tabContents" class="tabContentDiv">
+			<div>
+				<div class="subTitleDiv addArrow">开始创建项目</div>
+				<img src="../../image/business/100/100.4-1.png"/><br/>
+				<div class="subTitleDiv addArrow">按照提示步骤完成新项目创建</div>
+				<img src="../../image/business/100/100.4-2.png" onclick="SDImageViewer.showBigImage(this.src)" style="cursor:pointer;width:30%;"/>
+				<img src="../../image/business/100/100.4-4.png" onclick="SDImageViewer.showBigImage(this.src)" style="cursor:pointer;width:30%;"/>
+				<img src="../../image/business/100/100.4-5.png" onclick="SDImageViewer.showBigImage(this.src)" style="cursor:pointer;width:30%;"/>
+			</div>
+			<div style="display:none;">
+				右键已有的maven项目，在弹出菜单中选择“添加edk4j项目支持”，点击后，将会自动为你的项目创建edk4j项目中必须的文件<br/>
+				<img src="../../image/business/100/100.4-3.png"/><br/><br/>
+				<a style="font-weight:bold;">请核对自动添加的文件，并且按参考文件，修正正式文件。</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

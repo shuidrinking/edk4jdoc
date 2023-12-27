@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		“提取excel内容到Listx”Action说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		组件：<img src='../../image/icons/action/a012.png' style='margin-right:0.1rem;'>提取excel内容到Listx
+	</div>
+	<div class="subTitleDiv addArrow">
+		备注或算法描述：每次只能解析1页，若有多页，请解析多次
+	</div>
+	<div class="subTitleDiv addArrow">
+		实现类：com.edk4j.core.action.GetExcelContentToListxAction
+	</div>
+	<div class="subTitleDiv addArrow">
+		属性清单：
+	</div>
+	<table class="across">
+		<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:3rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+		<thead>
+			<tr>
+				<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style='text-align:center;'>1</td><td>fileFullPathDataCellId</td><td>文件名全路径所在字段</td><td>请选择保存“文件名全路径”的字段，保存的值中必须是文件名全路径，不能仅为相对路径文件名</td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>2</td><td>sheetNo</td><td>解析第几页</td><td>请输入大于0的阿拉伯数字</td><td>1</td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>3</td><td>firstRowNo</td><td>起始行号</td><td></td><td>1</td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>4</td><td>maxReadRowCount</td><td>结束行号</td><td>小于1表示不限制</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>5</td><td>dataListxId</td><td>保存解析数据的listx id</td><td></td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>6</td><td>readExceptionRowListxId</td><td>解析错误的单元格坐标集合</td><td>当某单元格解析失败时，将其坐标增加到该listx中</td><td>readExceptionRowListx</td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>7</td><td>excelColumnNumberList</td><td>null</td><td>多个值请用双竖线||进行分隔</td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>8</td><td>columnIdListInDataListx</td><td>null</td><td>多个值请用双竖线||进行分隔</td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

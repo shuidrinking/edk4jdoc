@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		24.2、配置业务逻辑事务
+	</div>
+	<div class="tabTitleDiv">&lt;BusinessLogic&gt;节点的事务属性transaction</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-xml" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+&lt;!-- 此处省去无关代码，.edk4jBpm文件编辑规范见“5.2.3、edk4jBpm配置文件”章节 --&gt;
+&lt;!--配置BusinessLogic节点的属性transaction，可以设置该业务逻辑是否创建事务 --&gt;
+&lt;BusinessLogic ... transaction="true或false，不设置时默认为false"&gt;
+</pre>
+	</div>
+	<div class="tabTitleDiv">在业务逻辑编辑器中配置</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		使用可视化编辑器，打开.edk4jBpm文件，在“逻辑索引”页中，新建逻辑，或者修改逻辑时，即可设置其“是否启用事务”的属性。<br>
+		<img src="../../image/business/24/24.1-1.png" />
+	</div>
+</body>
+</html>

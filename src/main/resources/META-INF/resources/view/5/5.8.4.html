@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.8.4、刷新时间戳
+	</div>
+	<div class="subTitleDiv addArrow">
+		这个功能用在这种场景：当客户提交了之后，时间戳已经被清理了，但是业务中出现了问题导致提交失败，客户再次提交时会出现重复提交的错误(errorCode="999997")，因此在客户提交时如果有具体业务错误，捕获以后要刷新时间戳。
+	</div>
+	<div class="subTitleDiv addArrow">
+		功能清单：
+	</div>
+	<div class="subContentDiv">
+		请求地址：http://url:port/youSystemName/refreshTimeStampe<br>
+		参数{"requestToken":"xxxxxxx"}
+	</div>
+</body>
+</html>

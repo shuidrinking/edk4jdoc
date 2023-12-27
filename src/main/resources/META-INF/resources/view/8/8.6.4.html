@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		8.6.4、第4步：配置jndi
+	</div>
+	<div class="tabTitleDiv">以tomcat中context.xml的配置为例</div>
+	<div class="tabTitleLine"></div>	
+	<div class="contentDiv">
+		<pre class="prettyprint lang-xml" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;Resource
+       name="jdbc/your_ds1"
+       uniqueResourceName="jdbc/your_ds1"
+       auth="Container"
+       type="com.atomikos.jdbc.AtomikosDataSourceBean"
+       factory="com.atomikos.tomcat.EnhancedTomcatAtomikosBeanFactory"
+       xaDataSourceClassName="com.mysql.cj.jdbc.MysqlXADataSource"
+       xaProperties.URL="jdbc:mysql://localhost:3306/your_database_1?charset=utf8mb4"
+       xaProperties.user="用户名"
+       xaProperties.password="密码"
+       xaProperties.pinGlobalTxToPhysicalConnection="true"
+       maxLifetime="60"
+       poolSize="10"
+       maxPoolSize="20"
+/&gt;
+&lt;Resource
+       name="jdbc/your_ds_2"
+       uniqueResourceName="jdbc/your_ds_2"
+       auth="Container"
+       type="com.atomikos.jdbc.AtomikosDataSourceBean"
+       factory="com.atomikos.tomcat.EnhancedTomcatAtomikosBeanFactory"
+       xaDataSourceClassName="com.mysql.cj.jdbc.MysqlXADataSource"
+       xaProperties.URL="jdbc:mysql://localhost:3306/your_database_2?charset=utf8mb4"
+       xaProperties.user="用户名"
+       xaProperties.password="密码"
+       xaProperties.pinGlobalTxToPhysicalConnection="true"
+       maxLifetime="60"
+       poolSize="10"
+       maxPoolSize="20"
+/&gt;
+</pre>
+		</div>
+		<div class="subContentDiv">
+			<label style="color:#ff0000;font-weight:bold">【注意】</label>上面配置中xaProperties.pinGlobalTxToPhysicalConnection="true" 是对mysql而言的，不加则无法提交事务，对于其他数据库不需要。<br/>
+			<label style="color:#ff0000;font-weight:bold">【注意】jndi中的其他属性，你可以自行研究并添加进去</label>
+		</div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			//CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		5.2.3、bpm配置文件
+	</div>
+	<div class="subTitleDiv">
+		文件用途：用于保存业务逻辑的配置；<br>
+		配置原则：一个bpm文件中，可以配置多个业务逻辑，可以将一组或者一个模块的业务逻辑配置到一个文件里。具体把哪些业务逻辑配置在一个文件中，由开发人员着情安排。
+	</div>
+	<div class="subTitleDiv addArrow">
+		（1）.bpm是“业务逻辑”配置文件，这与传统编码方式不同，传统硬编码中是把业务逻辑都写到一个service类中。
+	</div>
+	<div class="subTitleDiv addArrow">
+		（2）可视化开发ide可自动生成.bpm的文件内容。
+	</div>
+	<div class="subTitleDiv addArrow">
+		（3）.bpm配置文件内容是按照xml规范编写的，如果没有ide，你可以直接用文本编辑器打开手工处理，bpm文件内容模板以及解释如下：
+	</div>
+	<div class="subContentDiv addBorder">
+<pre class="prettyprint lang-xml" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;!DOCTYPE MvcGroup SYSTEM "../../dtd/spruceBpm.dtd"&gt;
+&lt;BusinessLogicGroup id="业务流分组ID，必配属性" label="建议按功能将一组业务流放到同一个bpm文件中，也就是说一个BusinessLogicGroup标签中可以有多个BusinessLogic标签"&gt;
+	&lt;!--每个业务逻辑分组中，可以有多个业务逻辑定义，每个BusinessLogic标签就是一个业务逻辑--&gt; 
+	&lt;BusinessLogic id="具体业务流的ID，以BL结尾，必配属性" transaction="true或false，不设置时默认为false" label="名称或概要说明文字"&gt;
+		&lt;!--每个业务逻辑中只能有一个数据域定义标签context--&gt; 
+		&lt;context&gt;
+			&lt;dataCell id="字段Id，必配属性"  defaultValue="默认值"  label="字段的中文名称，用于对该字段进行简要描述，该标签在context标签中可以有多个"/&gt;
+			&lt;mapx id="必配属性" label="字段的中文名称，用于对该字段进行简要描述，该标签在context标签中可以有多个"&gt;
+				&lt;dataCell id="字段1 Id，必配属性"/&gt;
+				...
+				&lt;dataCell id="字段n Id，必配属性"/&gt;
+			&lt;/mapx&gt;
+			&lt;listx id="列表1 Id，必配属性"  label="字段的中文名称，用于对该字段进行简要描述，该标签在context标签中可以有多个"&gt;
+				&lt;mapx&gt;
+					&lt;dataCell id="字段1 Id，必配属性"/&gt;
+					...
+					&lt;dataCell id="字段n Id，必配属性"/&gt;
+				&lt;/mapx&gt;
+			&lt;/listx&gt;
+		&lt;/context&gt;
+		&lt;!--每个业务逻辑中只能有一个输入定义标签input--&gt; 
+		&lt;input&gt;
+			&lt;dataCell id="必须是context中定义过的field的Id" label="有多个输入字段就定义多个field标签" checkerBeanName="复杂输入数据的检查器的beanName，检查器的写法见9.3章节" checkRegularExpression="检查该字段的正则表达式，注意不要用java里的转义写法，要严格使用标准的正则表达式写！例如斜杠不能写成\\" inputErrorMessage="检查不通过时的错误提示信息"/&gt;
+			&lt;mapx refId="必须是context中定义过的mapx的Id" label="有多个输入对象就定义多个mapx标签"/&gt;
+			&lt;listx refId="必须是context中定义过的listx的Id" label="有多个输入列表就定义多个listx标签"/&gt;
+		&lt;/input&gt;
+		&lt;!--每个业务逻辑中只能有一个输出定义标签output--&gt; 
+		&lt;output&gt;
+			&lt;dataCell id="必须是context中定义过的field的Id" label="有多个输出字段就定义多个field标签"/&gt;
+			&lt;mapx refId="必须是context中定义过的mapx的Id" label="有多个输出对象就定义多个mapx标签"/&gt;
+			&lt;listx refId="必须是context中定义过的listx的Id" label="有多个输出列表就定义多个listx标签"/&gt;
+		&lt;/output&gt;
+		&lt;!--每个业务逻辑中只能有一个业务逻辑流定义标签flow--&gt; 
+		&lt;flow&gt;
+			&lt;start&gt;
+				&lt;route toAction="步骤1 ID"/&gt;
+			&lt;/start&gt;
+			&lt;action id="步骤1 ID，必配属性" label="步骤1 className="com.myproject.....XXXXAction"&gt;
+				&lt;property id="属性名称，必配属性" value="属性值"/&gt;
+				&lt;route toAction="end 必配属性，如果后面没步骤了就写 end"/&gt;
+				&lt;route condition="填写aviator表达式，网上资料非常丰富" toAction="满足条件时要执行的下一步的action标签的id，如果有多个条件，就写多个route标签"/&gt;
+			&lt;/action&gt;
+			&lt;action id="步骤2 ID，必配属性" label="步骤2" className="com.myproject.....XXXXAction"&gt;
+				&lt;route toAction="end 必配属性，如果后面没步骤了就写 end "/&gt;
+			&lt;/action&gt;
+		&lt;/flow&gt;
+	&lt;/BusinessLogic&gt;
+	
+	......其他BusinessLogic......
+	
+&lt;/BusinessLogicGroup&gt;
+</pre>
+	</div>
+</body>
+</html>

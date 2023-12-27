@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		19.10、附录3：任务并发行怎么控制
+	</div>
+	<div class="tabTitleDiv">什么是正确的并发执行</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		我们的业务系统里对任务的执行， 绝大多数情况“不允许集群内或者单台服务器上，任务到点就执行而不管上一次的任务是否执行完成了” ，如下图所示：<br/>
+		<img src="../../image/business/19/19.10-1.png"/><br/>
+	</div>
+	<div class="tabTitleDiv">quartz中如何实现并发执行</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		quartz依靠实现org.quartz.Job（InterruptableJob）接口的类中加入注解来控制：<br/>
+		@DisallowConcurrentExecution<br/><br/>
+		此外，无论任务要不要控制并行执行，都要加入持久化注解<br/>
+		@PersistJobDataAfterExecution
+	</div>
+	<div class="tabTitleDiv">edk任务引擎中如何控制并发和不并发</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="subTitleDiv">
+			在taskEngine中有4个实现了InterruptableJob接口的实现类，分别如下：
+		</div>
+		<div class="item">
+			（1）<span style="color:red">允许</span>以并发的方式执行edk4j中的businessLogic
+		</div>
+		<div class="subContentDiv addTextIndent">
+			com.edk4j.taskengine.executor.TaskExecutorAllowConcurrentViaEdk4jBpm
+		</div>
+		<div class="item">
+			（2）<span style="color:red">允许</span>以并发的方式执行spring 中的service
+		</div>
+		<div class="subContentDiv addTextIndent">
+			com.edk4j.taskengine.executor.TaskExecutorAllowConcurrentViaQuartzAndSpring
+		</div>
+		<div class="item">
+			（3）<span style="color:red">不允许并发，</span>只运行以串行的方式执行edk4j中的businessLogic
+		</div>
+		<div class="subContentDiv addTextIndent">
+			com.edk4j.taskengine.executor.TaskExecutorDisallowConcurrentViaEdk4jBpm
+		</div>
+		<div class="item">
+			（4）<span style="color:red">不允许并发，</span>只以串行的方式执行spring 中的service
+		</div>
+		<div class="subContentDiv addTextIndent">
+			com.edk4j.taskengine.executor.TaskExecutorDisallowConcurrentViaQuartzAndSpring
+		</div>
+	</div>
+	<div class="tabTitleDiv">“自由态”的任务</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		有可能会出现这样的特殊任务，允许并发执行，而没什么时间限制的。如果是单台服务器，你可以使用上面的Allow执行类来实现，而如果是集群也要求这样，这时候可以不使用edk4j的任务引擎，而是使用Spring的@Schedule注解来注解一个服务类来实现，也是比较简单的。
+	</div>
+</body>
+</html>

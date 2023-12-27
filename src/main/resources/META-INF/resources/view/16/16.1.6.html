@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		16.1.6、编写具体接口调用者Caller
+	</div>
+	<div class="tabTitleDiv">什么是Caller</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		Caller是项目中的公共基础组件。每个接口都需要一个caller ，负责调用具体接口，caller是为action服务的，action要调用某个接口时，直接调用caller就可以了。在项目中，每个接口的caller 只有1个。
+	</div>
+	<div class="tabTitleDiv">谁负责写Caller</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="item">
+			由项目经理或技术经理完成，因为接口是相对固定的、公用的，无需每个程序员都自己造一遍调用组件。
+		</div>
+		<div class="item">
+			caller中调用接口的方法的参数，可以是requestFormat的报文实体类的对象，此时，action中就需要提前把实体类对象先做好；
+			也可以是接口需要的具体参数值，此时，就需要在caller中自行组织requestFormat的报文实体类！
+		</div>
+		<div class="item">
+			另外，caller中调用接口的方法的返回值，可以是答复报文的实体类对象，也可以是返回报文的字符串内容。对于返回内容中的数据，由action自行组织提取。
+		</div>
+	</div>
+</body>
+</html>

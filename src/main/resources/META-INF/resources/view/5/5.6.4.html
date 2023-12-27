@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.4、edk4j内置Base64编码及解码工具
+	</div>
+	<div class="subTitleDiv addArrow">
+		类：com.edk4j.core.util.Base64Util
+	</div>
+	<div class="subTitleDiv addArrow">
+		Base64编码规范
+	</div>
+	<div class="subContentDiv">
+		<div class="item">
+			Base64依赖于简单的编码和解码算法，使用65个字符的US-ASCII子集，其中前64个字符中的每一个都映射到等效的6位二进制序列，第65个字符（=）用于将Base64编码的文本填充到整数大小。后来产生了3个变种：
+		</div>
+		<div class="item">
+			（1）RFC4648 Basic基础标准：
+		</div>
+		<div class="subContentDiv">
+			此变体使用RFC 4648和RFC 2045的Base64字母表进行编码和解码。编码器将编码的输出流视为一行; 没有输出行分隔符。解码器拒绝包含Base64字母表之外的字符的编码。
+		</div>
+		<div class="item">
+			（2）RFC2045 MIME标准：
+		</div>
+		<div class="subContentDiv">
+			此变体使用RFC 2045提供的Base64字母表进行编码和解码。编码的输出流被组织成不超过76个字符的行; 每行（最后一行除外）通过行分隔符与下一行分隔。解码期间将忽略Base64字母表中未找到的所有行分隔符或其他字符。
+		</div>
+		<div class="item">
+			（3）RFC4648 Url安全标准：
+		</div>
+		<div class="subContentDiv">
+			此变体使用RFC 4648中提供的Base64字母表进行编码和解码。字母表与前面显示的字母相同，只是-替换+和_替换/。不输出行分隔符。解码器拒绝包含Base64字母表之外的字符的编码。
+		</div>
+	</div>
+	<div class="subTitleDiv addArrow">
+		常量清单：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:8rem;">
+					public static final String Standard_Basic = "RFC4648_Basic";
+				</td>
+				<td style="color:#3f5fbf">
+					本类的常量，意义为RFC4648 Basic基础标准
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static final String Standard_MIME = "RFC2045_MIME";
+				</td>
+				<td style="color:#3f5fbf">
+					本类的常量，意义为RFC2045 MIME标准
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static final String Standard_Url = "RFC4648_Url";
+				</td>
+				<td style="color:#3f5fbf">
+					本类的常量，意义为RFC4648 Url安全标准
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="subTitleDiv addArrow">
+		方法清单：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:10rem;">
+					public static byte[] encodeToByte(String charsetName, String standard, String data)
+				</td>
+				<td style="color:#3f5fbf">
+					将数据按指定编码和执行标准编码为base64字符串的byte数组，参数说明：<br>
+					charsetName：编码名称，例如：UTF-8<br>
+					standard：编码标准，请使用本类的常量<br>
+					data：待编码的明文字符串
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String encodeToString(String charsetName, String standard, String data)
+				</td>
+				<td style="color:#3f5fbf">
+					将数据按指定编码和执行标准编码为base64格式的字符串，参数说明：<br>
+					charsetName：编码名称，例如：UTF-8<br>
+					standard：编码标准，请使用本类的常量<br>
+					data：待编码的明文字符串
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static byte[] encodeToByte(String charsetName, String standard, String data) 
+				</td>
+				<td style="color:#3f5fbf">
+					将base64格式的字符串，按指定编码和执行标准，【解码】为明文字符串的byte数组，参数说明：<br>
+					charsetName：编码名称，例如：UTF-8<br>
+					standard：编码标准，请使用本类的常量<br>
+					data：待解码的base64字符串数据
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String decodeToString(String charsetName, String standard, String data)
+				</td>
+				<td style="color:#3f5fbf">
+					将base64格式的字符串，按指定编码和执行标准，【解码】为明文字符串，参数说明：<br>
+					charsetName：编码名称，例如：UTF-8<br>
+					standard：编码标准，请使用本类的常量<br>
+					data：待解码的base64字符串数据
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

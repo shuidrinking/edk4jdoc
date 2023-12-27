@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		23.2、如何对HTTP通信进行链路跟踪
+	</div>
+	<div class="tabTitleDiv">定制化Http统一通信类</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p><b>下面以CallCenterServiceApi为例，这里仅展示集成链路跟踪的关键代码：</b></p>
+	<div  class="contentDiv">
+		<pre class="prettyprint lang-java" id="codeShow1" style="font-weight:bold;font-size:0.14rem;line-height:0.14rem;">
+import org.springframework.beans.factory.ObjectProvider;
+import com.edk4j.track.engine.zipkin.report.ISpanProcessor;
+import com.edk4j.track.constant.EdkTraceConstant;
+import brave.http.HttpTracing;
+import brave.httpclient.TracingHttpClientBuilder;
+@Component
+public class CallTaskServerServiceApi {
+	/**
+	 * 1、注入链路跟踪执行单元
+	 */
+	@Autowired
+	private ObjectProvider&lt;HttpTracing&gt; httpTracingObjectProvider;
+	private static HttpTracing httpTracing;
+	
+	@Autowired
+	private ISpanProcessor autowiredSpanProcessor;
+	private static ISpanProcessor spanProcessor;
+
+	//2、初始化方法中初始化HttpTracing实例
+	@PostConstruct
+	public void init(){
+		CallTaskServerServiceApi.httpTracing = httpTracingObjectProvider.getIfAvailable();
+		CallTaskServerServiceApi.spanProcessor = autowiredSpanProcessor;
+		
+		//省略无关代码... 
+	}
+
+	//3、修改getHttpClient方法
+	private static CloseableHttpClient getHttpClient() {
+		//省略无关代码... 
+		if(credsProvider!=null) {
+			//如果存在httpTracing实例，则通过TracingHttpClientBuilder来构建HttpClient
+			if(httpTracing != null){
+				return TracingHttpClientBuilder.create(httpTracing).setDefaultCredentialsProvider(credsProvider).build();
+			}else{
+				return HttpClients.custom().setDefaultCredentialsProvider(credsProvider).build();
+			}
+		}
+		else {
+			//如果存在httpTracing实例，则通过TracingHttpClientBuilder来构建HttpClient
+			if(httpTracing != null){
+				return TracingHttpClientBuilder.create(httpTracing).build();
+			}else{
+				return HttpClients.createDefault();
+			}
+		}
+	}
+	//4、在调用接口的方法中，加入如下代码
+	private static String sendPostWithoutParseFormat(String serverUrl, String serviceUri, String jsonParamString){
+		//省略无关代码... 
+		//生成最终请求地址
+		String requestUrl = serverUrl + serviceUri;
+		
+		//省略无关代码... 
+		
+		//日志跟踪项标签map
+		Map&lt;String, String&gt; tagMap = new HashMap&lt;String, String&gt;(4);
+		
+		String responseStr=null;
+		try {
+			//向标签map中加入：请求地址、请求报文
+			tagMap.put("requestFormat", jsonParamString);
+			tagMap.put("requestUrl", requestUrl);
+			//【开始】跟踪
+			spanProcessor.startClientTrack(EdkTraceConstant.HTTP_CLIENT_SPAN_NAME, EdkTraceConstant.ANNOTATION_CS, tagMap);
+			httpClient = CallTaskServerServiceApi.getHttpClient();
+			//调用接口
+			responseStr=HttpCallApi.callViaPostMethod(httpClient, CallTaskServerServiceApi.requestConfig, CallTaskServerServiceApi.getCookieString(), requestUrl, jsonParamString, BaseConstant.DEFAULT_CHARSET);
+			
+			//向跟踪标签map中加入“返回报文”
+			spanProcessor.addTagToCurrentTrack("responseFormat", responseStr);
+		}
+		catch (Exception e) {
+			//如果发生异常时，向跟踪标签中加入异常信息
+			String errorStackTrace = BaseExceptionHandler.getErrorStack(e);
+			spanProcessor.addTagToCurrentTrack(EdkTraceConstant.ERROR_TAG_NAME, errorStackTrace);
+			//省略无关代码... 
+		}
+		finally {
+			//省略无关代码... 
+			
+			//完成跟踪，【注意，跟踪是有头有尾的动作，有开始就要有结束】
+			spanProcessor.finishTrack(EdkTraceConstant.ANNOTATION_CR);
+		}
+		return responseStr;
+	}
+}
+		</pre>
+	</div>
+		<p><b>经过以上代码配置，edk4j的Http通信类CallCenterServiceApi就纳入了全局链路跟踪。</b></p>
+	</div>
+</body>
+</html>

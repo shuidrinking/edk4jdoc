@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		16.1.2、编写配置文件
+	</div>
+	<div class="subTitleDiv" style="text-indent:0">
+		这个动作，由项目经理或技术经理做，开发人员无需处理<br>
+		在application-{profile}.properties里配置调用接口的参数<br>
+		<label style="text-indent:0.32rem;background-color:#ffff00;margin-bottom:5px;">
+			每个接口服务器有一组配置参数，每组参数的范式为“integration.服务器.具体参数”，模板如下：
+		</label>
+	</div>
+	<div class="tabTitleDiv">socket公共参数配置</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-properties" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+#以下3个配置项如果不配置时，系统都会使用其对应的默认值
+#是否对长连接socket服务器做心跳检查，值为true或false，默认值为false，如果不设置该项，则不会检查长连接心跳
+integration.socket.public.checkKeepAlive=false
+#心跳检查周期，单位秒，默认120秒
+integration.socket.public.checkAlivePeriodSeconds=120
+#心跳包（紧急包）内容，1个字节长度的内容，此处需要设置为int类型，0xff是255。本项默认值为0xff
+integration.socket.public.urgentData=0xff 
+</pre>
+	</div>
+	<div class="tabTitleDiv">socket具体具体服务器配置</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-properties" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+#socket接口模板
+#这个参数定义了服务器ip和端口，如果是多台服务器可以用逗号分开：ip1:port1, ip2:port2, ip3:port3
+integration.服务器.urlAndPort=197.97.1.49:8820
+#这个参数定义了连接池的最大连接数
+integration.服务器.maxConnectionCount=40
+#这个参数定义了socket连接是否是长连接
+integration.服务器.keepSocketConnectionAlive=false
+#这个参数定义了传输超时时间，单位为秒（不是连接超时时间）
+integration.服务器.socketDefaultSoTimeOutSeconds=30
+#这个参数是虚拟报文总开关，如果总开关为true时，任何对该服务器的接口调用都将使用虚拟报文模式，无论你在caller里传入的参数是什么值。当定义为false时，你可以在具体某个接口调用时选择是否使用虚拟报文
+integration.服务器.useVirtualFormat=false
+</pre>
+	</div>
+	<div class="tabTitleDiv">http具体服务器配置参数</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-properties" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+#http接口模板
+#这个参数定义了服务器IP和端口，多个服务器可以用逗号分开：http://ip1:port1/app , http://ip2:port2/app
+integration.服务器.urlAndPort=http://ip:port/app
+#这个参数定义了数据传输的最大超时时间，单位为秒，值为-1时一直等待
+integration.服务器.socketTimeOutSeconds=-1
+#这个参数定义了连接的最大超时时间，单位为秒
+integration.服务器.connectionTimeOutSeconds=60
+#这个参数定义了从连接池获得一个连接的超时时间，单位为秒
+integration.服务器.requestTimeOutSeconds=60
+#这个参数定义了最大连接数
+integration.服务器.maxRequest=30
+#这个参数是虚拟报文总开关，如果定义为true，无论你在caller里传入的是什么值，都会使用虚拟报文。当定义为false时，你可以在具体某个接口调用时选择是否使用虚拟报文
+integration.服务器.useVirtualFormat=false
+#这个参数定义了是否使用代理服务器
+integration.服务器.useProxy = false
+</pre>
+	</div>
+	<div class="contentDiv">
+		样例见edk4j-demos中的application-${profile}.properties配置文件，请仔细阅读
+	</div>
+</body>
+</html>

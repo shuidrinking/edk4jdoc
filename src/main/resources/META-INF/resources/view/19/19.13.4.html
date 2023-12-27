@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="../../css/dom.css" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">19.13.3、正在运行的任务登记（running_task_record）</div>
+	<table class="across">
+		<colgroup>
+			<col style="width:3rem;"/>
+			<col style="width:2rem;"/>
+			<col style="width:2rem;"/>
+			<col style="width:1rem;"/>
+			<col style="width:1rem;"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>字段名</th>
+				<th>中文名</th>
+				<th>数据类型</th>
+				<th>是否主键</th>
+				<th>不能为空</th>
+				<th>字段注释</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Task_Serial_No</td>
+				<td>流水号</td>
+				<td>VARCHAR2(100)</td>
+				<td>TRUE</td>
+				<td>TRUE</td>
+				<td>&nbsp;</td>
+			</tr>
+	
+			<tr>
+				<td>Task_Group</td>
+				<td>任务分组</td>
+				<td>VARCHAR2(100)</td>
+				<td>FALSE</td>
+				<td>TRUE</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Task_Id</td>
+				<td>任务ID</td>
+				<td>VARCHAR2(100)</td>
+				<td>FALSE</td>
+				<td>TRUE</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Task_Execute_Server_Ip</td>
+				<td>所在服务器IP</td>
+				<td>VARCHAR2(30)</td>
+				<td>FALSE</td>
+				<td>TRUE</td>
+				<td>&nbsp;</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

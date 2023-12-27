@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="../../css/dom.css" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">19.13.1、任务定义（task_define）</div>
+	<table class="across">
+		<colgroup>
+			<col style="width:3rem;"/>
+			<col style="width:2rem;"/>
+			<col style="width:2rem;"/>
+			<col style="width:1rem;"/>
+			<col style="width:1rem;"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>字段名</th>
+				<th>中文名</th>
+				<th>数据类型</th>
+				<th>是否主键</th>
+				<th>不能为空</th>
+				<th>字段注释</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Task_Group</td>
+				<td>任务分组</td>
+				<td>VARCHAR2(100)</td>
+				<td>TRUE</td>
+				<td>TRUE</td>
+				<td>分组英文名称</td>
+			</tr>
+			<tr>
+				<td>Task_ID</td>
+				<td>任务ID</td>
+				<td>VARCHAR2(100)</td>
+				<td>TRUE</td>
+				<td>TRUE</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Task_Version</td>
+				<td>任务版本号</td>
+				<td>VARCHAR2(10)</td>
+				<td>TRUE</td>
+				<td>TRUE</td>
+				<td>分组名+ID+版本号 构成主键</td>
+			</tr>
+			<tr>
+				<td>Task_Name</td>
+				<td>任务名称</td>
+				<td>VARCHAR2(100)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>任务名称</td>
+			</tr>
+			<tr>
+				<td>Task_Description</td>
+				<td>任务描述</td>
+				<td>VARCHAR2(300)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>任务描述</td>
+			</tr>
+			<tr>
+				<td>Task_Type</td>
+				<td>周期类型</td>
+				<td>VARCHAR2(1)</td>
+				<td>FALSE</td>
+				<td>TRUE</td>
+				<td>1-循环执行 2-非循环执行</td>
+			</tr>
+			<tr>
+				<td>Task_Max_Expense_Time</td>
+				<td>最长执行时间（秒）</td>
+				<td>VARCHAR2(15)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>最长执行时间（秒），默认-1 不限制</td>
+			</tr>
+			<tr>
+				<td>Task_Concurrent_Flag</td>
+				<td>是否允许并发</td>
+				<td>VARCHAR2(1)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>是否允许并发 1- 允许 0 - 不允许，默认为0</td>
+			</tr>
+	
+			<tr>
+				<td>Task_Recovery_Flag</td>
+				<td>运行中断后，下次是否允许恢复执行</td>
+				<td>VARCHAR2(1)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>当任务被强行停止、系统故障停止等情况引起的任务中断发生后，系统再次恢复时，被中断的任务是否允许被恢复执行：<br>
+					1 允许 <br> 0 或其他值 不恢复而重新执行 <br>
+					一般不需要恢复，重新执行就可以了，除非有一些进度数据需要被续接的，如果需要恢复执行时能取到这些数据，则这些进度数据一般是需要保存到任务的执行context中，或者保存到执行类能取到的地方
+	
+				</td>
+			</tr>
+			<tr>
+				<td>Task_Biz_Type</td>
+				<td>逻辑类型</td>
+				<td>VARCHAR2(1)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>0 - 自定义类<br> 1 - 业务平台自定义组件<br> 当=1时 Task_Biz就可以为空值
+	
+				</td>
+			</tr>
+			<tr>
+				<td>Task_Execute_Class_Name</td>
+				<td>逻辑执行类</td>
+				<td>VARCHAR2(1)</td>
+				<td>FALSE</td>
+				<td>TRUE</td>
+				<td>
+					用于执行逻辑的类，或者调用执行biz的类，该类必须符合所用的调度框架规范，例如quartz里必须继承org.quartz.Job</td>
+			</tr>
+			<tr>
+				<td>Task_Biz</td>
+				<td>执行Biz</td>
+				<td>VARCHAR2(100)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>逻辑执行组件，例如EMP中的Biz，当本字段不为空时，Task_Biz_Type字段不能为0</td>
+			</tr>
+			<tr>
+				<td>Task_Schedule_Effective_Time</td>
+				<td>调度开始生效时间</td>
+				<td>VARCHAR2(20)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>计划开始调度时间,也就是调度的启动时间</td>
+			</tr>
+			<tr>
+				<td>Task_Expression</td>
+				<td>执行时间或Crom表达式</td>
+				<td>VARCHAR2(30)</td>
+				<td>FALSE</td>
+				<td>TRUE</td>
+				<td>执行时间或Crom表达式</td>
+			</tr>
+			<tr>
+				<td>Task_Workday_Execute</td>
+				<td>工作日执行标志</td>
+				<td>VARCHAR2(1)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>0-不执行 1-执行</td>
+			</tr>
+			<tr>
+				<td>Task_Holiday_Execute</td>
+				<td>节假日执行标志</td>
+				<td>VARCHAR2(1)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>0-不执行 1-执行</td>
+			</tr>
+			<tr>
+				<td>Task_State</td>
+				<td>状态</td>
+				<td>VARCHAR2(1)</td>
+				<td>FALSE</td>
+				<td>TRUE</td>
+				<td>1-正常 2-发生错误 3-执行时间过长 4-暂停 5-作废</td>
+			</tr>
+			<tr>
+				<td>Task_Log_RunStatus_History</td>
+				<td>是否记录运行状态历史</td>
+				<td>VARCHAR2(1)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>1-记录 0或其他值-不记录</td>
+			</tr>
+			<tr>
+				<td>Task_Last_Start_Time</td>
+				<td>最近一次启动时间</td>
+				<td>VARCHAR2(20)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>最近一次启动时间yyyy-MM-dd HH:mm:ss</td>
+			</tr>
+			<tr>
+			<tr>
+				<td>Task_Last_Run_ServerIp</td>
+				<td>最近一次运行所在服务器IP</td>
+				<td>VARCHAR2(20)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Task_Last_End_Time</td>
+				<td>最近一次结束时间</td>
+				<td>VARCHAR2(20)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>最近一次结束时间 yyyy-MM-dd HH:mm:ss</td>
+			</tr>
+			<tr>
+				<td>Task_Run_Times</td>
+				<td>执行总次数</td>
+				<td>INTEGER</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Task_Warn_Times</td>
+				<td>报警次数</td>
+				<td>INTEGER</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Task_Exception_Times</td>
+				<td>异常次数</td>
+				<td>INTEGER</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>&nbsp;</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

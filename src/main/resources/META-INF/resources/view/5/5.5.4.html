@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.5.4、程序运行日志怎么记录
+	</div>
+	<div class="subTitleDiv addArrow">
+		什么是运行日志
+	</div>
+	<div class="subContentDiv">
+		程序运行日志，是代码运行过程的详细日志，是程序运行维护的根本依据，出问题了都要从这里定位，所以你的代码里，对日志要做到不杂不漏，必要的关键点上日志不可少，不需要的垃圾日志不要打，打日志会消耗cpu和内存，还影响运维人员阅读。 <br/>
+	</div>
+	<div class="subTitleDiv addArrow">
+		记录规范
+	</div>
+	<div class="subContentDiv">
+		（1）<label  style="color:#ff0000">严禁随意自己用其他的打印组件进行打印，例如直接使用log4j的类来做，这是严禁的！</label>
+	</div>
+	<div class="subContentDiv">
+		（2）而是用运行日志工具类：com.edk4j.core.log.Trace。该组件打日志，至少能保证查问题的时候，知道是哪个服务器，哪个客户出的问题，客户如果提问题过来了，运维也能准确的定位问题日志。
+	</div>
+	<div class="subContentDiv">
+		（3）该组件提供的方法有：
+		<div class="subContentDiv">
+			<div class="item">Trace.info</div>
+			<div class="item">Trace.error</div>
+			<div class="item">Trace.debug</div>
+			<div class="item">Trace.warn</div>
+			<div class="item">Trace.trace</div>
+		</div>
+	</div>
+	<div class="subTitleDiv addArrow">
+		debug级别日志记录技巧
+	</div>
+	<div class="subContentDiv">
+		<label style="font-weight:bold;">请这样写：</label><br/>
+		if(Trace.isDebugEnabled(getClass()){<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;Trace.debug......<br/>
+		}<br/><br/>
+		
+		<label style="font-weight:bold;">例如：</label><br/>
+		Trace.info(getClass(),Trace.Component_BizService,”日志内容”);<br/><br/>
+		
+		catch(Exception e){<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;Trace.error(getClass(),Trace.Component_BizService,”做某交易时异常了”,e);<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;.......<br/>
+		}<br/>
+		<br/>
+		if(Trace.isDebugEnabled(getClass()){<br/>
+			&nbsp;&nbsp;&nbsp;&nbsp;Trace.debug(getClass(),Trace.Component_Action,”具体值得debug的内容”);<br/>
+		}
+	</div>
+	<div class="subTitleDiv addArrow">
+		运行日志里前缀值从哪里来的呢？
+	</div>
+	<div class="subContentDiv">
+		<div>见edk4jConfig.properties中的配置项：</div>
+		<div class="addBorder">
+			<p><span style="color:#3f7f5f">#runLog</span></p>
+			<p><span style="color:#3f7f5f">#</span><span style="color:#3f7f5f">运行日志中要包含的日志前缀内容，值为这些字段在</span><span style="color:#3f7f5f">sessionContext</span><span style="color:#3f7f5f">中的值</span></p>
+			<p><span style="color:black">runLog.prefixFieldsInLogContent=</span><span style="color:#2a00ff">sessionCustNo, sessionCustName</span></p>
+		</div>
+		</div>
+	<div class="subContentDiv">
+		<label style="font-weight:bold;">注意</label>：注意上面的注意事项，有几个字段是要求你在创建sessionContext的时候，把User实体类保存进去的。如果你觉得麻烦，可以把对应的几个字段用其他变量名保存在sessionContext，在配置文件中写进去，照样正常打印日志出来，但是你最好把User实体类放进去，不然在安检等很多地方反而不方便。
+	</div>
+</body>
+</html>

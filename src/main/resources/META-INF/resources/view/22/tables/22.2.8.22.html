@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../../css/dom.css"/>
+	<script type="text/javascript" src="../../../javascript/core/domUtil.js"></script>
+	<style>
+		blockquote {
+		    padding: 0.1rem;
+		    border-left: 0.1rem solid #eee;
+		    font-size:0.2rem;
+		    margin-left:0.05rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		Activiti 数据库表结构 ACT_RU_TASK
+	</div>
+	<div class="contentDiv">
+		<blockquote>
+			<p>运行时任务节点表( act_ru_task )</p>
+		</blockquote>
+		<p style="padding:0.05rem;">
+		</p>
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"><col style="width:3rem;"><col style="width:2rem;"><col style="width:1rem;"><col style="width:1rem;"><col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>字段名称</th>
+					<th>字段描述</th>
+					<th>数据类型</th>
+					<th>主键</th>
+					<th>为空</th>
+					<th>取值说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>ID_</td>
+					<td>ID_</td>
+					<td>nvarchar(64)</td>
+					<td>√</td>
+					<td></td>
+					<td>ID_</td>
+				</tr>
+				<tr>
+					<td>REV_</td>
+					<td>乐观锁</td>
+					<td>int</td>
+					<td></td>
+					<td>√</td>
+					<td>乐观锁</td>
+				</tr>
+				<tr>
+					<td>EXECUTION_ID_</td>
+					<td>执行实例ID</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>执行实例ID</td>
+				</tr>
+				<tr>
+					<td>PROC_INST_ID_</td>
+					<td>流程实例ID</td>
+					<td>datetime</td>
+					<td></td>
+					<td>√</td>
+					<td>流程实例ID</td>
+				</tr>
+				<tr>
+					<td>PROC_DEF_ID_</td>
+					<td>流程定义ID</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>流程定义ID</td>
+				</tr>
+				<tr>
+					<td>NAME_</td>
+					<td>节点定义名称</td>
+					<td>bit</td>
+					<td></td>
+					<td>√</td>
+					<td>节点定义名称</td>
+				</tr>
+				<tr>
+					<td>PARENT_TASK_ID_</td>
+					<td>父节点实例ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>父节点实例ID</td>
+				</tr>
+				<tr>
+					<td>DESCRIPTION_</td>
+					<td>节点定义描述</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>节点定义描述</td>
+				</tr>
+				<tr>
+					<td>TASK_DEF_KEY_</td>
+					<td>节点定义的KEY</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>任务定义的ID</td>
+				</tr>
+				<tr>
+					<td>OWNER_</td>
+					<td>实际签收人</td>
+					<td>int</td>
+					<td></td>
+					<td>√</td>
+					<td>拥有者（一般情况下为空，只有在委托时才有值）</td>
+				</tr>
+				<tr>
+					<td>ASSIGNEE_</td>
+					<td>签收人或委托人</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>签收人或委托人</td>
+				</tr>
+				<tr>
+					<td>DELEGATION_</td>
+					<td>委托类型</td>
+					<td>nvarchar(4000)</td>
+					<td></td>
+					<td>√</td>
+					<td>备注8</td>
+				</tr>
+				<tr>
+					<td>PRIORITY_</td>
+					<td>优先级别</td>
+					<td>datetime</td>
+					<td></td>
+					<td>√</td>
+					<td>优先级别，默认为：50</td>
+				</tr>
+				<tr>
+					<td>CREATE_TIME_</td>
+					<td>创建时间</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>创建时间</td>
+				</tr>
+				<tr>
+					<td>DUE_DATE_</td>
+					<td>过期时间</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>耗时</td>
+				</tr>
+				<tr>
+					<td>SUSPENSION_STATE_</td>
+					<td>是否挂起</td>
+					<td>nvarchar(4000)</td>
+					<td></td>
+					<td>√</td>
+					<td>1代表激活 2代表挂起</td>
+				</tr>
+
+
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

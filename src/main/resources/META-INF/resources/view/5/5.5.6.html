@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.5.6、beanName常量
+	</div>
+	<div class="contentDiv">
+		edk平台中内置了一批bean，如果在项目中使用相同的beanName，则系统启动时将覆盖内置的实现类
+	</div>
+	<table class="across">
+		<colgroup>
+			<col style="width:4rem"/>
+			<col style="width:3rem"/>
+			<col/>
+			<col/>
+		</colgroup>
+		<thead>
+			 <tr>
+			 	<th colspan="4" style="text-align:left;">beanName定义所在常量类：com.edk4j.core.constant.BeanConstant</th>
+			 </tr>
+			<tr>
+				<th>常量名</th>
+				<th>常量值（beanName）</th>
+				<th>该bean的默认实现类  </th>
+				<th>说明</th>				
+			</tr>
+		</thead>
+		<tbody>
+			<tr><td>cacheSynchronizeReceiverBeanName</td><td>cacheSynchronizeReceiver</td><td>com.edk4j.core.service.impl.DefaultCacheSynchronizeReceiver</td><td>二级缓存同步消息消费者</td></tr>
+			<tr><td>cacheSynchronizeSenderBeanName</td><td>cacheSynchronizeSender</td><td>com.edk4j.core.service.impl.DefaultCacheSynchronizeSender</td><td>二级缓存同步消息生产者</td></tr>
+			<tr><td>businessVisitAuthCheckerBeanName</td><td>businessVisitAuthChecker</td><td>com.edk4j.core.service.impl.DefaultBusinessVisitAuthChecker</td><td>客户权限检查器</td></tr>
+			<tr><td>cacheServiceBeanName</td><td>cacheService</td><td>com.edk4j.core.service.impl.DefaultCacheService</td><td>缓存服务类</td></tr>
+			<tr><td>customerDataServiceBeanName</td><td>customerDataService</td><td>com.edk4j.core.service.impl.DefaultCustomerDataService</td><td>客户数据提取器</td></tr>
+			<tr><td>sessionServiceBeanName</td><td>sessionService</td><td>com.edk4j.core.service.impl.DefaultSessionService</td><td>session服务类</td></tr>
+			<tr><td>bizLoggerBeanName</td><td>bizLogger</td><td>com.edk4j.core.log.DefaultBizLoggerImpl</td><td>交易日志记录器</td></tr>
+			<tr><td>fileAccessValidatorBeanName</td><td>fileAccessValidator</td><td>com.edk4j.core.file.DefaultFileAccessValidator</td><td>文件校验器</td></tr>
+			<tr><td></td><td></td><td></td><td></td></tr>
+			<tr><td></td><td></td><td></td><td></td></tr>
+		</tbody>
+	</table>
+	
+	<table class="across">
+		<colgroup>
+			<col style="width:4rem"/>
+			<col style="width:3rem"/>
+			<col/>
+			<col/>
+		</colgroup>
+		<thead>
+			 <tr>
+			 	<th colspan="4" style="text-align:left;">beanName定义所在常量类：com.edk4j.track.constant.BeanConstant</th>
+			 </tr>
+			<tr>
+				<th>常量名</th>
+				<th>常量值（beanName）</th>
+				<th>该bean的默认实现类  </th>
+				<th>说明</th>				
+			</tr>
+		</thead>
+		<tbody>
+			<tr><td>EdkSpanProcessorBeanName</td><td>edkSpanProcessor</td><td>com.edk4j.track.report.EdkSpanProcessor</td><td>埋点处理bean名称</td></tr>
+			<tr><td>EdkTrackPluginBeanName</td><td>edkTrackPlugin</td><td>com.edk4j.track.report.TrackPluginImplement</td><td>跟踪插件实现bean名称</td></tr>
+		</tbody>
+	</table>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		“listx数据过滤”Action说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		组件：<img src='../../image/icons/action/a052.png' style='margin-right:0.1rem;'>listx数据过滤
+	</div>
+	<div class="subTitleDiv addArrow">
+		备注或算法描述：将符合指定参数值以外的记录从集合中剔除
+	</div>
+	<div class="subTitleDiv addArrow">
+		实现类：com.edk4j.core.action.ListxFilterAction
+	</div>
+	<div class="subTitleDiv addArrow">
+		属性清单：
+	</div>
+	<table class="across">
+		<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:3rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+		<thead>
+			<tr>
+				<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style='text-align:center;'>1</td><td>listxId</td><td>集合id</td><td></td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>2</td><td>mapxFieldid</td><td>要比较的列的id</td><td>指定listx中要被比较的列的id，比如选择age列，则遍历listx，比较每行的age列这个单元格</td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>3</td><td>conditionValueFieldId</td><td>参数值数据域</td><td>context中，用于比对的标准值的dataCell的id，比如选择数据域conditionAge，则使用context中conditionAge数据域中的值，来进行listx的每行中指定列进行比较</td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

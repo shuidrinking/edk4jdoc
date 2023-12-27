@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.3、edk4j内置Json及Xml格式化及反格式化工具
+	</div>
+	<div class="subTitleDiv">
+		本节所列的工具类，在接口调用、报文处理时可广泛使用。
+	</div>
+	<div class="subTitleDiv addArrow">
+		1、xml字符串和实体类转换工具
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.util.XmlParser
+	</div>
+	<div class="subContentDiv">
+		方法清单：
+	</div>
+	<div class="subContentDiv">
+		<table>
+			<tbody>
+				<tr>
+					<td style="width:12rem;">
+						public static String modelToXml(Object object)
+					</td>
+					<td style="color:#3f5fbf">
+						将实体对象转化为xml字符串，结果被添加缩进和回车美化
+						<br>object 实体对象
+						<br>xmlEncoding 生成结果的字符串编码格式
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static String modelToXml(Object objectString xmlEncoding)
+					</td>
+					<td style="color:#3f5fbf">
+						将实体对象转化为xml字符串，结果被添加缩进和回车美化
+						<br>object 实体对象
+						<br>xmlEncoding 生成结果的字符串编码格式
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static String modelToXmlWithoutIndent(Object object)
+					</td>
+					<td style="color:#3f5fbf">
+						将实体对象转化为xml字符串，结果未做任何美化
+						<br>object 实体对象
+						<br>xmlEncoding 生成结果的字符串编码格式
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static String modelToXmlWithoutIndent(Object object, String xmlEncoding)
+					</td>
+					<td style="color:#3f5fbf">
+						将实体对象转化为xml字符串，结果未做任何美化
+						<br>object 实体对象
+						<br>xmlEncoding 生成结果的字符串编码格式
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static String modelToXml(Object object)
+					</td>
+					<td style="color:#3f5fbf">
+						将实体对象转化为xml字符串
+						<br>object 实体对象
+						<br>xmlEncoding 生成结果的字符串编码格式
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static String modelToXml(Object object, String xmlEncoding)
+					</td>
+					<td style="color:#3f5fbf">
+						将实体对象转化为xml字符串
+						<br>object 实体对象
+						<br>xmlEncoding 生成结果的字符串编码格式
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static &lt;T&gt;T xmlStreamToModel(InputStream xmlStream, String charSetName, Class&lt;T&gt; clazz, boolean ignoreNameSpace)
+					</td>
+					<td style="color:#3f5fbf">
+						将xml流转化为实体类对象
+						<br>xmlStream &nbsp;xml流
+						<br>charSetName xml流转化过程中的编码方式
+						<br>clazz 返回对象的类定义
+						<br>ignoreNameSpace 是否忽略命名空间
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static &lt;T&gt; T xmlStringToModel(String xmlString, Class&lt;T&gt; clazz, boolean ignoreNameSpace)
+					</td>
+					<td style="color:#3f5fbf">
+						将xml字符串为实体类对象
+						<br>xmlString xml字符串
+						<br>clazz 返回对象的类定义
+						<br>ignoreNameSpace 是否忽略命名空间
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="subTitleDiv addArrow">
+		2、Json和实体类转换工具
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.util.JsonParser
+	</div>
+	<div class="subContentDiv">
+		方法清单：
+	</div>
+	<div class="subContentDiv">
+		<table>
+			<tbody>
+				<tr>
+					<td style="width:12rem;">
+						public static String modelToJSON(Object obj)
+					</td>
+					<td style="color:#3f5fbf">
+						将实体类对象转化为json字符串，字符串有添加缩进和回车美化
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static String modelToJSONWithoutIndent(Object obj)
+					</td>
+					<td style="color:#3f5fbf">
+						将实体类对象转化为json字符串，字符串没有添加任何美化
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static &lt;T&gt; T JSONToModel(String jsonStr, Class&lt;T&gt; clazz)
+					</td>
+					<td style="color:#3f5fbf">
+						将json字符串转化为clazz定义的实体类对象
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static &lt;T&gt; List&lt;T&gt; JSONToList(String jsonStr, TypeReference&lt;List&lt;T&gt;&gt; type)
+					</td>
+					<td style="color:#3f5fbf">
+						将json字符串转换为某类型实体类对象的列表
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static &lt;K, T&gt; Map&lt;K, T&gt; JSONToMap(String jsonStr, TypeReference&lt;Map&lt;K, T&gt;&gt; type)
+					</td>
+					<td style="color:#3f5fbf">
+						将json字符串转化为指定的map，例如map&lt;String,String&gt;
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static &lt;K, T&gt; List&lt;Map&lt;K, T&gt;&gt; JSONToListMap(String jsonStr, TypeReference&lt;List&lt;Map&lt;K, T&gt;&gt;&gt; type)
+					</td>
+					<td style="color:#3f5fbf">
+						将json字符串转化为指定的map构成的list
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="subTitleDiv addArrow">
+		3、Json和xml互转工具
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.util.JsonAndXmlParser
+	</div>
+	<div class="subContentDiv">
+		方法清单：
+	</div>
+	<div class="subContentDiv">
+		<table>
+			<tbody>
+				<tr>
+					<td style="width:12rem;">
+						public static String doParseXmlStreamToJsonStringUseJackson(InputStream xmlStream, Class&lt;?&gt; clazz)
+					</td>
+					<td style="color:#3f5fbf">
+						将xml字符串的流转化为json字符串，这里需要通过类定义中专，也就是说，传入的xml字符串的流，先转化为clazz的对象，再通过这个对象转化为json字符串
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static String doParseXmlStringToJsonStringUseJackson(String xmlString, Class&lt;?&gt; clazz)
+					</td>
+					<td style="color:#3f5fbf">
+						将xml字符串转化为json字符串，这里需要通过类定义中专，也就是说，传入的xml字符串，先转化为clazz的对象，再通过这个对象转化为json字符串
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static String doParseJsonStringToXmlStringUseJackson(String jsonString, String encoding, Class&lt;?&gt; clazz)
+					</td>
+					<td style="color:#3f5fbf">
+						将json字符串转化为xml字符串
+						<br>这里需要通过类定义中专，也就是说，传入的json字符串，先转化为clazz的对象，再通过这个对象转化为xml字符串
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		103.1、nginx.conf样例
+	</div>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-properties" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.18rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+<code>
+#配置中需要注意的：当设置了所有静态资源交给ngixn处理，但是有些静态资源被打包到jar里面时，需要对这些处于jar中的url做额外配置，否则404
+#location ^~/my-application-a/some_static_injar/ {
+#	proxy_pass http://my-application-a;
+#	...
+#}
+user app;
+worker_processes  4;
+worker_cpu_affinity 00000001 00000010 00000100 00001000;
+worker_rlimit_nofile 20000;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    use epoll;
+    worker_connections 1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    open_file_cache max=20000 inactive=60s; 
+    open_file_cache_valid    600s;
+    open_file_cache_min_uses 1;
+    client_max_body_size 100m;
+    keepalive_timeout  300;
+
+    #gzip  on;
+    gzip on;
+    gzip_min_length 1k;
+    gzip_buffers 4 16k;
+    gzip_http_version 1.0;
+    gzip_comp_level 2;
+    gzip_types text/plain application/x-javascript text/css application/xml image/jpeg image/gif image/png image/x-icon;
+    gzip_vary on;
+    upstream my-aplication-a{
+        server 127.0.0.1:8980;
+    }
+	upstream my-application-b{
+        server 127.0.0.1:8981;
+    }
+    server {
+        listen 80;
+        server_name localhost;
+        client_header_buffer_size 32k;
+        large_client_header_buffers 4 128k;
+        charset UTF-8;
+		
+        access_log  /usr/local/nginx-1.20.1/logs/host.access.log;
+        location / {
+            root /home/app/www/;
+            index index.html;
+            #try_files $uri $uri/ /index.html;
+            proxy_set_header    Host             $host; #保留代理之前的host
+            proxy_set_header    X-Real-IP        $remote_addr; #保留代理之前的真实客户端ip, 如果使用了CDN产品, 则是CDN节点IP
+            proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+            proxy_set_header    HTTP_X_FORWARDED_FOR $remote_addr; #在多级代理的情况下，记录每次代理之前的客户端真实ip
+            add_header 'Access-Control-Allow-Origin' '*'; #允许来自所有的访问地址
+            add_header 'Access-Control-Allow-Methods' 'GET'; #支持的请求方式
+            add_header 'Access-Control-Allow-Header' 'Content-Type,*'; #支持的媒体类型
+        }
+        location /my-application-a/ {
+            root /home/app/www/my-application-a/;
+            index  index.html;
+            proxy_pass http://my-application-a;
+            proxy_set_header    Host             $host; #保留代理之前的host
+            proxy_set_header    X-Real-IP        $remote_addr; #保留代理之前的真实客户端ip, 如果使用了CDN产品, 则是CDN节点IP
+            proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+            proxy_set_header    HTTP_X_FORWARDED_FOR $remote_addr; #在多级代理的情况下，记录每次代理之前的客户端真实ip
+            proxy_redirect      default; #指定修改被代理服务器返回的响应头中的location头域跟refresh头域数值
+            proxy_send_timeout 300; #后端服务器数据回传时间(代理发送超时)
+            proxy_read_timeout 300; #连接成功后，后端服务器响应时间(代理接收超时)
+            proxy_buffering off;
+            add_header 'Access-Control-Allow-Origin' '*'; #允许来自所有的访问地址
+            add_header 'Access-Control-Allow-Methods' 'GET,POST'; #支持的请求方式
+            add_header 'Access-Control-Allow-Header' 'Content-Type,*'; #支持的媒体类型
+        }
+        location /my-application-a-demo/ {
+            root /home/app/www/my-application-a-demo/;
+            index index.html;
+            proxy_pass http://127.0.0.1:8980/my-application-a/; #这里可以直接用服务器的地址，也可以用upstream
+            proxy_set_header    Host             $host; #保留代理之前的host
+            proxy_set_header    X-Real-IP        $remote_addr; #保留代理之前的真实客户端ip, 如果使用了CDN产品, 则是CDN节点IP
+            proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+            proxy_set_header    HTTP_X_FORWARDED_FOR $remote_addr; #在多级代理的情况下，记录每次代理之前的客户端真实ip
+            proxy_redirect      default; #指定修改被代理服务器返回的响应头中的location头域跟refresh头域数值
+            proxy_send_timeout 300; #后端服务器数据回传时间(代理发送超时)
+            proxy_read_timeout 300; #连接成功后，后端服务器响应时间(代理接收超时)
+            proxy_buffering off;
+            add_header 'Access-Control-Allow-Origin' '*'; #允许来自所有的访问地址
+            add_header 'Access-Control-Allow-Methods' 'GET,POST'; #支持的请求方式
+            add_header 'Access-Control-Allow-Header' 'Content-Type,*'; #支持的媒体类型
+        }
+        location /edk4j-fast-dev/ {
+            root /home/app/www/edk4j-fast-dev/;
+            index index.html;
+            proxy_pass http://127.0.0.1:8982/edk4j-fast-dev/;
+            proxy_set_header    Host             $host; #保留代理之前的host
+            proxy_set_header    X-Real-IP        $remote_addr; #保留代理之前的真实客户端ip, 如果使用了CDN产品, 则是CDN节点IP
+            proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+            proxy_set_header    HTTP_X_FORWARDED_FOR $remote_addr; #在多级代理的情况下，记录每次代理之前的客户端真实ip
+            proxy_redirect      default; #指定修改被代理服务器返回的响应头中的location头域跟refresh头域数值
+            proxy_send_timeout 300; #后端服务器数据回传时间(代理发送超时)
+            proxy_read_timeout 300; #连接成功后，后端服务器响应时间(代理接收超时)
+            proxy_buffering off;
+            add_header 'Access-Control-Allow-Origin' '*'; #允许来自所有的访问地址
+            add_header 'Access-Control-Allow-Methods' 'GET,POST'; #支持的请求方式
+            add_header 'Access-Control-Allow-Header' 'Content-Type,*'; #支持的媒体类型
+        }
+        location ^~/my-application-a/edk4j_uisdk/ {
+            root /home/app/www/my-application-a/;
+            index  index.html;
+            proxy_pass http://my-application-a;
+            proxy_set_header    Host             $host; #保留代理之前的host
+            proxy_set_header    X-Real-IP        $remote_addr; #保留代理之前的真实客户端ip, 如果使用了CDN产品, 则是CDN节点IP
+            proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+            proxy_set_header    HTTP_X_FORWARDED_FOR $remote_addr; #在多级代理的情况下，记录每次代理之前的客户端真实ip
+            proxy_redirect      default; #指定修改被代理服务器返回的响应头中的location头域跟refresh头域数值
+            proxy_send_timeout 300; #后端服务器数据回传时间(代理发送超时)
+            proxy_read_timeout 300; #连接成功后，后端服务器响应时间(代理接收超时)
+            proxy_buffering off;
+            add_header 'Access-Control-Allow-Origin' '*'; #允许来自所有的访问地址
+            add_header 'Access-Control-Allow-Methods' 'GET,POST'; #支持的请求方式
+            add_header 'Access-Control-Allow-Header' 'Content-Type,*'; #支持的媒体类型
+        }
+        location /my-application-b/ {
+            root /home/app/www/my-application-b/;
+            index  index.html;
+            proxy_pass http://my-application-b;
+            proxy_set_header    Host             $host; #保留代理之前的host
+            proxy_set_header    X-Real-IP        $remote_addr; #保留代理之前的真实客户端ip, 如果使用了CDN产品, 则是CDN节点IP
+            proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+            proxy_set_header    HTTP_X_FORWARDED_FOR $remote_addr; #在多级代理的情况下，记录每次代理之前的客户端真实ip
+            proxy_redirect      default; #指定修改被代理服务器返回的响应头中的location头域跟refresh头域数值
+            add_header 'Access-Control-Allow-Origin' '*'; #允许来自所有的访问地址
+            add_header 'Access-Control-Allow-Methods' 'GET,POST'; #支持的请求方式
+            add_header 'Access-Control-Allow-Header' 'Content-Type,*'; #支持的媒体类型
+        }
+        location ^~/my-application-b/modeler.html {
+            root /home/app/www/my-application-b/;
+            index  index.html;
+            proxy_pass http://my-application-b;
+            proxy_set_header    Host             $host; #保留代理之前的host
+            proxy_set_header    X-Real-IP        $remote_addr; #保留代理之前的真实客户端ip, 如果使用了CDN产品, 则是CDN节点IP
+            proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+            proxy_set_header    HTTP_X_FORWARDED_FOR $remote_addr; #在多级代理的情况下，记录每次代理之前的客户端真实ip
+            proxy_redirect      default; #指定修改被代理服务器返回的响应头中的location头域跟refresh头域数值
+            add_header 'Access-Control-Allow-Origin' '*'; #允许来自所有的访问地址
+            add_header 'Access-Control-Allow-Methods' 'GET,POST'; #支持的请求方式
+            add_header 'Access-Control-Allow-Header' 'Content-Type,*'; #支持的媒体类型
+        }
+        location ^~/my-application-b/diagram-viewer/{
+            root /home/app/www/my-application-b/;
+            index  index.html;
+            proxy_pass http://my-application-b;
+            proxy_set_header    Host             $host; #保留代理之前的host
+            proxy_set_header    X-Real-IP        $remote_addr; #保留代理之前的真实客户端ip, 如果使用了CDN产品, 则是CDN节点IP
+            proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+            proxy_set_header    HTTP_X_FORWARDED_FOR $remote_addr; #在多级代理的情况下，记录每次代理之前的客户端真实ip
+            proxy_redirect      default; #指定修改被代理服务器返回的响应头中的location头域跟refresh头域数值
+            add_header 'Access-Control-Allow-Origin' '*'; #允许来自所有的访问地址
+            add_header 'Access-Control-Allow-Methods' 'GET,POST'; #支持的请求方式
+            add_header 'Access-Control-Allow-Header' 'Content-Type,*'; #支持的媒体类型
+        }
+        location ^~/my-application-b/editor-app/{
+            root /home/app/www/my-application-b/;
+            index  index.html;
+            proxy_pass http://my-application-b;
+            proxy_set_header    Host             $host; #保留代理之前的host
+            proxy_set_header    X-Real-IP        $remote_addr; #保留代理之前的真实客户端ip, 如果使用了CDN产品, 则是CDN节点IP
+            proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+            proxy_set_header    HTTP_X_FORWARDED_FOR $remote_addr; #在多级代理的情况下，记录每次代理之前的客户端真实ip
+            proxy_redirect      default; #指定修改被代理服务器返回的响应头中的location头域跟refresh头域数值
+            add_header 'Access-Control-Allow-Origin' '*'; #允许来自所有的访问地址
+            add_header 'Access-Control-Allow-Methods' 'GET,POST'; #支持的请求方式
+            add_header 'Access-Control-Allow-Header' 'Content-Type,*'; #支持的媒体类型
+        }
+        location ^~/my-application-b/images/{
+            root /home/app/www/my-application-b/;
+            index  index.html;
+            proxy_pass http://my-application-b;
+            proxy_set_header    Host             $host; #保留代理之前的host
+            proxy_set_header    X-Real-IP        $remote_addr; #保留代理之前的真实客户端ip, 如果使用了CDN产品, 则是CDN节点IP
+            proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+            proxy_set_header    HTTP_X_FORWARDED_FOR $remote_addr; #在多级代理的情况下，记录每次代理之前的客户端真实ip
+            proxy_redirect      default; #指定修改被代理服务器返回的响应头中的location头域跟refresh头域数值
+            add_header 'Access-Control-Allow-Origin' '*'; #允许来自所有的访问地址
+            add_header 'Access-Control-Allow-Methods' 'GET,POST'; #支持的请求方式
+            add_header 'Access-Control-Allow-Header' 'Content-Type,*'; #支持的媒体类型
+        }
+        #静态文件交给nginx处理
+        location ~ .*\.(jpg|jpeg|gif|ico|png|bmp|html|htm|swf|txt|flv|mid|doc|ppt|pdf|xls|pptx|docx|xlsx|mp3|mp4|wma|rar|zip|7z|tar|gz|xml|json|map|exe|ocx|cab|svg|eot|ttf|otf|woff2|woff)$
+        {
+            root /home/app/www;
+            expires 30d;
+        }
+        #静态文件交给nginx处理
+        location ~ .*\.(js|css)?$
+        {
+            root /home/app/www;
+            expires 1d;
+        }
+
+        error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+}
+</code>
+ 		</pre>
+	</div>
+</body>
+</html>

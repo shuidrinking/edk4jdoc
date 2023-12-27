@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		20.1.1、activeMQ中的一些常识
+	</div>
+	<div class="subTitleDiv">
+		（1）ActiveMQ是一个消息队列服务器，英文名为MOM ，就是面向消息中间件（Message-oriented middleware）。在http://activemq.apache.org网站下载，并安装，启动后，一个activeMQ消息的体系将由3部分构成：“消息生产者、activeMQ服务器、消息消费者”，生产者生产消息，并推送到服务器，消费者从服务器获取消息。生产者将消息推送到服务器后，消费者需要不断主动的从服务器尝试获取消息，有消息则取下来。更多的知识请参网上资料。
+	</div>
+	<div class="subTitleDiv">
+		（2）JAVA程序中对ActiveMQ的使用，是基于JMS框架，JMS 叫做 Java 消息服务（Java Message Service）,是 Java 平台上有关面向 MOM 的技术规范，旨在通过提供标准的产生、发送、接收和处理消息的 API 简化企业应用的开发，类似于 JDBC 和关系型数据库通信方式的抽象。
+	</div>
+	<div class="subTitleDiv">
+		（3）消息的派发有两种方式：P2P和Pub/Sub。p2p模式是指基于Queue的方式作为生产者和消费者交互的方式，生产者和消费者事先约定一个queueName（队列名称），生产者向这个queue发布消息，消费者从这个queue里取消息，但是这里有个约定：Queue里的消息只能会被获取一次，如果有多个消费者，队列里的某条消息只能被某一个消费者获取，其他消费者就再获取不到了。Pub/Sub模式是订阅者模式，基于Topic的方式进行交互，和Queue类似，首先约定一个topicName，生产者发布一条topic消息，此时ActiveMQ的处理方式和Queue的处理方式不同，所有的消费者都能获取这条topic消息。
+	</div>
+	<div class="subTitleDiv">
+		<label style="background-color:#ffff00;">我们edk4j中，既支持p2p模式，也支持pub/sub模式，两种模式可以并存。</label>
+	</div>
+</body>
+</html>

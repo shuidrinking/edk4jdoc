@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.8.5、设置语种
+	</div>
+	<div class="subTitleDiv addArrow">
+		这个功能必须POST方式提交，页面上可以做个form处理，页面上如果有“语种”选择的下拉框时，客户选择后提交一次就可以了
+	</div>
+	<div class="subContentDiv">
+		<div class="item">
+			访问url: http://url:port/youSystemName/locale/setLocale
+		</div>
+		<div class="item">
+			form提交字段：customerLocale=zh_CN或en_US等
+		</div>
+	</div>
+	<div class="subTitleDiv addArrow">
+		查看设置结果：
+	</div>
+	<div class="subContentDiv">
+			<div>
+				在message_zh_CN.properties和message_en_US.properties中分别编写一个配置项，配置的key为myLocaleMessage或其他，调用设置语种的交易，然后使用下面方法查看设置结果：
+			</div>
+			<div >
+				编写一个交易，新增一个自定义Action，在其中调用ConfigPropertiesReader.getPropertyValue("myLocaleMessage", LocaleContextHolder.getLocale())即可获得当前语种对应的值；
+				在其中调用org.springframework.context.i18n.LocaleContextHolder.getLocale()方法，可以获得当前语种
+			</div>
+	</div>
+</body>
+</html>

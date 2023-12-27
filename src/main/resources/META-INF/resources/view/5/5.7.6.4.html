@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		“查询单笔数据明细”Action说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		组件：<img src='../../image/icons/action/a021.png' style='margin-right:0.1rem;'>查询单笔数据明细
+	</div>
+	<div class="subTitleDiv addArrow">
+		备注或算法描述：执行查询SQL查询数据明细，如果查询结果有多行时，只取第一行
+	</div>
+	<div class="subTitleDiv addArrow">
+		实现类：com.edk4j.core.repository.jdbc.QueryDataDetailUsingSQLAction
+	</div>
+	<div class="subTitleDiv addArrow">
+		属性清单：
+	</div>
+	<table class="across">
+		<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:3rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+		<thead>
+			<tr>
+				<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style='text-align:center;'>1</td><td>dataSourceName</td><td>数据源名称</td><td></td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>2</td><td>newTransactionFlag</td><td>使用独立事务</td><td>请选择事务类型，unuse:不使用事务；true:独立事务；false:沿用当前事务</td><td>unuse</td><td style='text-align:center;'>true</td><td>unuse<br>false<br>true</td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>3</td><td>querySql</td><td>查询SQL</td><td>SQL中通过 '?domainDataId' 占位符将context中的数据设置为参数。该属性优先级比querySqlDataCellId高。在SQL语句中where条件的编写，支持in (?listxId.dataCellId)。</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>4</td><td>querySqlDataCellId</td><td>保存待执行SQL的字段id</td><td>context里保存SQL的DataCell的Id，该属性的优先级比querySql低</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>5</td><td>outputFieldList</td><td>输出结果字段id</td><td>顺序必须和SQL中结果表中字段的顺序一致</td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

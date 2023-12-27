@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		8.2、JNDI数据源
+	</div>
+	<div class="tabTitleDiv">项目中的推荐写法</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		在服务器中配置JNDI数据源，然后在application-${profile}.properties中指定JNDI，例如：<br/>
+		<p><span style="color:#3f7f5f">#new version</span></p>
+		<p><span style="color:black">spring.datasource.jndi-name = </span><span style="color:#2a00ff">java:comp/env/jdbc/my_datasource</span></p>
+	</div>
+	<div class="tabTitleDiv">在tomcat中配置jndi样例</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-xml" id="javaCode1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;!--
+	请参考下面的JNDI数据源配置，参数很重要，如果在tomcat下配置不正确时，会导致长时间没有访问数据库而连接池失效。
+	【注意】在tomcat8.0及以上的版本中，启动的时候会报下面警告，请参照警告对相应的属性名称进行替换：
+	Property maxActive is not used in DBCP2, use maxTotal instead
+	removeAbandoned is not used in DBCP2, use one or both of removeAbandonedOnBorrow or removeAbandonedOnMaintenance instead.
+	maxWait is not used in DBCP2 , use maxWaitMillis instead. maxWaitMillis default value is -1
+--&gt;
+&lt;Resource
+    name="jdbc/my_datasource"
+    auth="Container"
+    type="javax.sql.DataSource"
+    driverClassName="com.mysql.jdbc.Driver"
+    username="xxx"
+    password="xxxxxx"
+    url="jdbc:mysql://localhost:3306/resourcemanage?charset=utf8mb4"
+    maxActive（高版本tomcat里是maxTotal）="200"
+    minIdle="0"
+    maxIdle="100"
+    maxWait（高版本tomcat里是maxWaitMillis）="3000"
+    validationQuery="select 1"
+    testWhileIdle="true"
+    testOnBorrow="false"
+    testOnReturn="false"
+    timeBetweenEvictionRunsMillis="60000"
+    minEvictableIdleTimeMillis="1800000"
+    removeAbandoned（高版本tomcat里是removeAbandonedOnBorrow）="true"
+    numTestsPerEvictionRun="10"
+    removeAbandonedTimeout="180"
+/&gt;
+</pre>
+	</div>
+</body>
+</html>

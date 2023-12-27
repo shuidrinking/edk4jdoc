@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		99.5、SpringMvc套路下输入输出实体类的规范
+	</div>
+	<div class="contentDiv">
+		<label style="color:#ff0000">本章节仅供参考，edk4j对于传统开发模式（例如springMvc的开发套路）虽然也是支持的，但是不建议这样做。</label><br/>
+	</div>
+	<div class="contentDiv">
+		<a style="font-weight:bold;">99.5.1、入参实体类</a><br/>
+		（1）	命名 XXXForm或者XXXRequest<br/>
+		（2）	不分页时必须继承com.edk4j.core.web.ioentity.BaseForm<br/>
+		（3）	分页时,必须继承com.edk4j.core.web.ioentity..PageForm<br/>
+		（4）	实体类必须实现Serializable接口,支持序列化
+	</div>
+	<div class="contentDiv">
+		<a style="font-weight:bold;">99.5.2、@RequestBody用途的入参类最好加这个注解</a><br/>
+		使用下面的注解,忽略那些无关字段，在所有输入实体类头上加一下这个注解:<br/>
+		@JsonIgnoreProperties(ignoreUnknown = true)
+	</div>
+	<div class="contentDiv">
+		<a style="font-weight:bold;">99.5.3、出参实体类</a><br/>
+		<div style="border:1px solid #eeeeee;margin-bottom:5px;">
+			<label style="font-weight:bold;">必须使用OperationResult</label><br/>
+			如果你使用的是spring的开发天路，那么，	必须使用该类作为结果返回类com.edk4j.core.web.ioentity.OperationResult<br/>
+			具体业务中要返回的业务数据实体类,设置到OperationResult的businessDataObject中去
+		</div>
+		<div style="border:1px solid #eeeeee;margin-bottom:5px;">
+			<label style="font-weight:bold;">OperationResult详介</label><br/>
+			该类被new以后，默认的三个字段如下：<br/>
+			/**<br/>
+			 * 返回码<br/>
+			 */<br/>
+			private String resultCode="0";<br/>
+			/**<br/>
+			 * 返回类型<br/>
+			 */<br/>
+			private String resultMessage="ok";<br/>
+			/**<br/>
+			 * 业务数据对象<br/>
+			 */<br/>
+			Object businessDataObject=null;<br/>
+			开发时，返回的结果数据，需要调用 setBusinessDataObject(Object businessDataObject) 方法设置进去，返回给前台的是json对象
+		</div>
+		<div style="border:1px solid #eeeeee;margin-bottom:5px;">
+			<label style="font-weight:bold;">约定OperationResult.resultCode='0'时正确</label><br/>
+			其他值错误，当有错误情况时，前台js自行处理
+		</div>
+	</div>
+</body>
+</html>

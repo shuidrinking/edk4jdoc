@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		“获取偏移的系统时间”Action说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		组件：<img src='../../image/icons/action/a047.png' style='margin-right:0.1rem;'>获取偏移的系统时间
+	</div>
+	<div class="subTitleDiv addArrow">
+		备注或算法描述：获取当前时间，并按偏移量计算目标时间
+	</div>
+	<div class="subTitleDiv addArrow">
+		实现类：com.edk4j.core.action.GetOffsetDateTimeAction
+	</div>
+	<div class="subTitleDiv addArrow">
+		属性清单：
+	</div>
+	<table class="across">
+		<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:3rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+		<thead>
+			<tr>
+				<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style='text-align:center;'>1</td><td>format</td><td>时间格式,可为空</td><td></td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>2</td><td>dateOffsetField</td><td>存放日期偏移的数据域Id</td><td></td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>3</td><td>minuteOffsetField</td><td>存放分钟数偏移的数据域Id</td><td></td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>4</td><td>secondOffsetField</td><td>存放秒数偏移的数据域Id</td><td></td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>5</td><td>offsetTimeField</td><td>存放结果的数据域Id</td><td></td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

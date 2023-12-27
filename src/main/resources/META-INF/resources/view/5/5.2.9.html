@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.2.9、edk4j中的异常定义，以及已有的异常类
+	</div>
+	<div class="subTitleDiv addArrow">
+		edk4j中的异常包含两个不可缺少的属性：errorCode和errorMessage
+	</div>
+	<div class="subContentDiv">
+		在系统抛出异常后，通过errorCode获取errorMessage，算法为：根据errorCode到pub_errcode表中查询，如果没有查到，则在i18n 的message.properties文件找查找，如果没找到，则取errorMessage
+	</div>
+	<div class="subTitleDiv addArrow">
+		为开发人员，需要记住2条原则：
+	</div>
+	<div class="subContentDiv">
+		<div class="item">（1）所有抛出的异常必须是BaseException的子类，并且errorCode和errorMessage必须指定</div>
+		<div class="item">（2）action中只允许抛出TranFailException，不允许你抛出其他类型的异常</div>
+	</div>
+	<div class="subTitleDiv addArrow">
+		下面列出edk4j中已有的异常类及其说明，除了TranFailException以外，其他异常一般不需要开发人员人为抛出：
+	</div>
+	<div class="subContentDiv">
+		<table class="across">
+			<colgroup><col style="width:3rem;"/><col/></colgroup>
+			<thead>
+				<tr><th>异常类</th><th>用途</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>BaseException</td><td>所有异常的父类，其他异常，或者在项目中自定义异常，都要继承该类。</td></tr>
+				<tr><td>TranFailException</td><td>交易异常，具体交易中抛出该异常，在开发过程中编写的action 一律抛出这个异常，明确告诉前台什么业务错误。</td></tr>
+				<tr><td>CacheException</td><td>缓存异常</td></tr>
+				<tr><td>DuplicateSubmitException</td><td>重复提交异常</td></tr>
+				<tr><td>FakeDataException</td><td>伪造交易数据异常</td></tr>
+				<tr><td>FileDownLoadFailException</td><td>文件下载异常</td></tr>
+				<tr><td>FileNotFoundException</td><td>文件未找到异常</td></tr>
+				<tr><td>FileUploadFailException</td><td>文件上传异常</td></tr>
+				<tr><td>IllegalVisitException</td><td>非法访问异常</td></tr>
+				<tr><td>JdbcExecuteException</td><td>jdbc执行异常</td></tr>
+				<tr><td>PorpertiesCopyException</td><td>实体类属性copy异常</td></tr>
+				<tr><td>RequestException</td><td>请求异常</td></tr>
+				<tr><td>SessionTimeOutException</td><td>会话超时</td></tr>
+				<tr><td>SystemComponentException</td><td>系统异常</td></tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

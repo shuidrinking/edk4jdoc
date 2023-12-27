@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../../css/dom.css"/>
+	<script type="text/javascript" src="../../../javascript/core/domUtil.js"></script>
+	<style>
+		blockquote {
+		    padding: 0.1rem;
+		    border-left: 0.1rem solid #eee;
+		    font-size:0.2rem;
+		    margin-left:0.05rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		Activiti 数据库表结构 ACT_HI_VARINST
+	</div>
+	<div class="contentDiv">
+		<blockquote>
+			<p>历史变量表( act_hi_varinst )</p>
+		</blockquote>
+		<p style="padding:0.05rem;">
+		</p>
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"><col style="width:3rem;"><col style="width:2rem;"><col style="width:1rem;"><col style="width:1rem;"><col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>字段名称</th>
+					<th>字段描述</th>
+					<th>数据类型</th>
+					<th>主键</th>
+					<th>为空</th>
+					<th>取值说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>ID_</td>
+					<td>ID_</td>
+					<td>nvarchar(64)</td>
+					<td>√</td>
+					<td></td>
+					<td>ID_</td>
+				</tr>
+				<tr>
+					<td>PROC_INST_ID_</td>
+					<td>流程实例ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>流程实例ID</td>
+				</tr>
+				<tr>
+					<td>EXECUTION_ID_</td>
+					<td>执行实例ID</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>执行实例ID</td>
+				</tr>
+				<tr>
+					<td>TASK_ID_</td>
+					<td>任务实例ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>任务实例ID</td>
+				</tr>
+				<tr>
+					<td>NAME_</td>
+					<td>名称</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td></td>
+					<td>参数名称(英文)</td>
+				</tr>
+				<tr>
+					<td>VAR_TYPE_</td>
+					<td>参数类型</td>
+					<td>varchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>备注5</td>
+				</tr>
+				<tr>
+					<td>REV_</td>
+					<td>乐观锁</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>乐观锁 Version</td>
+				</tr>
+				<tr>
+					<td>BYTEARRAY_ID_</td>
+					<td>字节表ID</td>
+					<td>nvarchar(400)</td>
+					<td></td>
+					<td>√</td>
+					<td>ACT_GE_BYTEARRAY表的主键</td>
+				</tr>
+				<tr>
+					<td>DOUBLE_</td>
+					<td>DOUBLE_</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>存储DoubleType类型的数据</td>
+				</tr>
+				<tr>
+					<td>LONG_</td>
+					<td>LONG_</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>存储LongType类型的数据</td>
+				</tr>
+				<tr>
+					<td>TEXT_</td>
+					<td>TEXT_</td>
+					<td>datetime</td>
+					<td></td>
+					<td>√</td>
+					<td>备注6</td>
+				</tr>
+				<tr>
+					<td>TEXT2_</td>
+					<td>TEXT2_</td>
+					<td>datetime</td>
+					<td></td>
+					<td>√</td>
+					<td>此处存储的是JPA持久化对象时，才会有值。此值为对象ID</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

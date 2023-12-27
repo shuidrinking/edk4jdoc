@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		22.3.3、如何中止流程
+	</div>
+	<div class="tabTitleDiv">什么是“中止流程”，怎么中止</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<label style="background:#ffff00;font-weight:bold;">“中止流程” != “终止流程”。</label>
+		“终止流程”是指流程流转了所有的节点，自然结束归档。而“中止流程”是指让流程中途停止掉，一旦被中止，则该流程工单“被作废”。<br>
+		<label style="background:#ff0000;color:#ffffff;font-weight:bold;">只要流程模型图中，对某个节点配置了“中止流程”的操作路线，那么流程流转到该节点时，就能做中止操作！</label>
+		<br>
+		例如：在添加用户时，发起流程后又不想继续流转了，此流程在“数据填报”节点上有“中止流程”的操作线路，此时便可对其进行中止。
+		<img src="../../image/business/22/22.3.3-1.png" style="margin:0 auto;display:table-cell;"/>
+	</div>
+	<div class="tabTitleDiv">编程套路</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<div>中止流程 也是 流程流转，所以变成套路和“<a href="22.3.2.html">22.3.2、如何流转流程</a>”章节的套路一模一样</div>
+	</div>
+</body>
+</html>

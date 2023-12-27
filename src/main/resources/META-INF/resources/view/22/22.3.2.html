@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		22.3.2、如何流转流程
+	</div>
+	<div class="tabTitleDiv">在哪里流转</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		如果流程流转到某节点，该节点已经指定由具体<label style="background:#ffff00;">用户</label>处理，则该用户在“待办任务”中可以看到需要自己处理的流程<br/>
+		如果流程流转到某节点，该节点已经指定由具体<label style="background:#ffff00;">角色</label>处理，则拥有该角色的用户，在“待办任务”中也可以看到。
+		<img src="../../image/business/22/22.3.2-1.png" style="width:100%;margin:0 auto;display:table-cell;"/>
+		<br/>
+		在待处理的流程工单上点击“办理”按钮，即可进入处理页面。<br/>
+		<label style="background:#ff0000;color:#ffffff;font-weight:bold;">点击“同意”按钮，则流程继续向下流转。点击“拒绝”按钮，则流程被驳回到上一节点。“同意”或“拒绝”，都能驱动流程流转！</label>
+		<img src="../../image/business/22/22.3.2-2.png" style="margin:0 auto;display:table-cell;"/>
+	</div>
+	<div class="tabTitleDiv">编程套路</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<div>（1）观察流程图，会发现：每个节点的“出口线路”可以有多条，而在前台能操作的按钮对应的也会有多个，每个按钮对应一条线路走向。</div>
+		<div>（2）开发套路非常简单：只需要调用完成当前节点的业务逻辑，把要走哪条线路的名称作为参数传过去即可，当然，参数中还需要携带审批意见等。</div>
+		<div>（3）前端组织好参数，调用workflowInstanceMvc.edk4jMvc文件中的mvc“/workflowInstance/completeTask”，关联到wokflowInstanceBpm.edk4jBpm文件中的“wokflowInstance.completeTaskBL”。</div>
+		<div>（4）在“管理系统模板”的js文件中，搜索"dealTask"，便可看到js调用流转的做法，这些方法内容都一样。</div>
+		<div>（5）无论是“审批”、“拒绝”等，只要流程流转，都调用的是同一个mvc</div>
+	</div>
+</body>
+</html>

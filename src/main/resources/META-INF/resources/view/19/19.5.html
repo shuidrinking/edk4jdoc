@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/language/lang-sql.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		19.5、编写并执行任务定义SQL脚本
+	</div>
+	<div class="subTitleDiv addArrow">
+		任务定义样例脚本：
+	</div>
+	<div class="subContentDiv">
+		<pre class="prettyprint language-sql" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+delete from task_define;
+
+insert into task_define (Task_Group, Task_ID, Task_Version, Task_Name, Task_Description, Task_Type, Task_Max_Expense_Time, Task_Concurrent_Flag, Task_Recovery_Flag, Task_Biz_Type, Task_Execute_Class_Name, Task_Biz, Task_Schedule_Effective_Time, Task_Expression, Task_Workday_Execute, Task_Holiday_Execute, Task_State, Task_Log_RunStatus_History) 
+values ('taskDemoGroup', 'moduleTask', '1.0', '测试任务', '执行biz业务流', '1', '-1', '0', '0', '1', 'com.edk4j.taskengine.executor.TaskExecutorDisallowConcurrentViaEdk4jBpm', 'module1Task.helloTaskBL', null, '0/30 * * * * ?', '1', '1', '1', '1');
+
+insert into task_define (Task_Group, Task_ID, Task_Version, Task_Name, Task_Description, Task_Type, Task_Max_Expense_Time, Task_Concurrent_Flag, Task_Recovery_Flag, Task_Biz_Type, Task_Execute_Class_Name, Task_Biz, Task_Schedule_Effective_Time, Task_Expression, Task_Workday_Execute, Task_Holiday_Execute, Task_State, Task_Log_RunStatus_History) 
+values ('taskDemoGroup', 'module3Task', '1.0', '测试任务', '执行service服务类', '1', '-1', '0', '0', '1', 'com.edk4j.taskengine.executor.TaskExecutorDisallowConcurrentViaQuartzAndSpring', 'module3TaskService', null, '0/20 * * * * ?', '1', '1', '1', '1');
+		</pre>
+	</div>
+</body>
+</html>

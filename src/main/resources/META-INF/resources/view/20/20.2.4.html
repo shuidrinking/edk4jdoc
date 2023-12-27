@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		20.2.4、配置application-{profile}.properties文件
+	</div>
+	<div class="subTitleDiv">
+		这里给出的是一个测试配置，对于实际spring.kafka开头的配置项有很多，其意义需要自行学习，可以参考https://www.cnblogs.com/alan319/p/8651434.html<br>
+		将下面的配置内容追加到项目中的application-{profile}.properties文件中：
+	</div>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-properties" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+	################### kafka ##############################
+	#卡夫卡引擎开关，本项不配置时，默认为false
+	spring.kafka.enabled=true
+	#卡夫卡集群服务器地址
+	spring.kafka.bootstrapServers=brokerAIp:port, brokerBIp:port,brokerCIp:port...
+	#--------------------producer----------------------------
+	spring.kafka.producer.acks=-1
+	#spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+	#spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer
+	#spring.kafka.producer.properties.partitioner.class = com.xx.XXXPartitioner
+	#spring.kafka.producer.compressionType = lz4
+	#16M
+	spring.kafka.producer.batchSize = 16384
+	#32M
+	#spring.kafka.producer.bufferMemory = 33554432
+	#spring.kafka.producer.retries = 3
+	spring.kafka.properties.linger.ms = 5
+	#spring.kafka.properties.max.block.ms = 600000
+	#spring.kafka.properties.request.timeout.ms = 600000
+	#spring.kafka.properties.enable.idempotence = true
+	#------------------------consumer-------------------------
+	#spring.kafka.consumer.groupId=xxxxGroup这条配置被废弃不要用，否则会在高并发时消费不同topic不流畅，在kafka1.3.x版本中，可以为每个消费者指定group-id
+	spring.kafka.consumer.auto-offset-reset=earliest
+	spring.kafka.consumer.fetch-min-size=1
+	spring.kafka.consumer.fetch-max-wait=500
+	#spring.kafka.consumer.enable-auto-commit=false
+	#spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+	#spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+	#spring.kafka.listener.ack-mode=MANUAL_IMMEDIATE
+	#spring.kafka.properties.session.timeout.ms=180000
+	#spring.kafka.properties.max.poll.records=100
+	#spring.kafka.properties.max.poll.interval.ms=300
+	#spring.kafka.properties.heartbeat.interval.ms=60000
+</pre>
+	</div>
+</body>
+</html>

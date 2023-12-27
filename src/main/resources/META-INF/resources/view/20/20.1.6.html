@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		20.1.6、编写消费者
+	</div>
+	<div class="tabTitleDiv">java规范</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		【注意】消费者类是@Service类，或者@Component类，并不需要外部触发，因此放在service包中。<br/>
+		消费的方法是基于@JmsListener注解的，因此该类的线程统一由spring统一管理，不需要开发者额外添加调用机制。<br/>
+		@JmsListener注解中有三个属性：<br/>
+		containerFactory <br/>
+		destination和concurrency要取edk4jConfig.properties里的配置值<br/>
+	</div>
+	<div class="tabTitleDiv">Queue消费者写法</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		请自行阅读com.edk4j.edk4jdemos.business.mqModule.service.impl.DemoActiveMQQueueConsumer，此处不展示
+	</div>
+	<div class="tabTitleDiv">Topick消费者写法</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		【注意】：concurrency你最好配置成1，否则pub/sub模式下，所有的消费者都会收到消息，多个线程会导致每个线程也都收到消息，从而造成数据重复处理的问题，因此请设置成单线程处理><br/>
+		请自行阅读com.edk4j.edk4jdemos.business.mqModule.service.impl.DemoActiveMQTopicConsumer，此处不展示
+	</div>
+</body>
+</html>

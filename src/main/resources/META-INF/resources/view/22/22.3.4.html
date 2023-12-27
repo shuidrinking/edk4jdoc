@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		22.3.4、如何更新流程业务数据
+	</div>
+	<div class="tabTitleDiv">使用场景</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		在流程流转过程中，往往需要更新流程业务数据，例如：当业务数据中某些数据填写有问题，被领导拒绝打回；又例如：当发起流程后，不确定某些数据，还要在发送审批前补充录入；<br><br>
+	</div>
+	<div class="tabTitleDiv">调用代码</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<div>（1）前端组织好参数，直接调用workflowInstanceMvc.edk4jMvc文件中的mvc/workflowInstance/recordInstanceBusinessData”，关联到wokflowInstanceBpm.edk4jBpm文件中的“wokflowInstance.recordInstanceBusinessDataBL”。</div>
+		<div>（2）前端提交的数据，需要按业务流程数据列表的格式组织为一个数组。数据是s中组织的key为wfBusinessDataList数组，在众多edit*.js中可以找到doSubmit()函数，有许多案例。</div>
+		<div>（3）注意：如果是这种场景：“当流程有很多步骤，每一步骤需要更行自己这1步的数据，但是不影响其他步骤的数据”，就需要额外传入参数updateType，而且参数值必须是"iou"</div>
+	</div>
+</body>
+</html>

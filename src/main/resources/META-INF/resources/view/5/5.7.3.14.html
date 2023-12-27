@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		“从json字符串提取数据到context”Action说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		组件：<img src='../../image/icons/action/a010.png' style='margin-right:0.1rem;'>从json字符串提取数据到context
+	</div>
+	<div class="subTitleDiv addArrow">
+		备注或算法描述：
+	</div>
+	<div class="subTitleDiv addArrow">
+		实现类：com.edk4j.core.action.CutOutJsonStringFieldsToContextAction
+	</div>
+	<div class="subTitleDiv addArrow">
+		属性清单：
+	</div>
+	<table class="across">
+		<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:3rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+		<thead>
+			<tr>
+				<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style='text-align:center;'>1</td><td>jsonStringFieldInContext</td><td>json字符串所在dataCellId</td><td></td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>2</td><td>obeyMapxPrototype</td><td>遇到array时是否遵守mapx的原型</td><td>如果选择true，则在解析时，遇到mapx里没有定义的key会被忽略</td><td>false</td><td style='text-align:center;'>false</td><td>false<br>true</td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>3</td><td>fieldListInJson</td><td>要提取的字段的key列表</td><td>支持多层提取。如果json里有多层（对象里有对象）,允许提取的字段名是类似 level1.level2.field。例如{'level1':{'level2':{'field':'the value'}}}，这种情况下，要提取field这个字段，就写成level1.level2.field</td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>4</td><td>fieldListInContext</td><td>要提取到context中的数据域id列表</td><td>从json中提取出数据后，需要一 一对应的保存到context中的数据域id的列表。json中的数组类型对应Listx类型。</td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

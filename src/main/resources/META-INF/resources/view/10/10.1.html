@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		10.1、加密返回结果
+	</div>
+	<div class="subTitleDiv addTextIndent">
+		一般情况下，数据传输是明文的，但是对安全性要求高时，需要用密文进行传输，因此开发过程中有可能遇到下面这些情况：
+	</div>
+	<div class="subContentDiv">
+		（1）请求方发送过来的数据，是加密数据，必须先进行解密后，才能使用，例如手机前端，或者对安全性要求较高的网站。<br/>
+		（2）要求后台将数据加密后返回。<br/>
+		<div class="subContentDiv">
+			这个好处理，要返回什么样的，自己在BusinessLogic里定义一个处理返回结果的action，然后对output里需要加密的字段值进行加密<br/>
+			或者为特殊的交易定制一个MvcController，然后在postHandle方法对返回结果进行整体加密。
+		</div>
+	</div>
+</body>
+</html>

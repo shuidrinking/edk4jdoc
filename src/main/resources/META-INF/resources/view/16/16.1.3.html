@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		16.1.3、编写配置映射类
+	</div>
+	<div class="contentDiv">
+		这个动作，由项目经理或技术经理做<br/>
+		<p style="background-color:#ffff00;">
+		在.properties中配置好以后，新建包，例如：com.mycompany.myproject.config包下编写映射类，每组配置都有一个映射文件！这些映射类用于在接口调用的api服务类中使用，使用的依据就是你给映射类起的beanName。这些映射类，必须根据你要调用的接口方式（socket还是http），继承映射类的接口：
+		<br/>
+		socket映射类必须继承com.edk4j.integration.config.SocketIntegrationConfig
+		<br/>
+		http映射类一般都要继承com.edk4j.integration.config.HttpIntegrationConfig
+		<br>
+		如果你不继承的话，那么前面.properties里要求配置的那些参数的映射项不能少！
+		</p>
+		例如，edk4j-demos技术样例项目中的几个映射类：<br/>
+		com.edk4j.edk4jdemos.config.BusSystemIntegrationConfig<br/>
+		com.edk4j.edk4jdemos.config.LocalSocketServerIntegrationConfig<br/>
+		com.edk4j.edk4jdemos.config.WeChatConfig<br/>
+		com.edk4j.edk4jdemos.config.CenterIntegrationConfig<br/>
+		对于这些类，自行在项目中打开查看，不再赘述。
+
+	</div>
+</body>
+</html>

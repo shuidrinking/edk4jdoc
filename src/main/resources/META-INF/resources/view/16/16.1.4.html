@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		16.1.4、编写报文实体类
+	</div>
+	<div class="contentDiv">
+		<p style="text-indent:0.32rem;">
+			这个动作，由项目经理或技术经理做
+		</p>
+		<p style="text-indent:0.32rem;background-color:#ffff00;">
+			接口的报文体现在报文配置类中，并不是某些开发平台中的配置xml格式的format，因为那种做法不能处理复杂的报文，而且不能处理json格式的报文，而我们使用报文配置类的方式，可以应付各种报文。
+		</p>
+		<p style="text-indent:0.32rem;">
+			接口确定了以后，接口的请求报文和答复报文也就确定了，根据报文，编写与报文映射的实体类，这些类在调用接口时会和报文进行互相转化。
+		</p>
+		<p style="text-indent:0.32rem;">
+			<label style="background-color:#ffff00;">如果报文格式是xml的</label>，则参照com.edk4j.edk4jdemos.integration.localDemo包下的一系列fotmat子包中的实体类。我们采用的是jdk中JAXB的映射类规范。除此之外，还可以参照com.edj4j.edk4jdemos.test.UtilTest.XmlParserUtilTest这个类。
+		</p>
+		<p style="text-indent:0.32rem;">
+			<label style="background-color:#ffff00;">如果报文格式是json的</label>，则参照com.edk4j.edk4jdemos.integration.weChat包下的一系列format子包中的实体类。我们采用的是jackson框架的映射类规范。除此之外，还可以参照com.edk4j.edk4jdemos.test.UtilTest.JsonParseUtilTest这个类。
+		</p>
+		<p style="text-indent:0.32rem;">
+			首先，要强调的是代码结构，在每个具体接口服务器的包下，都有下面4个子包：caller, requestFormat, responseFormat, publicFormat，分别保存：具体接口调用者，请求报文，接收报文，公共报文（报文头尾等）。
+			<br/>
+			再次，要情调的是具体接口的相关类的命名，必须在类命名中夹带接口编号，例如SH0001接口的调用者就要命名成SH0001Caller，请求报文要命名成SH0001RequestFormat，接收报文要命名成SH0001ResponseFormat
+			<br/><br/>
+			下面是edk4j-demos中给出的，socket服务的接口调用的一杆子代码：
+		</p>
+	</div>
+	<div class="subTitleDiv addArrow">
+		（1）请求报文
+	</div>
+	<div class="subContentDiv">
+		<pre class="prettyprint language-xml" style="width:100%;padding-left:0.5rem;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;edk4j&gt;
+    &lt;head&gt;
+        &lt;serviceCode&gt;SH0001&lt;/serviceCode&gt;&lt;!--接口编号--&gt;
+        &lt;dateTime&gt;2018-07-19 10:21:56&lt;/dateTime&gt;&lt;!--调用时间，格式yyyy-MM-dd HH:mm:ss--&gt;
+        &lt;serialNo&gt;1531966916610&lt;/serialNo&gt;&lt;!--序列号--&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;custNo&gt;331235454123&lt;/custNo&gt;&lt;!--客户编号--&gt;
+    &lt;/body&gt;
+&lt;/edk4j&gt;
+		</pre>
+	</div>
+	<div class="subTitleDiv addArrow">
+		（2）答复报文
+	</div>
+	<div class="subContentDiv">
+		<pre class="prettyprint language-xml" style="width:100%;padding-left:0.5rem;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;edk4j&gt;
+      &lt;head&gt;
+           &lt;serviceCode&gt;SH0001&lt;/serviceCode&gt;&lt;!--接口编号--&gt;
+           &lt;dateTime&gt;20180717150000&lt;/dateTime&gt;&lt;!--答复时间--&gt;
+           &lt;serialNo&gt;15123124&lt;/serialNo&gt;&lt;!--序列号--&gt;
+           &lt;resultCode&gt;0&lt;/resultCode&gt;&lt;!--返回码--&gt;
+           &lt;resultMessage&gt;ok&lt;/resultMessage&gt;&lt;!--返回信息--&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+           &lt;custNo&gt;33123515&lt;/custNo&gt;&lt;!-- 客户信息 --&gt;
+           &lt;custName&gt;张飞&lt;/custName&gt;&lt;!-- 客户姓名 --&gt;
+           &lt;accounts&gt;&lt;!-- 账号列表 --&gt;
+                 &lt;account&gt;&lt;!-- 具体账号 --&gt;
+                      &lt;accountNo&gt;643126661233315512&lt;/accountNo&gt;&lt;!-- 账号 --&gt;
+                      &lt;userName&gt;张飞&lt;/userName&gt;&lt;!-- 户主名称 --&gt;
+                      &lt;currency&gt;RMB&lt;/currency&gt;&lt;!-- 结算币种 --&gt;
+                      &lt;state&gt;0&lt;/state&gt;&lt;!-- 当前状态 --&gt;
+                 &lt;/account&gt;
+                 &lt;account&gt;
+                      &lt;accountNo&gt;643126661233315513&lt;/accountNo&gt;
+                      &lt;userName&gt;张飞&lt;/userName&gt;
+                      &lt;currency&gt;RMB&lt;/currency&gt;
+                      &lt;state&gt;0&lt;/state&gt;
+                 &lt;/account&gt;
+           &lt;/accounts&gt;
+      &lt;/body&gt;
+&lt;/edk4j&gt;
+		</pre>
+	</div>
+	<div class="subTitleDiv addArrow">
+		（3）样例程序清单
+	</div>
+	<div class="subContentDiv">
+		<img src="../../image/business/16/16.1.3-1.png"/>
+	</div>
+</body>
+</html>

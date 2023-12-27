@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/sdTabControl.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/SDTabControl.js"></script>
+	<style type="text/css">
+		.containnerDiv{
+			display: flex;
+			flex-flow: row wrap;
+			justify-content: space-between;
+			align-content: center;
+			padding: 0.05rem;
+		}
+		.itemDiv{
+			display:inline-block;
+			width:calc(50% - 0.5rem);
+			border :0;
+			flex-grow:1;
+			border-radius:5px;
+			text-align:left;
+			text-align:center;
+		}
+	</style>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		1.3、“软编码”开发模式
+	</div>
+	<div style="margin:0.05rem;">
+		<div id="tabs" class="sd_tab">
+			<div class="sd_tab_out" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),1);">传统“硬编码”开发模式</div>
+			<div class="sd_tab_out" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),2);">“软编码”开发模式</div>
+			<div class="sd_tab_in" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),3);">“软编码”VS“硬编码”</div>
+		</div>
+		<div id="tabContents" class="tabContentDiv">
+			<div style="display:none;">
+				<div class="item addArrow">什么是“传统开发模式”</div>
+				<div class="subContentDiv">
+					传统开发模式是“纯编码(full code)、硬编码(hard code)”的开发模式。开发人员需要通过“完全编码”实现功能。
+				</div>
+				<div class="item addArrow">“传统开发模式”的痛点</div>
+				<div class="subContentDiv">
+					<img src="../../image/business/1/1.3-1.png"/>
+				</div>
+				<div class="item addArrow">“传统开发模式”的业务模型实现短板</div>
+				<div class="subContentDiv">
+					<img src="../../image/business/1/1.3-2.png"/>
+				</div>
+			</div>
+			<div style="display:none;">
+				<div class="item addArrow">
+					我们对“软件开发过程”重新梳理和思考，对“传统软件开发模式”进行颠覆性重构，全新的“软编码开发模式(soft code)”，具备以下特征：
+				</div>
+				<div class="subContentDiv">
+					<div class="item">（1）低代码高配置</div>
+					<div class="item">（2）可视化，拖拽、组装、绘图式开发</div>
+					<div class="item">（3）面向构件和模块，扩展式组件库支持</div>
+					<div class="item">（4）结构清晰、规范、统一</div>
+					<div class="item">（5）设计即完成</div>
+				</div>
+				<div class="item addArrow">
+					软编码开发模式重点在于“配置组装”，弱化手工锻打代码，在沉淀的组件库和可视化IDE的支持下，将“业务逻辑”和“实现细节”的解耦。
+				</div>
+			</div>
+			<div>
+				<div style="text-align:center;display:flex;justify-content:center;margin-top:0.1rem;">
+					<div style="width:calc(50% - 1rem);height:3rem;position:relative;text-align:right;">
+						<div style="width:100%;height:0.6rem; font-weight:bold;font-size:0.2rem;text-align:center;">
+							传统硬编码(hard code) 开发模式<br>
+							代码优先，手工锻打
+						</div>
+						<div style="width:90%;height:0.1rem;margin-bottom:0.1rem;border:0;border-bottom:1px dotted;display:inline-block;">
+						</div>
+						<img src="../../image/business/1/1.3-3.png" style="position:absolute;top:0.8rem;left:1.5rem;width:2rem;height:2rem;border-radius:50%;border:1px solid #000000;"/>
+						<div style="text-align:left;display:inline-block;width:4rem;text-align:left;margin-right:0.5rem;">
+							1.按设计图将程序一点一点写出来 ； <br>
+							2.“业务流”是通过“硬编码”的方式写死在java类中的，对开发人员要求也高 ； <br>
+							3.代码之间关联的很紧密的程序结构，一旦出问题，要拆了重做，涉及到拆的地方很多，而且重造成本昂贵 。
+						</div>
+					</div>
+					<div style="height:2rem;width:2rem;padding-top:0.5rem;font-size:0.5rem;font-weight:bold;display:inline-block;color:#379d81">
+						VS
+					</div>
+					<div style="width:calc(50% - 1rem);height:3rem;position:relative;text-align:left;">
+						<div style="width:100%;height:0.6rem; font-weight:bold;font-size:0.2rem;text-align:center;">
+							edk4j平台软编码(soft code) 开发模式<br>
+							配置优先，搭积木式设计开发
+						</div>
+						<div style="width:90%;height:0.1rem;margin-bottom:0.1rem;border:0;border-bottom:1px dotted;display:inline-block;"></div>
+						<div style="text-align:left;display:inline-block;width:4rem;text-align:left;margin-left:0.5rem;">
+							1.熟悉可视化开发IDE，熟悉配置规范，熟悉平台体系，熟悉内置的组件，熟悉组件的扩展规范；<br>
+							2.将各个组件“组装”成“业务流”，设置组件的相关属性，“搭积木”一样的完成开发。
+						</div>
+						<img src="../../image/business/1/1.3-4.png" style="position:absolute;top:0.8rem;right:1.5rem;width:2rem;height:2rem;border-radius:50%;border:1px solid #000000;"/>
+					</div>
+				</div>
+				<div class="containnerDiv">
+					<div class="itemDiv">
+						<video src="../../image/business/1/hardcode.mp4" controls style="height:6.3rem;"></video>
+					</div>
+					<div class="itemDiv">
+						<video src="../../image/business/1/softcode.mp4" controls style="height:6.3rem;"></video>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

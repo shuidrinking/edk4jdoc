@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		94.5、自主装配配置bean
+	</div>
+	<div class="tabTitleDiv">1、spring-boot1.x版本的套路</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="subTitleDiv addArrow">继承接口BeanFactoryAware, EnvironmentAware</div>
+		<div class="subTitleDiv addArrow">将配置值设置到bean，是抄袭该方法的内容：org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor#postProcessBeforeInitialization(Object, String)</div>
+		<div class="subTitleDiv addArrow">样例代码：</div>
+<pre class="prettyprint lang-java" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.Environment;
+......
+
+public SomeBootAutoConfigClass implements BeanFactoryAware, EnvironmentAware {
+	......
+	
+	private BeanFactory beanFactory;
+	private Environment environment;
+	
+	@Override
+	public void setEnvironment(Environment environment) {
+		this.environment = environment;
+	}
+
+	@Override
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		this.beanFactory = beanFactory;
+	}
+	
+	......
+	public void someMethod(){
+		//SomeConfigurationClass类需要有注解@Configuration或者@Component、@ConfigurationProperties(prefix = "配置项的前缀", ignoreInvalidFields = true)
+		SomeConfigurationClass someConfigurationClass = new SomeConfigurationClass();
+		bindConfigValueToConfigrationBean(someConfigurationClass, "配置项的前缀");
+	}
+	......
+	
+	/**
+	 * 从Enviroment中提取配置，设置到配置类的实例中
+	 * @param bean
+	 * @param prefix
+	 * @see org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor#postProcessBeforeInitialization
+	 */
+	private void bindConfigValueToConfigrationBean(Object bean, String prefix) {
+		PropertiesConfigurationFactory&lt;Object&gt; factory = new PropertiesConfigurationFactory&lt;Object&gt;(bean);
+		factory.setPropertySources(((ConfigurableEnvironment) environment).getPropertySources());
+		factory.setIgnoreInvalidFields(true);
+		factory.setIgnoreUnknownFields(true);
+		if(StringUtils.hasLength(prefix)){
+			factory.setTargetName(prefix);
+		}
+		try{
+			factory.bindPropertiesToTarget();
+		}
+		catch (BindException e){
+			throw new BeanCreationException("Could not bind properties to" + bean.getClass(), e);
+		}
+	}
+	......
+}
+</pre>
+	</div>
+	
+	<div class="tabTitleDiv">2、spring-boot2.x版本的套路</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="subTitleDiv addArrow">spring-boot2删除了PropertiesConfigurationFactory类，属性值绑定的工作则被委派给了ConfigurationPropertiesBindingPostProcessor内的静态ConfigurationPropertiesBinder类</div>
+		<div class="subTitleDiv addArrow">实现源码见：org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor#postProcessBeforeInitialization(Object, String)</div>
+		<div class="subTitleDiv addArrow">
+			在Spring Boot 2.0不再直接使用现有的PropertySource接口进行绑定，而是引入了一个新的ConfigurationPropertySource接口。<br>
+			同时提供了一个合理的方式来实施放松绑定规则，这些规则以前是活页夹的一部分。<br>
+			该接口的主要API非常简单： ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name);<br>
+			还有一个IterableConfigurationPropertySource变相的实现了Iterable接口，以便可以发现源包含的所有名称的配置。<br>
+			通过使用以下代码 Iterable&lt;ConfigurationPropertySource&gt; sources = ConfigurationPropertySources.get(environment); 可以获取外部源数据；<br>
+			或者根据需要，还提供一个简单的MapConfigurationPropertySource实现
+		</div>
+		<div class="subTitleDiv addArrow">从environment读取配置，创建配置bean的样例代码：</div>
+<pre class="prettyprint lang-java" id="codeShow2" style="font-weight:bold;color:#3f7f5f;">
+	private Object bindConfigValueToConfigrationBean(Class clazz, String prefix) {
+		Iterable&lt;ConfigurationPropertySource&gt; sources = ConfigurationPropertySources.get(environment);
+		// 设置Binder
+		Binder binder = new Binder(sources);
+		// 属性绑定
+		targetBean = binder.bind(prefix, Bindable.of(clazz)).get();
+		return targetBean;
+	}
+</pre>
+<div class="subTitleDiv addArrow">从报文中读取配置，创建配置bean的样例代码：</div>
+<pre class="prettyprint lang-java" id="codeShow3" style="font-weight:bold;color:#3f7f5f;">
+  // 筛选头信息
+  Map<String, Object> headerMap = Collections.list(request.getHeaderNames())
+                .stream()
+                .filter(headerName -> SignatureHeaders.SIGNATURE_PARAMETER_SET.contains(headerName))
+                .collect(Collectors.toMap(headerName -> headerName.replaceAll("-", "."), headerName -> request.getHeader(headerName)));
+  // 自定义ConfigurationProperty源信息
+  ConfigurationPropertySource sources = new MapConfigurationPropertySource(headerMap);
+  // 创建Binder绑定类
+  Binder binder = new Binder(sources);
+  // 绑定属性
+  SignatureHeaders signatureHeaders = binder.bind("openapi.validate", Bindable.of(SignatureHeaders.class)).get();
+</pre>
+	</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		23.1.2、设置配置文件
+	</div>
+	<div class="tabTitleDiv">配置application-{profile}.properties文件</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<pre class="prettyprint" id="codeShow1" style="font-weight:bold;">
+<label style="color:#3f7f5f;">#启用链路跟踪总开关，默认为true</label>
+spring.zipkin.enabled = <label style="color:#2a00ff;">true</label>
+<label style="color:#3f7f5f;">#跟踪采样率 ，取值范围0.1到1.0 ，意义为10%到100%</label>
+spring.zipkin.tracing.sample-rate = <label style="color:#2a00ff;">1.0</label>
+<label style="color:#3f7f5f;">#配置zipkin跟踪日志记录服务器API，必须以http://开头，例如：http://159.1.123.211:9411/api/v2/spans</label>
+spring.zipkin.sender.endpoint = <label style="color:#2a00ff;">http://&lt;zipkin服务器IP&gt;:&lt;zipkin服务器Port&gt;/api/v2/spans</label>
+<label style="color:#3f7f5f;">#链路跟踪控制台是否记录Spring Controller的类名和方法名</label>
+spring.zipkin.log.controller.enabled = <label style="color:#2a00ff;">false</label>
+<label style="color:#3f7f5f;">#要忽略的资源请求，一般忽略静态资源</label>
+spring.zipkin.forbid-suffix = <label style="color:#2a00ff;">jpg,jpeg,gif,ico,png,bmp,css,js,html,htm,swf,txt,flv,mid,doc,ppt,pdf,xls,pptx,docx,xlsx,mp3,mp4,wma,rar,zip,7z,tar,gz,xml,json,map,exe,ocx,cab,svg,eot,ttf,woff</label>
+		</pre>
+		<p style="color:#9a3e29;font-weight:bold;">edk4j可视化ide中，新建或者添加edk4j项目支持时，选择“分布式链路跟踪”技术点，ide会在所有application-{profile}.properties文件中自动添加上面的属性</p>
+	</div>
+</body>
+</html>

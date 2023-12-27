@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		99.4、Hibernate的dao怎么做
+	</div>
+	<div class="contentDiv">
+		（1）在项目的repository/entity包下，建立表和实体映射类<br/>
+		这些类采用javax.persistence包下的注解：<br/>
+		Entity,Table,Column,Id等，将表结构和实体类字段的映射关系描述清楚<br/><br/>
+		（2）在项目的repository包内，建立各个表的repository对象<br/>
+		这些类，必须继承<br/>
+		com.edk4j.core.annotation.BaseRepository&lt;T, PK&gt;<br/><br/>
+		（3）对于数据库的dao操作，hibernate支持很多“按约定命名”的方法调用，没有特殊情况时，不需要自定义方法，具体参照hibernate的jpa说明<br/><br/>
+		（4）在service类中将repository类@Autowired注入后，就可以进行数据库操作了
+	</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		22.2.6、配置流程环节要素
+	</div>
+	<div class="contentDiv">
+		<div class="contentDiv">
+		我们在流程模型中设计好了流程图，发布了1个请假流程定义，做好了请假流程中的工作页面，现在需要做的，就是定义流程节点。进入菜单“工作流管理 >> 流程定义管理”
+		<img src="../../image/business/22/22.2.4-2.png" style="margin:0 auto;display:table-cell;"/>
+		<br>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~华丽的分割线~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
+		在具体流程定义中点击“节点配置”，进入节点配置页面
+		<img src="../../image/business/22/22.2.6-1.png" style="width:100%;margin:0 auto;display:table-cell;"/>
+		<br>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~华丽的分割线~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
+		<label style="background:#ffff00;">在这里对具体的节点进行配置</label>
+		<img src="../../image/business/22/22.2.6-2.png" style="width:100%;margin:0 auto;display:table-cell;"/>
+		<br>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~华丽的分割线~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
+		<label style="background:#ffff00;">问：配置什么呢？答：配置流程的“工作页面”、“负责处理该节点的当事人”、“流程进入或离开该节点时要执行的业务逻辑”、“经过某条连线时要执行的业务逻辑”</label>
+		<img src="../../image/business/22/22.2.6-3.png" style="margin:0 auto;display:table-cell;"/>
+		<img src="../../image/business/22/22.2.6-4.png" style="margin:0 auto;display:table-cell;"/>
+		<label style="background:#ffff00;">在我们EDK项目中，流程进入第一个节点时，你可以设置进入的业务逻辑为：“检查是否有对该业务数据的在途工单”</label><br>
+		<label style="background:#ffff00;">流程流转，最后一个审批节点处理完成后，流经连线“审批 ---&gt;”结束时，执行该连线上的业务逻辑，使业务数据能够落地</label><br>
+		<label style="background:#ff0000;color:#ffffff;">【注意】流程的第一个节点的处理人，应当选择“发起人”</label>
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<style>
+		.sharp{
+			color:#166db7;
+			font-weight:bold;
+			font-size:0.18rem;
+			margin:0 0.1rem 0 0.36rem;
+		}
+	</style>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		23.9、附录：使用ElasticSearch存储链路跟踪数据
+	</div>
+	<div class="tabTitleDiv">持久化方式说明</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p>默认情况下，我们使用链路跟踪服务器（即zipkin-server-2.21.0.jar）时，链路数据会存储在内存中，<b style="color: red;">重启服务后丢失，</b>无法用于生产模式。</p>
+		<p style="color: red;">目前链路跟踪持久化方式有以下几种：</p>
+		<p><b style="color: blue;">Mysql：</b>当链路数据量增大时存取效率较低，不建议用于生产环境。</p>
+		<p><b style="color: blue;">Cassandra：</b>分布式NoSQL数据库，高性能，推荐。</p>
+		<p><b style="color: blue;">Elasticsearch：</b>全文搜索引擎，高性能，推荐。</p>
+	</div>
+	<div class="tabTitleDiv">搭建ElasticSearch集群</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p style="color: blue;">搭建Elasticsearch服务器集群，默认开放9200端口。</p>
+		<p>
+			<a href="23.11.html">
+				内部搭建样例
+			</a><br>
+			<a href="https://leyan.pro/2020/02/23/elasticsearch%E6%8A%80%E5%B7%A7%E7%AC%94%E8%AE%B0%E4%B9%8B7-6-0%E7%89%88%E6%9C%AC%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" target="_blank">
+				网上资料：集群搭建参考
+			</a>
+		</p>
+	</div>
+</body>
+</html>

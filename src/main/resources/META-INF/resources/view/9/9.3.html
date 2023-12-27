@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			CodePrettyUtil.escapeInnerHTML('codeShow2', 'codeShow2');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		9.3、请求数据的检查验证套路
+	</div>
+	<div class="tabTitleDiv">后台检查的必要性</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		请求数据检查有两个地方：<br/>
+		客户端进行检查；<br/>
+		服务器端需要再次检查，<label style="color:#ff0000;">后台检查是最后一道安全防线</label>，不能省略，防止绕开前端检查而进行交易，这是很重要的安全性机制。<br/>
+		<label style="background-color:#ffff00;">
+		这里要重点讲服务器端检查的手段，请自行参考<a href="javascript:window.open('../102/102.1.html', null, getWindowOpenFeature(200, 200));">spruce-demos技术点样例项目</a>中的文件/bpmConfig/utilModule/checkInputDataBpm.bpm进行学习。
+		</label>
+	</div>
+	<div class="tabTitleDiv">9.1、手段一：开发action类进行检查</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		如果要这样做，你需要写个action类，并且把这个action类放到bpm业务逻辑的第一步，在你这个action类里对输入的数据进行检查！
+	</div>
+	<div class="tabTitleDiv">9.2、手段二：配置正则表达式进行检查</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		参照前面第5章中对.bpm文件编写规范的说明，其中&lt;input&gt;中的&lt;dataCell&gt;可以设置检查属性，用正则表达式进行检查。<br/>
+		<label style="background-color:#ffff00;">需要注意的是：如果正则表达式完不成复杂的检查规则时，或者需要对listx类型的输入进行检查时，就必须写action自行处理了。</label>
+	</div>
+	<div class="tabTitleDiv">9.3	手段三：开发InputDataChecker实现类进行检查</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<a>编写检查器接口实现类，然后配置bpm中&lt;input&gt;里的&lt;dataCell&gt;节点的checkerBeanNames属性</a><br/>
+		如果遇到复杂的数据，正则表达式不能完成检查，但是你又不想用上面的“手段一”中的做法，你就可以用这种做法！<br/>
+		<label style="background-color:#ffff00;">套路如下：</label><br/>
+		（1）你写的检查器，属于工具类，所以首先放到你项目里的util包下！<br/>
+		（2）你写的检查器，必须实现接口com.bigtree.spruce.core.util.InputDataChecker，该接口定义如下：
+		<div style="border:1px solid #eeeeee;">
+<pre class="prettyprint lang-java" id="codeShow2" style="font-weight:bold;font-size:0.14rem;font-family: 'Verdana','微软雅黑','宋体';line-height:0.16rem;">
+package com.bigtree.spruce.core.util;
+import com.bigtree.spruce.core.businessprocessmanage.model.InputCheckResult;
+
+/**
+ * 请求端录入数据检查器接口
+ */
+public interface InputDataChecker {
+	/**
+	 * 对具体数据进行检查
+	 * @param inputData 数据值
+	 * @param errorMessage 参考的错误信息，该信息定义在bpm -> input节点 -> dataCell节点的inputErrorMessage属性中
+	 * @return 检查结果InputCheckResult对象
+	 * @see com.bigtree.spruce.core.businessprocessmanage.model.InputCheckResult
+	 */
+	InputCheckResult doCheck(Object inputData, String errorMessageInConfig);
+}
+</pre>
+		</div>
+		（3）你写的检查器，必须添加spring的@Service或者@Component注解，并且设置beanName的值，例如下面的样例：<br/>
+		<div style="border:1px solid #eeeeee;padding:0.1rem;">
+<pre class="prettyprint lang-java" id="codeShow1" style="font-weight:bold;font-size:0.14rem;font-family: 'Verdana','微软雅黑','宋体';line-height:0.16rem;">
+package com.mycompany.myproject.mypack;
+import org.springframework.stereotype.Component;
+
+import com.bigtree.spruce.core.businessprocessmanage.model.InputCheckResult;
+import com.bigtree.spruce.core.exception.TranFailException;
+import com.bigtree.spruce.core.log.Trace;
+import com.bigtree.spruce.core.util.InputDataChecker;
+
+/**
+ * 输入数据检查工具类样例：身份证号检查工具类
+ * @author xxxxxx
+ * @version xxxx年x月xx日
+ * @since jdk1.8
+ */
+@Component("idCardInputDataChecker")
+public class IdCardInputDataChecker implements InputDataChecker{
+	/**
+	 * 请在这里定义一些返回对象的常量，而不是在每次检查时都new一个对象
+	 */
+	private InputCheckResult okResult = new InputCheckResult(true, null);
+	private InputCheckResult someErrorResult = new InputCheckResult(false, "错误1");
+	private InputCheckResult otherErrorResult = new InputCheckResult(false, "错误2");
+	
+	@Override
+	public InputCheckResult doCheck(Object inputData, String errorMessageInConfig) throws TranFailException{
+		if(...) {
+			return otherErrorResult;
+		}
+		if(...) {
+			return someErrorResult;
+		}
+		return okResult;
+	}
+}
+</pre>
+</div>
+		（4）配置bpm中的&lt;input&gt;节点中，&lt;dataCell&gt;节点的checkerBeanNames属性，值为你的checker类的beanName<br/><br/>
+		
+		<label style="background-color:#ffff00;">【注意】对于checkerBeanNames属性，可以设置多个检查器，检查器的beanName之间用双竖线 “||”分隔，如此，spruce平台会依次执行你设置的所有检查器。</label>
+		
+	</div>
+	<div class="tabTitleDiv">9.4、请注意</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		手段二和手段三的检查手段只针对dataCell类型的输入。<br/>
+		对于Listx类型的输入数据，没有提供这种检查机制，只能用手段一，借助自定义的action完成检查。因为listx类型的输入检查没有通用性。
+	</div>
+	<div class="tabTitleDiv">9.5、常见的正则表达式</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		你可以学习一下正则表达式怎么写。<br/>
+		经常用的正则表达式<a href="https://baike.baidu.com/item/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/1700215?fr=aladdin" target="_blank">网上非常多</a>，自己找一下，下面给出一些样例：
+		<table class="across">
+			<colgroup>
+				<col style="width:4rem;"/><col/>
+			</colgroup>
+			<tbody>
+				<tr><td>长度为1~32位的任意字符</td><td>^\S{1,32}$</td></tr>
+				<tr><td>可为空，或者长度为1~10位的任意字符</td><td>^(null|\S{1,10})?$</td></tr>
+				<tr><td>可为空，或者输入值必须是1或者2</td><td>^(null|[1,2]{1})?$</td></tr>
+				<tr><td>最小8位长度，至少包含“1个数字、1个大写字母、1个小写”字母，不能包含特殊字符</td><td>^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$</td></tr>
+				<tr><td>正整数</td><td>^[0-9]*[1-9][0-9]*$</td></tr>
+				<tr><td>非正整数（负整数 + 0）</td><td>^((-\d+)|(0+))$</td></tr>
+				<tr><td>负整数</td><td>^-[0-9]*[1-9][0-9]*$</td></tr>
+				<tr><td>整数</td><td>^-?\d+$</td></tr>
+				<tr><td>非负浮点数（正浮点数 + 0）</td><td>^\d+(\.\d+)?$</td></tr>
+				<tr><td>正浮点数</td><td>^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$</td></tr>
+				<tr><td>非正浮点数（负浮点数 + 0）</td><td>^((-\d+(\.\d+)?)|(0+(\.0+)?))$</td></tr>
+				<tr><td>负浮点数</td><td>^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$</td></tr>
+				<tr><td>浮点数</td><td>^(-?\d+)(\.\d+)?$</td></tr>
+				<tr><td>由26个英文字母组成的字符串</td><td>^[A-Za-z]+$</td></tr>
+				<tr><td>由26个英文字母的大写组成的字符串</td><td>^[A-Z]+$</td></tr>
+				<tr><td>由26个英文字母的小写组成的字符串</td><td>^[a-z]+$</td></tr>
+				<tr><td>由数字和26个英文字母组成的字符串</td><td>^[A-Za-z0-9]+$</td></tr>
+				<tr><td>由数字、26个英文字母或者下划线组成的字符串</td><td>^\w+$</td></tr>
+				<tr><td>email地址</td><td>^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$</td></tr>
+				<tr><td>同一个字符连续出现过n次</td><td>"^.*(.)\1{n-1}.*$"</td></tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/sdTabControl.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/SDTabControl.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		100.3、安装
+	</div>
+	<div style="margin:0.05rem;">
+		<div id="tabs" class="sd_tab">
+			<div class="sd_tab_in" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),1);">如何安装或更新</div>
+			<div class="sd_tab_out" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),2);">如何刷新</div>
+			<div class="sd_tab_out" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),3);">启用插件</div>
+			<div class="sd_tab_out" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),4);">查看当前版本</div>
+		</div>
+		<div id="tabContents" class="tabContentDiv">
+			<div>
+				<div>
+					<div class="subTitleDiv addArrow">
+						方法1：
+					</div>
+					（1）解压下载的压缩包，解压后文件目录如下图，不要在文件夹外再套一层同名文件夹：<br/>
+					<p style="width:5rem;display:inline-block;">
+					<img src="../../image/business/100/100-2.1.png"/><br/>
+					<label style="font-size:0.15rem;margin-left:1rem;background-color:#00ff00;">正确的目录结构图</label>
+					</p>
+					<p style="width:4rem;display:inline-block;">
+					<img src="../../image/business/100/100-2.2.png"/><br/>
+					<label style="font-size:0.15rem;margin-left:1rem;background-color:#ff0000;">错误的目录结构图，解压时注意</label>
+					</p>
+					<br/>
+					（2）将解压后的文件夹，复制到eclipse安装目录下的dropins文件夹中，如下图所示：<br/>
+					<img src="../../image/business/100/100-2.3.png"/><br/>
+				</div>
+				<div>
+					<div class="subTitleDiv addArrow">
+						方法2：
+					</div>
+					
+					在eclipse/dropins目录下，新建一个文件，文件名自己起， 后缀名为".Ink"（注意是大写的i，不是小写的L），例如edkIde.Ink<br/>
+					用文本编辑器打开，输入下面内容：<br/>
+					<span style="background-color:#c4ffc4;">path=D:/eclipsePlugin/edk4j-ide-<span style="color:#cb0000">${具体版本号}</span></span><br/>
+					
+					这句的意思是，指定插件所在目录，注意路径里用的是“/”，不是“\”，别输错了<br>
+					样例如下：<br>path=D:/programs/eclipsePlugIn/edk4j-ide-1.0.0.20210301
+				</div>
+			</div>
+			<div style="display:none;">
+				<div>
+					当插件有更新时，你要使用新的版本，则要将旧的先删除掉，然后安装新的。<br/>
+					最后用此方法擦除eclipse的缓存：右键快捷方式 -->“属性”，在“目标”值后面补充 -clean<br/>
+					<img src="../../image/business/100/100-2.4.png"/><br/>
+					注意：运行一次以后，把上面补充的-clean删掉，不然每次都擦除，eclipse启动很慢的。
+				</div>
+			</div>
+			<div style="display:none;">
+				<div>
+					（1）打开Eclipse，添加透视图，点击菜单“Window -> Perpective -> Open Perspective”，在弹出框中选择“edk4j”<br/>
+					<img src="../../image/business/100/100.3-1.png"/><br/>
+					
+					（2）打开“edk4j”透视图<br/>
+					<img src="../../image/business/100/100.3-2.png"/><br/>
+					
+					（3）如果你更新了插件，需要对“edk4可视化开发”透视图做“Reset”操作<br/>
+					<img src="../../image/business/100/100.3-3.png"/>
+				</div>
+			</div>
+			<div style="display:none;">
+				<div>
+					打开Eclipse主菜单：“Help -> 关于EDK可视化开发IDE”，弹出窗口中会显示版本及发布信息<br/>
+					<img src="../../image/business/100/100.3-4.png"/><br/>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

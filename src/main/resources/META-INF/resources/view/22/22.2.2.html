@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			CodePrettyUtil.escapeInnerHTML('codeShow2', 'codeShow2');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		22.2.2、设置配置文件
+	</div>
+	<div class="tabTitleDiv">配置edk4jConfig.properties</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-javascript" id="codeShow1" style="font-weight:bold;">
+<label style="color:#3f7f5f;">#配置工作流默认的数据源，如果不配置，则会使用系统的默认数据源</label>
+application.defaultWorkFlowDataSourceName = <label style="color:#2a00ff;">yourDataSourceName</label>
+</pre>
+	</div>
+	<div class="tabTitleDiv">配置application.properties</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-xml" id="codeShow2" style="font-weight:bold;">
+<label style="color:#3f7f5f;">######activiti workflow config#######</label>
+server.max-http-header-size = <label style="color:#2a00ff;">102400</label>
+<label style="color:#3f7f5f;">#关闭activiti自动建表功能，可选值有false,create-drop,true</label>
+spring.activiti.database-schema-update = <label style="color:#2a00ff;">false</label>
+<label style="color:#3f7f5f;">#enable autoDeploy
+#不校验流程文件（使用流程设计器部署，不使用具体文件）</label>
+spring.activiti.check-process-definitions = <label style="color:#2a00ff;">false</label>
+<label style="color:#3f7f5f;">#The BPM files in the specified directory will be automatically deployed</label>
+<label style="color:#3f7f5f;">#spring.activiti.processDefinitionLocationPrefix = classpath:/diagrams/</label>
+<label style="color:#3f7f5f;">#Set it to the highest level of full to facilitate the tracing of historical data</label>
+<label style="color:#3f7f5f;">#spring.activiti.history-level = full</label>
+<label style="color:#3f7f5f;">#spring 2.x开始使用，1.x中为spring.http.multipart.enabled</label>
+spring.servlet.multipart.enabled = <label style="color:#2a00ff;">false</label>
+spring.activiti.async-executor-activate = <label style="color:#2a00ff;">false</label>
+</pre>
+	</div>
+</body>
+</html>

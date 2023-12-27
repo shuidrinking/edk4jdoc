@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			//CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		5.3.3、application-{profile}.properties
+	</div>
+	<div class="subTitleDiv addArrow">
+		所有Spring个性化的profile配置文件位于该文件夹： ${项目路径}/src/main/resources/springConfig/
+	</div>
+	<div class="subTitleDiv addArrow">
+		对于profile，名称可以自定义，edk中预定义了4种：development、test、verify、product
+	</div>
+	<div class="subContentDiv">
+		该配置文件中定义的是“数据源、redis缓存服务器地址、接口url、代理服务器”等个性化的，随着环境用途不同而不同的参数。<br>
+		对配置内容解释：
+	</div>
+	<div class="subContentDiv addBorder">
+		<pre class="prettyprint lang-properties" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+#数据源设置，可以使用jndi
+spring.datasource.jndi-name = java:comp/env/jdbc/xxxx-ds
+#数据源设置，也可以使用jdbc配置
+#spring.datasource.driverClassName = com.mysql.jdbc.Driver
+#spring.datasource.url = jdbc:mysql://localhost:3306/taskdatabase
+#spring.datasource.username = root
+#spring.datasource.password = 123
+
+#activemq配置
+#when use cluster, you can set like this :
+#如果有多台ActiveMQ服务器集群时，可以这样设置 spring.activemq.broker-url =failover:(tcp://192.168.1.51:61616, tcp://192.168.1.52:61616)
+spring.activemq.broker-url=failover:(tcp://192.168.1.52:61616)
+#如果ActiveMQ服务器使用了授权模式才能使用，必须设置用户名和密码
+#spring.activemq.user=userName
+#spring.activemq.password=password
+#应用服务器和activeMQ服务器不在同一个机器上，将下面的in-memory属性设置为false
+spring.activemq.in-memory=false
+#启动连接池并设置最大连接数
+spring.activemq.pool.enabled=true
+spring.activemq.pool.max-connections=50
+#连接异常时允许重新连接
+spring.activemq.pool.reconnect-on-exception=true
+#在空闲连接清除线程之间运行的时间，当为负数时，没有空闲连接驱逐线程运行
+#unit ms
+spring.activemq.pool.time-between-expiration-check=-1
+#系统启动时自动启动jms监听器
+spring.jms.listener.auto-startup=true
+ 
+#redis服务器配置
+#是否使用哨兵集群模式，默认值为 true，该模式下支持多台redis服务器
+redis.useSentinel = false
+#是否使用cluster集群模式，默认为false，该模式下支持多台redis服务器，但是要求高版本的redis服务器，#如果 useCluster=true时，useSentinel的设置将被edk忽略
+#redis.useCluster = false;
+#redis服务器密码，如果redis服务器没有密码，则不能设置值
+redis.password = 123456
+#连接超时时间毫秒数，默认值为2000
+redis.connectTimeOutMillis = 2000
+#传输返回超时毫秒数，默认值为10000
+redis.soTimeOutMillis = 10000
+#当发生异常时，重复尝试交互的次数5
+redis.maxAttempts = 5
+#redis服务器的ip和端口配置，支持多台，多台之间用逗号分隔，例如 : xxx.xxx.xxx.xxx:port , xxx.xx.xx.xx:port  如果既不用哨兵模式也不用cluster模式做集群，则只会连接第一个服务器，按单机处理；如果是cluster模式时，需要将所有的集群节点（包括slave） 都配置进来
+redis.serverIpAndPortArray= 192.168.1.52:6379
+redis.masterName = mymaster
+redis.maxIdle = 5
+redis.maxTotal = 300
+redis.minIdle = 2
+redis.maxWaitMillis = -1
+redis.testOnBorrow = true
+redis.testOnReturn = true
+redis.testWhileIdle = true
+redis.timeBetweenEviction = 3000
+redis.numTestPerEviction = 50
+redis.softMinEvictableIdleTime =3000
+ 
+#代理服务器配置，调用接口时使用
+integration.proxy.host = 192.68.70.71
+integration.proxy.port =3128
+integration.proxy.userName=userName
+integration.proxy.password=password
+#接口调用的参数配置，详细见接口调用的章节，这里不赘述
+</pre>
+	</div>
+</body>
+</html>

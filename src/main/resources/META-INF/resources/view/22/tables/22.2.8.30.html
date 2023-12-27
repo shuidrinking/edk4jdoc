@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../../css/dom.css"/>
+	<script type="text/javascript" src="../../../javascript/core/domUtil.js"></script>
+	<style>
+		blockquote {
+		    padding: 0.1rem;
+		    border-left: 0.1rem solid #eee;
+		    font-size:0.2rem;
+		    margin-left:0.05rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		EDK工作流引擎数据库表 -- 节点配置表ACTX_NODE
+	</div>
+	<div class="contentDiv">
+		<blockquote>
+			<p>保存流程图中工作节点的配置信息</p>
+		</blockquote>
+		<p style="padding:0.05rem;">
+		</p>
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"><col style="width:3rem;"><col style="width:2rem;"><col style="width:1rem;"><col style="width:1rem;"><col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>字段名称</th>
+					<th>字段描述</th>
+					<th>数据类型</th>
+					<th>主键</th>
+					<th>为空</th>
+					<th>取值说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>id</td>
+					<td>主键ID</td>
+					<td>bigint</td>
+					<td>√</td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>process_definition_id</td>
+					<td>流程定义ID</td>
+					<td>varchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>node_sid</td>
+					<td>节点标识SID，如userTask1，如果没有指定会默认生成</td>
+					<td>varchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>node_name</td>
+					<td>节点名称</td>
+					<td>varchar(32)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>node_type</td>
+					<td>节点类型</td>
+					<td>char(1)</td>
+					<td></td>
+					<td>√</td>
+					<td>0-StartEvent 1-UserTask 2-EndEvent 3-exclusiveGateway
+						4-parallelGateway 5-inclusiveGateway</td>
+				</tr>
+				<tr>
+					<td>in_action</td>
+					<td>进入本节点时动作</td>
+					<td>varchar(256)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>in_action_type</td>
+					<td>进入动作类型</td>
+					<td>varchar(32)</td>
+					<td></td>
+					<td>√</td>
+					<td>sql、class、biz</td>
+				</tr>
+				<tr>
+					<td>in_action_execute_bean_name</td>
+					<td>活动进入本节点时动作执行在IOC容器中的beanName</td>
+					<td>varchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>out_action</td>
+					<td>离开本节点时动作</td>
+					<td>varchar(256)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>out_action_type</td>
+					<td>离开动作类型</td>
+					<td>varchar(32)</td>
+					<td></td>
+					<td>√</td>
+					<td>sql、class、biz</td>
+				</tr>
+				<tr>
+					<td>out_action_execute_bean_name</td>
+					<td>离开本节点动作执行在IOC容器中的beanName</td>
+					<td>varchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

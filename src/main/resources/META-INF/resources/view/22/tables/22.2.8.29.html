@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../../css/dom.css"/>
+	<script type="text/javascript" src="../../../javascript/core/domUtil.js"></script>
+	<style>
+		blockquote {
+		    padding: 0.1rem;
+		    border-left: 0.1rem solid #eee;
+		    font-size:0.2rem;
+		    margin-left:0.05rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		EDK工作流引擎数据库表--流程实例表 ACTX_PROCESS_INSTANCE
+	</div>
+	<div class="contentDiv">
+		<blockquote>
+			<p>保存流程实例数据</p>
+		</blockquote>
+		<p style="padding:0.05rem;">
+		</p>
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"><col style="width:3rem;"><col style="width:2rem;"><col style="width:1rem;"><col style="width:1rem;"><col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>字段名称</th>
+					<th>字段描述</th>
+					<th>数据类型</th>
+					<th>主键</th>
+					<th>为空</th>
+					<th>取值说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>app_no</td>
+					<td>主键ID</td>
+					<td>bigint</td>
+					<td>√</td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>process_definition_id</td>
+					<td>流程定义ID</td>
+					<td>varchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>process_definition_key</td>
+					<td>流程定义Key</td>
+					<td>varchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>process_definition_name</td>
+					<td>流程定义名称</td>
+					<td>varchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>process_instance_id</td>
+					<td>流程实例ID</td>
+					<td>varchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>business_code</td>
+					<td>交易码</td>
+					<td>varchar(32)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>user_no</td>
+					<td>流程发起人编号</td>
+					<td>varchar(32)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>process_type</td>
+					<td>流程类型</td>
+					<td>varchar(32)</td>
+					<td></td>
+					<td>√</td>
+					<td>一般可以把流程所属的业务模块编码设置到本字段</td>
+				</tr>
+				<tr>
+					<td>create_time</td>
+					<td>创建时间</td>
+					<td>varchar(20)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>start_time</td>
+					<td>开始时间</td>
+					<td>varchar(20)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>end_time</td>
+					<td>结束时间</td>
+					<td>varchar(20)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>status</td>
+					<td>状态</td>
+					<td>char(1)</td>
+					<td></td>
+					<td>√</td>
+					<td>0-未提交,1-审批中,2-审批完成,3-发起人撤回 4-人工终止 5-已挂起</td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

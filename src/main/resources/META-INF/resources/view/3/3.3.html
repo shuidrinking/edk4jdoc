@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/sdMenuTreeClassic.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/sdTree/SDTreeControl_min.js"></script>
+	<style type="text/css">
+		.remarks{
+			color:#fffdeb;background-color:#33b582;
+		}
+	</style>
+	<script type="text/javascript">
+		function init(){
+			var tree = new TreeControl();
+			$("treeContainnerDiv").innerHTML="";
+			tree.Container = "treeContainnerDiv";//指定容器
+			
+			tree.RootNodeId = "root";//设置跟结点
+			tree.addNode("root", null, "your_edk4j_project", "#", false);
+			tree.expandAllFlag=true;//展开所有节点
+			tree.URLProxy = "doNoting";
+			
+			tree.addNode("100000000000000", "root", "edk4jIdeSupport<font class='remarks'>【edk4j可视化ide支持包】</font>", "#", false);
+			tree.addNode("101000000000000", "100000000000000", "icons", "#", false);
+			tree.addNode("101010000000000", "101000000000000", "action", "#", false);
+			tree.addNode("101010100000000", "101010000000000", "ide中action的图标文件.png", "#", false);
+			tree.addNode("101020000000000", "100000000000000", "actionPrototype.xml<font class='remarks'>【action原型扩展配置】</font>", "#", false);
+			tree.addNode("101030000000000", "100000000000000", "domainDictionary.xml<font class='remarks'>【<font class='remarks'>【数据字典扩展】</font>】</font>", "#", false);
+			tree.addNode("101040000000000", "100000000000000", "regularExpression.xml<font class='remarks'>【参考正则表达式扩展】</font>", "#", false);
+			
+			tree.addNode("200000000000000", "root", "src<font class='remarks'>【标准maven项目代码结构】</font>", "#", false);
+			tree.addNode("201000000000000", "200000000000000", "main", "#", false);
+			tree.addNode("201010000000000", "201000000000000", "java", "#", false);
+			tree.addNode("201010100000000", "201010000000000", "项目中的所有java代码", "#", false);
+			
+			tree.addNode("201020000000000", "201000000000000", "resources", "#", false);
+			tree.addNode("201020100000000", "201020000000000", "edk4jConfig", "#", false);
+			tree.addNode("201020101000000", "201020100000000", "bpmConfig<font class='remarks'>【业务逻辑文件包】</font>", "#", false);
+			tree.addNode("201020101010000", "201020101000000", "具体功能模块", "#", false);
+			tree.addNode("201020101010100", "201020101010000", "someBpm.edk4jBpm", "#", false);
+			
+			tree.addNode("201020102000000", "201020100000000", "dtd", "#", false);
+			tree.addNode("201020102010000", "201020102000000", "edk4jMvc.dtd<font class='remarks'>【mvc配置文件验证dtd】</font>", "#", false);
+			tree.addNode("201020102020000", "201020102000000", "edk4jBpm.dtd<font class='remarks'>【bpm配置文件验证dtd】</font>", "#", false);
+			
+			tree.addNode("201020103000000", "201020100000000", "mvcConfig<font class='remarks'>【mvc视图配置文件包】</font>", "#", false);
+			tree.addNode("201020103010000", "201020103000000", "具体功能模块", "#", false);
+			tree.addNode("201020103010100", "201020103010000", "someMvc.edk4jMvc", "#", false);
+			
+			tree.addNode("201020104000000", "201020100000000", "business.properties<font class='remarks'>【业务规则配置】</font>", "#", false);
+			tree.addNode("201020105000000", "201020100000000", "edk4jConfig.properties<font class='remarks'>【edk4j内核配置】</font>", "#", false);
+			tree.addNode("201020106000000", "201020100000000", "sessionContext.xml<font class='remarks'>【会话context原型配置】</font>", "#", false);
+			
+			
+			tree.addNode("201020200000000", "201020000000000", "mybatisConfig", "#", false);
+			tree.addNode("201020201000000", "201020200000000", "mapper", "#", false);
+			tree.addNode("201020201010000", "201020201000000", "someMapper.xml", "#", false);
+			tree.addNode("201020202000000", "201020200000000", "mybatis-config.xml", "#", false);
+			
+			tree.addNode("201020300000000", "201020000000000", "springConfig", "#", false);
+			tree.addNode("201020301000000", "201020300000000", "i18n<font class='remarks'>【国际化配置】</font>", "#", false);
+			tree.addNode("201020301010000", "201020301000000", "message", "#", false);
+			tree.addNode("201020301010100", "201020301010000", "message_en_US.properties", "#", false);
+			tree.addNode("201020301010200", "201020301010000", "message_en.properties", "#", false);
+			tree.addNode("201020301010300", "201020301010000", "message_zh_CN.properties", "#", false);
+			tree.addNode("201020301010400", "201020301010000", "message_zh.properties", "#", false);
+			tree.addNode("201020301010500", "201020301010000", "message.properties", "#", false);
+			tree.addNode("201020301020000", "201020301000000", "error", "#", false);
+			tree.addNode("201020301020100", "201020301020000", "error_en_US.properties", "#", false);
+			tree.addNode("201020301020200", "201020301020000", "error_en.properties", "#", false);
+			tree.addNode("201020301020300", "201020301020000", "error_zh_CN.properties", "#", false);
+			tree.addNode("201020301020400", "201020301020000", "error_zh.properties", "#", false);
+			tree.addNode("201020301020500", "201020301020000", "error.properties", "#", false);
+			tree.addNode("201020302000000", "201020300000000", "application-development.properties", "#", false);
+			tree.addNode("201020303000000", "201020300000000", "application-junit.properties", "#", false);
+			tree.addNode("201020304000000", "201020300000000", "application-product.properties", "#", false);
+			tree.addNode("201020305000000", "201020300000000", "application-test.properties", "#", false);
+			tree.addNode("201020306000000", "201020300000000", "application-verify.properties", "#", false);
+			tree.addNode("201020307000000", "201020300000000", "application.properties", "#", false);
+			
+			tree.addNode("201020400000000", "201020000000000", "virtualFormat", "#", false);
+			tree.addNode("201020401000000", "201020400000000", "具体接口的虚拟报文文件", "#", false);
+			tree.addNode("201020500000000", "201020000000000", "ehCache3Config.xml<font class='remarks'>【ehCache配置】</font>", "#", false);
+			tree.addNode("201020600000000", "201020000000000", "jta.properties<font class='remarks'>【多数据源属性设置】</font>", "#", false);
+			tree.addNode("201020700000000", "201020000000000", "log4j2.component.properties", "#", false);
+			tree.addNode("201020800000000", "201020000000000", "log4j2.StatusLogger.properties", "#", false);
+			tree.addNode("201020900000000", "201020000000000", "log4j2.xml<font class='remarks'>【运行日志配置】</font>", "#", false);
+			
+			tree.addNode("201030000000000", "201000000000000", "webapp", "#", false);
+			tree.addNode("201030100000000", "201030000000000", "WEB-INF", "#", false);
+			tree.addNode("201030101000000", "201030100000000", "web.xml", "#", false);
+			tree.addNode("201030200000000", "201030000000000", "其他静态资源文件：view、javascript、css等<font class='remarks'>【项目中自行组织】</font>", "#", false);
+			
+			tree.addNode("300000000000000", "root", "pom.xml", "#", false);
+			tree.generate();//勾画树
+		}
+		function doNoting(){
+			
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		3.3、edk4j项目的文件结构
+	</div>
+	<div class="subTitleDiv addArrow">edk4j项目的文件目录结构如下所示：</div>
+	<div id="treeContainnerDiv" class="subContentDiv"></div>
+</body>
+</html>

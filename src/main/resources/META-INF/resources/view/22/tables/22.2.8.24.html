@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../../css/dom.css"/>
+	<script type="text/javascript" src="../../../javascript/core/domUtil.js"></script>
+	<style>
+		blockquote {
+		    padding: 0.1rem;
+		    border-left: 0.1rem solid #eee;
+		    font-size:0.2rem;
+		    margin-left:0.05rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		Activiti 数据库表结构 ACT_EVT_LOG
+	</div>
+	<div class="contentDiv">
+		<blockquote>
+			<p>事件日志( act_evt_log )</p>
+		</blockquote>
+		<p style="padding:0.05rem;">
+		</p>
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"><col style="width:3rem;"><col style="width:2rem;"><col style="width:1rem;"><col style="width:1rem;"><col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>字段名称</th>
+					<th>字段描述</th>
+					<th>数据类型</th>
+					<th>主键</th>
+					<th>为空</th>
+					<th>取值说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>LOG_NR_</td>
+					<td>主键</td>
+					<td>bigint(20)</td>
+					<td>√</td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>TYPE_</td>
+					<td>类型</td>
+					<td>varchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>PROC_DEF_ID_</td>
+					<td>流程定义编号</td>
+					<td>varchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>PROC_INST_ID_</td>
+					<td>流程实例编号</td>
+					<td>varchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>EXECUTION_ID_</td>
+					<td>执行实例编号</td>
+					<td>varchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>TASK_ID_</td>
+					<td>任务编号</td>
+					<td>varchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>TIME_STAMP_</td>
+					<td>时间戳</td>
+					<td>timestamp(3)</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>USER_ID_</td>
+					<td>用户编号</td>
+					<td>varchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>DATA_</td>
+					<td>数据</td>
+					<td>longblob</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>LOCK_OWNER_</td>
+					<td>拥有者</td>
+					<td>varchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>LOCK_TIME_</td>
+					<td>锁定时间</td>
+					<td>timestamp(3)</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>IS_PROCESSED_</td>
+					<td>是否已处理</td>
+					<td>tinyint(4)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

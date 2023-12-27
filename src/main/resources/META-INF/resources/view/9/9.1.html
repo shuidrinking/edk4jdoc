@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<style type="text/css">
+		ol{
+    		list-style-position: inside;
+    		list-style-type: none;
+    		counter-reset: sectioncounter 0
+		}
+		ol li:before {
+			content: "（" counter(sectioncounter)"）";
+			counter-increment: sectioncounter;
+			margin-left:0.32rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		9.1、请求数据的提交方式及方法
+	</div>
+	<div class="tabTitleDiv">名词解释</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<label style="font-weight:bold;">请求数据：</label>请求端发送过来的数据，对应我们bpm里在&lt;input&gt;节点中定义的数据。<br/>
+	</div>
+	<div class="tabTitleDiv">提交的方式</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		在edk4j平台中，请求数据的提交方式不限，例如：浏览器中用form或ajax提交、后台代码中以http接口调用的方式提交，等等。
+	</div>
+	<div class="tabTitleDiv">提交的method</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		如果在mvc中没有设置method属性，则接收所有提交方法，可以是GET，也可以是POST。如果method属性中一旦设置了值，则只接受设置的方法。
+	</div>
+	<div class="tabTitleDiv">请求数据的传输位置</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		在edk4j平台中，将请求数据放在下面这些位置传输到后台，都能被接收。<br>
+		<label style="font-weight:bold;">
+			（1）在url中显式传输
+		</label>，例如：http://......?field1=value1&amp;field2=value2...<br>
+		<label style="font-weight:bold;">
+			（2）在request的流中隐式传输
+		</label>，将请求数据组织为特定格式，用流写到服务器。（例如：form提交，ajax的Request.send提交、 用 HttpUrlConnection的OutputStream写出）<br>
+		<label style="font-weight:bold;">
+			（3）request的head中隐式传输
+		</label><br>
+		在requestHead里提交字段，也能被bpm的input捕获<br>
+		<label style="color:#ff0000;">【注意】，提交到head里的字段的值，一般不会有中文；万一必须把中文放到head里传输，需要提前使用URLEncoder进行UTF-8格式的编码，接收方需要使用URLDecoder进行解码</label>
+	</div>
+</body>
+</html>

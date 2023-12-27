@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			//CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			//PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		24.1、事务使用原则
+	</div>
+	<div class="tabTitleDiv">事务是什么</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		事务：是数据库等操作的最小工作单元，是作为单个逻辑工作单元执行的一系列操作；这些操作作为一个整体一起向系统提交，要么都执行、要么都不执行；事务是一组不可再分割的操作集合（工作逻辑单元）.<br>
+		事务的特点：原子性、隔离性、一致性、提交永久性。
+	</div>
+	<div class="tabTitleDiv">edk4j平台中的事务配置点</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+	（1）配置在具体的业务逻辑中，使整个业务逻辑执行时创建一个新事务<br>
+	（2）配置在数据库操作的组件中，设置其属性“是否使用独立事务”，使具体数据库操作的步骤能选择“启用独立事务”或“沿用当前业务逻辑的事务”
+	</div>
+	<div class="tabTitleDiv">事务的使用原则</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		程序运行过程中对事务的管理，需要消耗系统性能，同一个交易开启事务后处理速度会比不开启事务慢一倍，所以为了增加交易处理速度，要做到“无需开启的则不开启”<br>
+		（1）如果业务逻辑中有数据库的【增删改】变更操作，则该业务逻辑【必须】使用事务；<br>
+		（2）如果业务逻辑中没有数据库操作，或者只有数据库查询操作，则该业务逻辑不使用事务；<br>
+		（3）对于数据库组件“查询单笔数据明细”、“查询数据列表”、“分页查询数据列表”组件，一般都将其“是否使用独立事务”属性设置为"unuse"，即不使用事务，除非有特殊的交易，比如“需要查询出本事务中已执行但事务尚未提交的数据”时，可以酌情启用事务
+	</div>
+</body>
+</html>

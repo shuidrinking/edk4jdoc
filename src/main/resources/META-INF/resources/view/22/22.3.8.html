@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		22.3.8、附录：可复用的流程操作的js脚本
+	</div>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-javascript" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+/**
+ * 生成流程操作按钮
+ * 其中调用ajax注册在webapp/javascript/config/workflow.mvc.config.js文件中
+ * @returns
+ */
+function createProcessOperationButtons(taskId){
+	top.sdMasker.progress.show();
+	Server.jsonAjax("wf.queryOperationsForTask", {"taskId":taskId} ,function(data){
+		top.sdMasker.progress.hidden();
+		if(data.resultCode!="0"){
+			alert(data.resultMessage);
+			return;
+		}
+		else{
+			if(!data.processOperationList || data.processOperationList.length==0){
+				$("operationTd").innerHTML = "<label style='color:#ff0000;'>没有可用操作，无法继续处理流程！</label>";
+				return;
+			}
+			var operationHtml = "";
+			//可以在operationHtml里添加一些流程图外的个性化按钮
+			for(var i = 0; i &lt; data.processOperationList.length; i++){
+				operationHtml += "&lt;div class='button deepRedButton' onclick=\"dealTask('"
+				                     + data.processOperationList[i].id +"', '"
+				                     + data.processOperationList[i].name 
+				                     +"')\" style='margin-right:0.1rem;'&gt;"
+				                     + data.processOperationList[i].name 
+				                     +"&lt;/div&gt;";
+			}
+			//如果是授权页面，放开下面这句，添加一个“返回”按钮，使页面返回到“待办任务”
+			//operationHtml += "&lt;div class='button lightRedButton' onclick=\"window.location.replace('../workflowModule/GTask.html')\"&gt;返回&lt;/div&gt;";
+			$("operationTd").innerHTML = operationHtml;
+		}
+	});
+}
+		</pre>
+	</div>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-javascript" id="codeShow2" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+/**
+ * 流转流程，无论点击哪个流程操作的按钮，都调用该函数，引擎中会根据routeId进行流转
+ * 其中调用ajax注册在webapp/javascript/config/workflow.mvc.config.js文件中
+ */
+function dealTask(routeId, outcomeRouteName){
+	var comment = $("auditMessageTA").value;
+	if(!comment){
+		alert("请填写审批意见");
+		return;
+	}
+	var param={
+		"taskId":taskId,
+		"outcomeRouteName":routeId,
+		"comment":comment
+	};
+	top.sdMasker.progress.show();
+	Server.jsonAjax("wf.completeTask", param ,function(data){
+		top.sdMasker.progress.hidden();
+		if(data.resultCode=="0"){
+			parent.Dialog.alert("已“"+outcomeRouteName+"”！",function(){
+				window.location.replace("/"+Server.projectName+"/view/workflowModule/GTask.html");
+			});
+		}
+		else{
+			alert(data.resultMessage);
+		}
+	});
+}
+		</pre>
+	</div>
+</body>
+</html>

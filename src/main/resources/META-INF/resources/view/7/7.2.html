@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		7.2、CacheService接口，该接口并不强制实现
+	</div>
+	<div class="tabTitleDiv">1、需要实现的接口</div>
+	<div class="tabTitleLine"></div>
+	<div class="subTitleDiv" style="font-weight:bold;">
+		edk框架中默认的实现类，已经基本上能满足需求了，如果没有特殊情况，该接口可以不用自行实现。
+	</div>
+	<div class="contentDiv">
+		<label style="font-weight:bold;">接口</label>：com.edk4j.core.service.CacheService
+		<br/><label style="font-weight:bold;">什么用</label>：管理缓存数据，执行增删改查动作。实现方法中，可以根据需要调用相应的缓存服务器。如果你要集成二级缓存机制，也只需要在实现类里处理就好了。
+		<br/><label style="width:0.64rem;display:inline-block;"></label>对于缓存文件的配置，详见前面章节“edk中的配置文件概要说明”里，对于edk4jConfig.properties关于缓存配置项的说明，以及对于ehCache3Config.xml的说明
+		<br/><label style="font-weight:bold;">edk中的默认实现类</label>：com.edk4j.edk4jdemos.service.impl.CacheServiceImpl
+		<br/><label style="font-weight:bold;">实现类中必须使用注解和beanName</label>：@Service("cacheService")，如果beanName没有这样设置，那么将会调用com.edk4j.core.service.impl.DefaultCacheService，这个默认实现类应该不够满足你的应用需求。
+		<br/><label style="font-weight:bold;">方法清单</label>：
+		<div class="contentDiv">
+			<pre class="prettyprint lang-java" id="codeShow1" style="padding-left:0.5rem;width:100%;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+/**
+ * 获取二级缓存的key
+ * @return
+ */
+public String getL2CacheKey();
+/**
+ * 在redis中缓存数据,使用自定义时间
+ * @param key 缓存key
+ * @param expireSeconds 缓存时间秒数
+ * @param value 缓存的数据
+ * @throws TranFailException, CacheException
+ */
+public void putToRedisOnly(String key, int expireSeconds, Object value) throws TranFailException, CacheException ;
+/**
+ * 缓存数据，使用默认设定的时间
+ * @param cacheGroupName 缓存分组名称,对应application.properties中的cache分组中的某个值
+ * @param key 缓存key
+ * @param value 缓存的数据
+ * @throws TranFailException, CacheException
+ */
+public void put(String cacheGroupName, String key, Object value) throws TranFailException, CacheException ;
+/**
+ * 获取缓存数据
+ * @param cacheGroupName 缓存分组名称,对应application.properties中的cache分组中的某个值
+ * @param key
+ * @return
+ * @throws IOException 
+ * @throws TranFailException, CacheException
+ */
+public Object get(String cacheGroupName, String key) throws TranFailException, CacheException ;
+/**
+ * 刷新缓存时间，注意：redis可以刷新，但是ehCache不能刷新（tti机制下，hit以后会自动刷新）
+ * @param key 缓存key
+ * @param expireSeconds 过期秒数
+ * @throws TranFailException, CacheException
+ */
+public void setExpiration(String key, int expireSeconds) throws TranFailException, CacheException ;
+/**
+ * 刷新缓存时间，使用预设的时间，注意：redis可以刷新，但是ehCache不能刷新（tti机制下，hit以后会自动刷新）
+ * @param cacheGroupName 缓存分组名称，对应application.properties中的cache分组中的某个值
+ * @param key 缓存key
+ * @throws TranFailException, CacheException 
+ */
+public void setExpiration(String cacheGroupName, String key)throws TranFailException, CacheException ;
+/**
+ * 清除缓存
+ * @param cacheGroupName 缓存分组名称，对应application.properties中的cache分组中的某个值，如果为redis缓存时，无视该参数（传null即可）
+ * @param key 缓存key
+ * @throws TranFailException, CacheException
+ */
+public void evict(String cacheGroupName, String key) throws TranFailException, CacheException ;
+/**
+ * 检查缓存是否存在
+ * @param cacheGroupName 缓存分组名称，对应application.properties中的cache分组中的某个值，如果为redis缓存时，无视该参数（传null即可）
+ * @param key
+ * @return
+ * @throws TranFailException, CacheException
+ */
+public boolean exists(String cacheGroupName, String key) throws TranFailException, CacheException ;
+/**
+ * 原子性加锁，只在redis上操作，和本地缓存不相干<br>
+ * 加锁成功后返回true<br>
+ * CacheService.lockDataOnlyInRedis<br>
+ * CacheService.getLockedDataOnlyFromRedis<br>
+ * CacheService.unlockDataOnlyInRedis<br>
+ * 这三个方法是一套，获取加锁的值时不能用RedisUtil.get方法，因为get方法里用的是序列化操作，不能正确获取加锁数据
+ * @param key
+ * @param value
+ * @param expireSeconds
+ * @return
+ */
+public boolean lockDataOnlyInRedis(String key, String value, int expireSeconds) ;
+/**
+ * 从redis获取通过lockDataOnlyInRedis加锁的 key对应的值，只在redis上操作，和本地缓存不相干<br>
+ * CacheService.lockDataOnlyInRedis<br>
+ * CacheService.getLockedDataOnlyFromRedis<br>
+ * CacheService.unlockDataOnlyInRedis<br>
+ * 这三个方法是一套，获取加锁的值时不能用RedisUtil.get方法，因为get方法里用的是序列化操作，不能正确获取加锁数据
+ * @param key
+ * @return
+ */
+public String getLockedDataOnlyFromRedis(String key);
+/**
+ * 原子性解锁，解锁后，锁的key将被删除<br>
+ * 只在redis上操作，和本地缓存不相干<br>
+ * CacheService.lockDataOnlyInRedis<br>
+ * CacheService.getLockedDataOnlyFromRedis<br>
+ * CacheService.unlockDataOnlyInRedis<br>
+ * 这三个方法是一套，获取加锁的值时不能用RedisUtil.get方法，因为get方法里用的是序列化操作，不能正确获取加锁数据
+ * @param key
+ * @param value
+ * @return
+ */
+public boolean unlockDataOnlyInRedis(String key, String value);
+
+/**
+ * 使计数器字段递增1，原子性操作，同步性可以用于并发<br>
+ * 只在redis上操作，key 不存在，那么 key 的值会先被初始化为 0 ，然后再执行 INCR 操作进行加一。 <br>
+ * 然后其它用户在执行 INCR 操作进行加一时，如果返回的数大于 1 ，说明这个锁存在，并且本次调用正常。<br>
+ * 这个方法和本地缓存不相干<br>
+ * 该方法一般用于“抢”、“秒杀”等场景<br>
+ * <b>【注意】：</b>该方法还可以被用在“加锁”场景中：如果返回结果是1，说明加锁成功，大于1，说明已经被其他地方用过了
+ * CacheService.incrOnlyInRedis<br>
+ * CacheService.deleteIncrOnlyInRedis<br>
+ * 这2个方法是一套
+ * @param key
+ * @return
+ */
+public Long incrOnlyInRedis(String key);
+
+/**
+ * 只在redis上操作，删除incr测试，和本地缓存不相干<br>
+ * CacheService.incrOnlyInRedis<br>
+ * CacheService.deleteIncrOnlyInRedis<br>
+ * 这2个方法是一套
+ * @param key
+ * @return
+ */
+public boolean deleteIncrOnlyInRedis(String key);
+			</pre>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		18.2、查看系统配置参数
+	</div>
+	<div class="subTitleDiv">
+		（1）请求Url：http://url:port/youSystemName/system/audit/serverInfo
+	</div>
+	<div class="subTitleDiv">
+		（2）需要用ajax访问，请求参数：{"auditPassword":"密文加密值"}
+	</div>
+	<div class="subTitleDiv">
+		（3）返回json格式的结果，样例：
+	</div>
+	<div class="subContentDiv">
+		<pre class="prettyprint lang-json" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+{
+       "resultCode":"0",
+       "resultMessage":"ok",
+       "timeStamp":null,
+       "businessDataObject":{
+              "hostName":"admin-PC",
+              "mac":"B0-6E-BF-31-E2-47",
+              "ip":"192.168.1.104",
+              "userName":"admin",
+              "osArch":"amd64",
+              "osName":"Windows 7",
+              "osVersion":"6.1",
+              "workDir":"/D:/liuxiaosong/workSpace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/edk4j-demos/WEB-INF/classes/",
+              "cpuThreadCount":4,
+              "javaVersion":"1.8.0_144",
+              "totalMemory":"750MB",
+              "freeMomory":"204MB",
+              "maxMemory":"1792MB"
+       }
+}
+</pre>
+	</div>
+</body>
+</html>

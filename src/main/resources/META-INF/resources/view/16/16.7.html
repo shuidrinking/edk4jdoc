@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		16.7、带有SSL验证的https接口怎么调用
+	</div>
+	<div class="tabTitleDiv">关键点</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		按前面的套路做，区别就是，需要构造带有证书验证器的httpClient对象
+	</div>
+	<div class="tabTitleDiv">实施方法</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="item">
+		（1）通过com.edk4j.integration.HttpCallApi#getSSLConnectionSocketFactory方法，获得<br/>
+			org.apache.http.conn.ssl.SSLConnectionSocketFactory的对象。<br/>
+			注意 getSSLConnectionSocketFactory的参数是X509TrustManager的实现类，你自己写一个，因为HttpCallApi.getDefaultX509TrustManager()这个方法获得的默认实现类并不是通用的。
+		</div>
+		<div class="item">
+			（2）通过这句来获得HttpClient 对象：<br/>
+	 		HttpClients.custom().setSSLSocketFactory(sslConnectionSocketFactory).build();
+		</div>	 		
+	 	<div class="item">
+ 			（3）样例代码如下：
+	 	</div>
+	 	<div class="subContentDiv">
+	 		<p><span style="color:black">CloseableHttpClient </span><span style="color:#6a3e3e">httpClient</span><span style="color:black"> = </span><strong><span style="color:#7f0055">null</span></strong><span style="color:black">;</span></p>
+			<p><strong><span style="color:#7f0055">try</span></strong><span style="color:black">{</span></p>
+			<p><span style="color:black">&nbsp; &nbsp; SSLConnectionSocketFactory </span><span style="color:#6a3e3e">sslConnectionSocketFactory</span><span style="color:black">= HttpCallApi.<em>getSSLConnectionSocketFactory</em>(HttpCallApi.<em>getDefaultX509TrustManager</em>());</span></p>
+			<p><span style="color:#6a3e3e">&nbsp; &nbsp; httpClient</span><span style="color:black"> = HttpClients.<em>custom</em>().setSSLSocketFactory(</span><span style="color:#6a3e3e">sslConnectionSocketFactory</span><span style="color:black">).build();</span></p>
+			<p><span style="color:black">&nbsp; &nbsp; String </span><span style="color:#6a3e3e">result</span><span style="color:black"> = HttpCallApi.<em>callViaGetMethod</em>(</span><span style="color:#6a3e3e">httpClient</span><span style="color:black">, </span><em><span style="color:#0000c0">requestConfig</span></em><span style="color:black">, </span><strong><span style="color:#7f0055">null</span></strong><span style="color:black">, </span><em><span style="color:#0000c0">weixinTokenUrl</span></em><span style="color:black">,BaseConstant.</span><em><span style="color:#0000c0">DEFAULT_CHARSET</span></em><span style="color:black">);</span></p>
+			<p><strong><span style="color:#7f0055">&nbsp; &nbsp; return</span></strong> <span style="color:#6a3e3e">result</span><span style="color:black">;</span></p>
+			<p><span style="color:black">}</span></p>
+			<p><strong><span style="color:#7f0055">...</span></strong></p>
+	 	</div>
+	 	<div class="item">
+	 	<label style="background-color:#ffff00;">对于https接口的调用样例，见edk4j-demos项目中的文件：src/main/resources/edk4jConfig/mvcConfig/demo/httpIntegrationDemoMvc.edk4jBpm</label>
+ 		</div>
+	</div>
+</body>
+</html>

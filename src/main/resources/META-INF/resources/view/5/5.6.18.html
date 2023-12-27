@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.18、edk4j配置读取工具
+	</div>
+	<div class="subTitleDiv">
+		类：com.edk4j.core.util.ConfigPropertiesReader
+	</div>
+	<div class="subContentDiv">
+		这个类的方法必须在项目启动后才有效执行，所以做测试时，直接在main方法里调用是会报错的。<br>
+		前面章节中，讲过了“配置参数怎么获取”，按我们的规范，每组配置项都要有一个特定的配置映射类，然后通过映射类获得配置值。<br>
+		但是，这个类是在不需要配置映射类的情况下读取配置值的。
+	</div>
+	<div class="subTitleDiv">
+		方法清单：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:12.5rem;">
+					public static final String getPropertyValue(String code)
+				</td>
+				<td style="color:#3f5fbf">
+					获取配置的key为code的值
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static final String getPropertyValue(String code, String defaultValue)
+				</td>
+				<td style="color:#3f5fbf">
+					获取配置的key为code的值，如果配置值不存在时，返回defaultValue
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static final String getPropertyValue(String code, Locale locale)
+				</td>
+				<td style="color:#3f5fbf">
+					根据语种locale，获取配置的key为code的值，如果配置值不存在时，返回defaultValue
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static final String getPropertyValue(String code, Object[] placeHolderValue)
+				</td>
+				<td style="color:#3f5fbf">
+					获取配置的key为code的值，配置值中的占位符（即{n}）的值，会依次用placeHolderValue中的值替换。
+				</td>
+			</tr>
+			<tr>
+				<td>
+				public static final String getPropertyValue(String code, Object[] placeHolderValue, Locale locale)
+				</td>
+				<td style="color:#3f5fbf">
+					根据语种locale，获取配置的key为code的值，配置值中的占位符（即{n}）的值，会依次用placeHolderValue中的值替换。
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static final String getPropertyValue(String code, String defaultValue, Object[] placeHolderValue)
+				</td>
+				<td style="color:#3f5fbf">
+					获取配置的key为code的值，配置值中的占位符（即{n}）的值，会依次用placeHolderValue中的值替换。
+					<br>如果配置中没有这个配置时，返回默认值defaultValue
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static final String getPropertyValue(String code, String defaultValue, Object[] placeHolderValue, Locale locale)
+				</td>
+				<td style="color:#3f5fbf">
+					根据语种locale，获取配置的key为code的值，配置值中的占位符（即{n}）的值，会依次用placeHolderValue中的值替换。
+					<br>如果配置中没有这个配置时，返回默认值defaultValue
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

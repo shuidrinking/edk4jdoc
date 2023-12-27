@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.9、i18n国际化工具
+	</div>
+	<div class="subTitleDiv">
+		目前这个类用于异常时“提取错误信息”，用于统异常处理组件中，在自定义Action 中一般用不到。
+	</div>
+	<div class="subTitleDiv">
+		类：com.edk4j.core.util.I18nMessageUtil
+	</div>
+	<div class="subTitleDiv">
+		方法如下：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:9rem;">
+					public static String getErrorMessage(String errorCode, String[] placeHolderValue)
+				</td>
+				<td style="color:#3f5fbf">
+					根据错误码，获取错误信息，错误信息中的占位符会被placeHolderValue中的值依次替换，获取的算法如下：
+					<br>1.先从pub_errCode表里获取错误信息
+					<br>2.如果获取不到，则从i18n配置的.properties里获取
+					<br>3.再获取不到时，返回&ldquo;交易失败&rdquo;
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getErrorMessage(String errorCodeString defaultErrorMessage)
+				</td>
+				<td style="color:#3f5fbf">
+					根据错误码，获取错误信息，获取的算法如下：
+					<br>1.先从pub_errCode表里获取错误信息
+					<br>2.如果获取不到，则从i18n配置的.properties里获取
+					<br>3.再获取不到时，返回&ldquo;交易失败&rdquo;
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

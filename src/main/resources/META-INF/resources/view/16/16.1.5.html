@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		16.1.5、编写接口调用的服务类
+	</div>
+	<div class="contentDiv">
+		<p style="text-indent:0.32rem;">
+			这个动作，由项目经理或技术经理做
+		</p>
+		<p style="text-indent:0.32rem;">
+			首先要强调的是代码位置，接口调用的包integration下，对每个接口服务器建立一个包，将这个服务类直接放下去，如下图：
+		</p>
+		<img src="../../image/business/16/16.1.4-1.png"/>
+		<p style="text-indent:0.32rem;">
+			也就是说，<label style="background-color:#ffff00;">每个【接口服务器】都有一个公共的调用服务类</label>，这个类用来做什么呢：因为每个接口服务器可能提供了很多功能接口，每个功能接口虽然具体的参数不一样，但是发起对服务器的调用的动作是统一的，
+			<label style="background-color:#ffff00;">对这个服务器上提供的接口调用的规则是一样的，比如“报文前缀”、“报文头长度”等等参数一样，这样一来，这类参数就可以写死在这个调用服务类里</label>，所以这个统一的调用动作就由调用的服务类去做！ 这就好比专门有一个跑腿的，带着你的参数去服务器传话，然后把服务器的回话给你带回来。
+		</p>
+		<p style="text-indent:0.32rem;">
+			例如edk4j-demos技术点样例项目里有几个接口调用服务类做接口调用的样例，具体代码请参考：
+		</p>
+		<p style="text-indent:0.32rem;">
+			调用“公交服务器”的com.edk4j.edk4jdemos.integration.CallBusServerApi
+		</p>
+		<p style="text-indent:0.32rem;">
+			调用“本地socket服务”的com.edk4j.edk4jdemos.integration.localDemo.CallLocalSocketServerApi
+		</p>
+		<p style="text-indent:0.32rem;">
+			调用“微信接口”的com.edk4j.edk4jdemos.integration.weChat.CallWeChatApi
+		<p style="text-indent:0.32rem;">
+			这里不对代码做赘述。需要强调的是，接口调用服务类中，底层调用的仍然是edk中的连接池。
+		</p>
+	</div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../../css/dom.css"/>
+	<script type="text/javascript" src="../../../javascript/core/domUtil.js"></script>
+	<style>
+		blockquote {
+		    padding: 0.1rem;
+		    border-left: 0.1rem solid #eee;
+		    font-size:0.2rem;
+		    margin-left:0.05rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		Activiti 数据库表结构 act_hi_comment
+	</div>
+	<div class="contentDiv">
+		<blockquote>
+			<p>历史意见表( act_hi_comment )</p>
+		</blockquote>
+		<p style="padding:0.05rem;">
+		</p>
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"><col style="width:3rem;"><col style="width:2rem;"><col style="width:1rem;"><col style="width:1rem;"><col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>字段名称</th>
+					<th>字段描述</th>
+					<th>数据类型</th>
+					<th>主键</th>
+					<th>为空</th>
+					<th>取值说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>ID_</td>
+					<td>ID_</td>
+					<td>nvarchar(64)</td>
+					<td>√</td>
+					<td></td>
+					<td>主键ID</td>
+				</tr>
+				<tr>
+					<td>TYPE_</td>
+					<td>类型</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>类型：event（事件）comment（意见）</td>
+				</tr>
+				<tr>
+					<td>TIME_</td>
+					<td>时间</td>
+					<td>datetime</td>
+					<td></td>
+					<td></td>
+					<td>填写时间’</td>
+				</tr>
+				<tr>
+					<td>USER_ID_</td>
+					<td>用户ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>填写人</td>
+				</tr>
+				<tr>
+					<td>TASK_ID_</td>
+					<td>节点任务ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>节点实例ID</td>
+				</tr>
+				<tr>
+					<td>PROC_INST_ID_</td>
+					<td>流程实例ID</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>流程实例ID</td>
+				</tr>
+				<tr>
+					<td>ACTION_</td>
+					<td>行为类型</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>见备注1</td>
+				</tr>
+				<tr>
+					<td>MESSAGE_</td>
+					<td>基本内容</td>
+					<td>nvarchar(4000)</td>
+					<td></td>
+					<td>√</td>
+					<td>用于存放流程产生的信息，比如审批意见</td>
+				</tr>
+				<tr>
+					<td>FULL_MSG_</td>
+					<td>全部内容</td>
+					<td>varbinary(max)</td>
+					<td></td>
+					<td>√</td>
+					<td>附件地址</td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

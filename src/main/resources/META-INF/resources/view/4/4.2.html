@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			//CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+		function openSubPage(){
+			window.open("../2/2.2.html", null, getWindowOpenFeature(200,200));
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		4.2、搭建开发环境
+	</div>
+	<div class="subTitleDiv" style="text-indent:0.32rem;">
+		开发环境要求见<a href="javascript:openSubPage('devEnvRequire')" style="margin:0 0.1rem;">2.2、开发环境要求</a>章节。按照要求，依次做以下步骤完成开发环境搭建：
+	</div>
+	<div class="subTitleDiv addArrow">
+		一、确保公司或个人虚拟机中具备服务器
+	</div>
+	<div class="subContentDiv">
+		<div>
+			（1）数据库服务器；
+		</div>
+		<div>
+			（2）ActiveMq或Kafka服务器；
+		</div>
+		<div>
+			（3）Redis服务器
+		</div>
+	</div>
+	<div class="subTitleDiv addArrow">
+		二、安装jdk
+	</div>
+	<div class="subTitleDiv addArrow">
+		三、安装eclipse及必备插件
+	</div>
+	<div class="subTitleDiv addArrow">
+		四、配置本地maven库
+	</div>
+	<div class="subTitleDiv addArrow">
+		五、安装tomcat
+	</div>
+	<div class="subTitleDiv addArrow">
+		六、安装数据库、Redis等客户端工具
+	</div>
+	<div class="subTitleDiv addArrow">
+		七、安装“Postman” 或者 “Edge/chrome浏览器的Dev Http Client插件”等ajax调试工具
+	</div>
+</body>
+</html>

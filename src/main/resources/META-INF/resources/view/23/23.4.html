@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		23.4、将Mysql通信纳入链路跟踪
+	</div>
+	<div class="tabTitleDiv">配置项目数据库连接属性</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p><b>只需要在数据库url配置后添加statementInterceptors=brave.mysql.TracingStatementInterceptor即可，如下红字部分：</b></p>
+		<pre class="prettyprint" id="codeShow1" style="font-weight:bold;">
+spring.datasource.driverClassName = <label style="color:#2a00ff;">com.mysql.jdbc.Driver</label>
+spring.datasource.url = jdbc:mysql://localhost:3306/edkdemo<label style="color:#ff0000;">?statementInterceptors=brave.mysql.TracingStatementInterceptor</label>
+spring.datasource.username = <label style="color:#2a00ff;">root</label>
+spring.datasource.password = <label style="color:#2a00ff;">root</label>
+		</pre>
+	</div>
+	<div class="tabTitleDiv">Mysql链路跟踪效果</div>
+	<div class="contentDiv">
+		<p class="tabTitleLine"></p>
+		<p><b>配置之后，链路跟踪中会展示各SQL语句的内容、耗时、异常等信息，如下：</b></p>
+		<div class="contentDiv">
+			<img src="../../image/business/23/23.4-1.png" />
+			<img src="../../image/business/23/23.4-2.png" />
+		</div>
+	</div>
+</body>
+</html>

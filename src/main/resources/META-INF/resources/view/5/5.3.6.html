@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			//CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		5.3.6、business.propertie
+	</div>
+	<div class="subTitleDiv addArrow">
+		文件位置： ${项目路径}/src/main/resources/edkConfig/business.properties
+	</div>
+	<div class="subTitleDiv addArrow">
+		该文件中配置业务规则，例如：“图形验证码属性”、“文件上传规则”等等。
+	</div>
+	<div class="subTitleDiv addArrow">
+		对于该配置文件里的配置参数如何获取，详见下一章中的“配置参数怎么获取”小节内容。
+	</div>
+	<div class="subTitleDiv addArrow">
+		配置样例：
+	</div>
+	<div class="subContentDiv addBorder">
+		<pre class="prettyprint lang-properties" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+#imageCheckCodeLength
+checkCode.imageCheckCodeLength=4
+checkCode.imageCheckCodePerCharWidth=30
+checkCode.imageCheckCodeHeight=30
+checkCode.imageCheckCodeVerifyInputValue=true
+#unit = KB
+#buffer大小
+multiPartResolver.bufferSize=10
+#最大上传文件大小
+multiPartResolver.maxFileSize=1024
+#文件上传临时目录
+multiPartResolver.tempFileRootPath=/home/fileUpload/temps
+#文件上传后保存的目录
+multiPartResolver.uploadFileRootPath=/home/fileUpload/uploads
+#fileUploadSettings  format: servicePath,maxFileSize,fileType
+#if param is null,then the format will be: servicePath,null,fileType
+#max size unit = KB
+#具体的请求上传的规则设定，格式为：相对文件夹,最大kb，只允许的文件类型正则表达式
+/file/fileUploadDemo=fileUploadDemo,100,^(txt|xls|plz|csv|pdf|xml)$
+/file/imageUploadDemo=imageUploadDemo,1024,^(jpeg|jpg|png|gif|bpm|tif])$
+</pre>
+	</div>
+</body>
+</html>

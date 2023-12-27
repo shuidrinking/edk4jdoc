@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		23.5.1、自定义埋点概述
+	</div>
+	<div class="tabTitleDiv">自定义埋点的作用</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p>默认情况下，edk4j项目只要集成了分布式链路跟踪引擎，便会自动跟踪所有访问的API请求。默认跟踪的链路粒度为整个API请求，HTTP、TCP、Webservice等通信请求。</p>
+		<p>而往往可能会存在想对某一个BIZ业务流中的一个或几个Action业务小步骤进行具体的链路跟踪。</p>
+		<p>比如：希望对下面业务流程中的<b>“cutomStep2”</b>步骤进行链路跟踪</p>
+		<img src="../../image/business/23/23.5.1-1.png" />
+		<p>这种情况下就需要做自定义埋点，所以自定义埋点也就是一种<b>细粒度的链路跟踪。</b></p>
+	</div>
+</body>
+</html>

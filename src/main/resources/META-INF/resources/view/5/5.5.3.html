@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.5.3、配置参数怎么获取
+	</div>
+	<div class="subTitleDiv addArrow">
+			1、通过ApplicationConfig
+		</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.config.ApplicationConfig<br/>
+		将本类用@Autowired引入，并调用其get方法，可获取的参数见edk4jConfig.properties文件中"application."前缀的配置
+	</div>
+	<div class="subTitleDiv addArrow">
+		2、通过CacheConfig
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.config.CacheConfig<br/>
+		将本类用@Autowired引入，并调用其get方法，可获取的参数见edk4jConfig.properties文件中" cache."前缀的配置
+	</div>
+	<div class="subTitleDiv addArrow">
+		3、通过DataBaseProperties
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.config.DataBaseProperties<br/>
+		将本类用@Autowired引入，并调用其getDataBaseName()方法，可获取application.properties配置文件中的spring.jpa.database字段的值（数据库名称：ORACLE,MYSQL,DB2）
+	</div>
+	<div class="subTitleDiv addArrow">
+		4、通过FileUploadConfig
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.config.FileUploadConfig<br/>
+		将本类用@Autowired引入，并调用其get方法，可获取的参数见business.properties文件中" multiPartResolver."前缀的配置
+	</div>
+	<div class="subTitleDiv addArrow">
+		5、通过RedisCacheConfig
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.config.RedisCacheConfig<br/>
+		将本类用@Autowired引入，并调用其get方法，可获取的参数见application-{profile}.properties文件中" redis."前缀的配置
+	</div>
+	<div class="subTitleDiv addArrow">
+		6、通过SessionConfig
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.config.SessionConfig<br/>
+		将本类用@Autowired引入，并调用其get方法，可获取的参数见edk4jConfig.properties文件中" sessionConfig."前缀的配置
+	</div>
+	<div class="subTitleDiv addArrow">
+		7、通过ProxyConfig
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.integration.config.ProxyConfig<br/>
+		将本类用@Autowired引入，并调用其get方法，可获取的参数见application-{profile}.properties文件中" proxy."前缀的配置
+	</div>
+	<div class="subTitleDiv addArrow">
+		8、实现接口HttpIntegrationConfig
+	</div>
+	<div class="subContentDiv">
+		接口：com.edk4j.core.integration.config.HttpIntegrationConfig<br/>
+		实现该接口，定义http接口配置，具体配置类需要在具体应用中实现<br/>
+		可获取的参数见application-{profile}.properties文件中"自定义具体接口的配置前缀."前缀的配置<br/>
+		edk-integration中对接口参数的调用都是通过接口的get方法获取的
+	</div>
+	<div class="subTitleDiv addArrow">
+		9、实现接口SocketIntegrationConfig
+	</div>
+	<div class="subContentDiv">
+		接口：com.edk4j.core.integration.config.SocketIntegrationConfig<br/>
+		实现该接口，定义socket接口配置，具体配置类需要在具体应用中实现<br/>
+		可获取的参数见application-{profile}.properties文件中"自定义具体接口的配置前缀."前缀的配置<br/>
+		edk-integration中对接口参数的调用都是通过接口的get方法获取的
+	</div>
+	
+	<div class="subTitleDiv addArrow">
+		10、具体项目中还有扩展内容，需要怎么配置
+	</div>
+	<div class="subContentDiv">
+		<label style="font-weight:bold;">spring项目中的properties配置，要落实到java中使用时，一般是需要经过这么几个步骤：</label><br/>
+		<label style="font-weight:bold;">（1）在.properties配置文件中添加配置项，例如</label>
+		<div class="contentDiv">
+			在business.properties中新增了下面内容<br/>
+			bankSettings.bankName=XXX银行<br/>
+			bankSettings.bankTelephoneNo=12345678
+		</div>
+		<label style="font-weight:bold;">（2）在具体项目的config包中新增对应的配置文件BankSettings.java</label><br/>
+		spring在加载时会自动将properties中的配置值注入到对象中
+		<div class="contentDiv">
+			<p><span style="color:#646464">@Component</span></p>
+			<p><span style="color:#646464">@ConfigurationProperties</span><span style="color:black">(prefix = </span><span style="color:#2a00ff">&quot;bankSettings&quot;</span><span style="color:black">, ignoreInvalidFields = </span><strong><span style="color:#7f0055">true</span></strong><span style="color:black">)</span></p>
+			<p><strong><span style="color:#7f0055">public</span></strong> <strong><span style="color:#7f0055">class</span></strong><span style="color:black"> BankSettingsConfig {</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#3f5fbf">/**</span><span style="color:#3f5fbf">银行名称</span><span style="color:#3f5fbf">**/</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong><span style="color:#7f0055">private</span></strong> <strong><span style="color:#7f0055">boolean</span></strong> <span style="color:#0000c0">bankName</span><span style="color:black">;</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#3f5fbf">/**</span><span style="color:#3f5fbf">银行电话号码</span><span style="color:#3f5fbf">**/</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong><span style="color:#7f0055">private</span></strong> <strong><span style="color:#7f0055">boolean</span></strong> <span style="color:#0000c0">bankTelephoneNo</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#0000c0">对这两个参数再添加</span><span style="color:#0000c0">get</span><span style="color:#0000c0">和</span><span style="color:#0000c0">set</span><span style="color:#0000c0">方法</span><span style="color:black">;</span></p>
+			<p><span style="color:black">}</span></p>
+		</div>
+		<label style="font-weight:bold;">（3）然后按spring的套路使用就可以了</label>
+		<div class="contentDiv">
+			<p><span style="color:#000000">......</span></p>
+			<p><span style="color:#3f5fbf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**</span></p>
+			<p><span style="color:#3f5fbf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;* bankSettings</span><span style="color:#3f5fbf">配置</span></p>
+			<p><span style="color:#3f5fbf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;*/</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#646464">@Autowired</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong><span style="color:#7f0055">private</span></strong><span style="color:black"> BankSettingsConfig</span><span style="color:#0000c0"> bankSettingsConfig</span><span style="color:black">;</span></p>
+			<p>&nbsp;</p>
+			<p><span style="color:black">&nbsp;&nbsp;&nbsp; .......</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#0000c0">通过</span><span style="color:#0000c0">bankSettingsConfig</span><span style="color:#0000c0">提取参数值：</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#0000c0">String bankName = bankSettingsConfig.getBankName();</span></p>
+			<p><span style="color:#000000">......</span></p>
+		</div>
+	</div>
+</body>
+</html>

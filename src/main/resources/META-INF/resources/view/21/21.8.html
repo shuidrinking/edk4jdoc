@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		21.8、只使用mvn插件将依赖jar打包到项目jar
+	</div>
+	<div class="contentDiv">
+		使用maven-assembly-plugin插件，但是<label style="font-weight:bold;">本插件不能打包spring-boot项目</label>，
+		它所执行的动作并不是把依赖的jar原样打包进去，而是将第三方依赖包里的class都提取后打包，
+		这种方法打包的spring-boot项目会缺少资源文件不能运行。
+	</div>
+<pre class="prettyprint lang-xml" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+&lt;plugins&gt;
+	&lt;plugin&gt;
+		&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+		&lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+		&lt;version&gt;3.3.0&lt;/version&gt;
+		&lt;configuration&gt;
+			&lt;archive&gt;
+				&lt;manifest&gt;
+					&lt;mainClass&gt;com.ApplicationBoot&lt;/mainClass&gt;
+				&lt;/manifest&gt;
+			&lt;/archive&gt;
+			&lt;descriptorRefs&gt;
+				&lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;
+			&lt;/descriptorRefs&gt;
+			&lt;!-- 指定打包依赖后的JAR包名称 --&gt;
+			&lt;finalName&gt;${project.artifactId}-${project.version}&lt;/finalName&gt;
+			&lt;!-- 禁止添加描述符 ID 的后缀 --&gt;
+			&lt;appendAssemblyId&gt;false&lt;/appendAssemblyId&gt; 
+		&lt;/configuration&gt;
+		&lt;executions&gt;
+			&lt;execution&gt;
+				&lt;id&gt;make-assembly&lt;/id&gt;
+				&lt;phase&gt;package&lt;/phase&gt;
+				&lt;goals&gt;
+					&lt;goal&gt;single&lt;/goal&gt;
+				&lt;/goals&gt;
+			&lt;/execution&gt;
+		&lt;/executions&gt;
+	&lt;/plugin&gt;
+&lt;/plugins&gt;
+</pre>
+</body>
+</html>

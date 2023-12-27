@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.15、edk4j内置汉语拼音工具
+	</div>
+	<div class="subTitleDiv">
+		类：com.edk4j.core.util.PinyinUtil
+	</div>
+	<div class="subTitleDiv">
+		方法清单：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:9rem;">
+					public static String[][] chineseToPinyin(String chineseStr, boolean toneMarkFlag)
+				</td>
+				<td style="color:#3f5fbf">
+					将中文转拼音，注意多音字的情况
+					<br>chineseStr 中文字符串
+					<br>toneMarkFlag 是否带音标标志
+					<br>例如:
+					<br>参数为(&quot;和平&quot;,false)时将返回[[&#39;he&#39;,&#39;huo&#39;,&#39;hai&#39;,&#39;hu&#39;][&#39;ping&#39;]]
+					<br>参数为(&quot;和平&quot;,true)时将返回[[&#39;h&eacute;&#39;,&#39;h&egrave;&#39;,&#39;hu&oacute;&#39;,&#39;hu&ograve;&#39;,&#39;huo&#39;,&#39;hāi&#39;,&#39;he&#39;,&#39;h&uacute;&#39;][&#39;p&iacute;ng&#39;]]
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String[] getFirstPinyinCharOfChineseChar(Character chineseChar)
+				</td>
+				<td style="color:#3f5fbf">
+				取汉字拼音的大写首字母
+	
+				注意：返回的仍然是数组，因为有多音字
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

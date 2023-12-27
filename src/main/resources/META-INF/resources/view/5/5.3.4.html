@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			//CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		5.3.4、edk4jConfig.properties
+	</div>
+	<div class="subTitleDiv addArrow">
+		文件位置：位于 ${项目路径}/src/main/resources/edk4jConfig/edk4jConfig.properties
+	</div>
+	<div class="subTitleDiv addArrow">
+		该文件负责配置的内容是：系统的一些属性参数、日志的属性参数、缓存类的属性参数等。
+	</div>
+	<div class="subTitleDiv addArrow">
+		该文件的配置内容既不属于spring属性，也不会随着环境变化而变化，只属于edk4j平台本身
+	</div>
+	<div class="subContentDiv">
+		配置内容解释：
+	</div>
+	<div class="subContentDiv addBorder">
+		<pre class="prettyprint lang-properties" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+#application
+#edk4j的配置根目录，这个字段可以不配置，若不配置该项，它的默认值为 edk4jConfig/
+application.configRootPathInClassPath=edk4jConfig/
+#当使用系统审计功能时，必须在json提交的参数中添加auditPassword字段，它是审计密码，否则拒绝使用，若项目里不设置，那么它的默认值为audit123456Pass的md5加密值9d2076c6cbc77729ae413ab3fb247e0b
+application.auditPassword=9d2076c6cbc77729ae413ab3fb247e0b
+#对于Spring的静态资源管理，我们提供了静态资源后缀名配置，你可以把这些配置以外的项目个性化后缀名添加到配置项中: jpg,jpeg,gif,ico,png,bmp,css,js,html,htm,swf,txt,flv,mid,doc,ppt,pdf,xls,pptx,docx,xlsx,mp3,wma,rar,zip,7z,tar,gz。多个后缀名以逗号分割，如果你不配置application.springStaticResourceFileExtend这个选项，系统将默认使用上面这些后缀名
+application.springStaticResourceFileExtend=aaa,bbb,ccc
+#这个字段配置了MVC控制器中的默认控制器类，如果你的&lt;Mvc标签中className未设置，默认就会使用这个类
+application.defaultMvcControllerClassName=com.edk4j.sdk.web.controller.DefaultMvcController
+#默认的请求数据解包类配置，当某个mvc要求解包，但是它没有配置requestDataWrapperClass这个属性，那么edk4j平台会调用这个默认的类，对请求数据进行包装，常见的解包动作有“数据解密”等
+application.defaultRequestDataWrapperClassName=com.edk4j.sdk.web.requestDataWrapper.DemoRequestDataWrapper
+#下面的配置项，是全局请求数据解包总开关，可选值：true/false，如果设置为true，那么所有请求数据都要被解包
+application.wrappedAllRequestData=
+#是否是统一平台，false时表示渠道系统
+application.isCenter=true
+#如果是统一平台isCenter=true，渠道编号的配置将无效
+application.channelCode=pc
+#是否从request获取httpSessionId,如果是统一平台则获取到的只是渠道系统的请求而不是客户端的
+application.getHttpSessonId=true
+#是否从request获取客户IP，,如果是统一平台则获取到的只是渠道系统的请求而不是客户端的
+application.getClientIp=true
+#是否检查交易请求中的httpSessionId和会话中存储的httpSessionId一致
+application.checkHttpSessionIdEqualsWithSession=true
+#是否检查交易请求中的clientIp和会话中存储的clientIp一致
+application.checkClientIpEqualsWithSession=true
+#是否将mvc处理过的请求参数传递到Context中，这个字段用在渠道-统一平台的场景下
+application.wrappedPrameBeforeControllerProcess=false
+#config constants ,see com.edk4j.core.constant.BaseConstant
+#默认编码方式
+application.defaultCharSet=UTF-8
+#默认语种
+application.defaultLocal=ZH_CN
+#默认币种
+application.defaultCurrencyCode=01
+#检查request参数中是否含有攻击性内容的正则表达式
+application.requestParameterSafeCheckPattern=(&lt;[\\s\\x00]*SCRIPT|(SELECT|INSERT|DELETE|UPDATE|DROP|TRUNCATE|CREATE)\\s|&lt;!--|-->|(&lt;FRAME|&lt;IFRAME|&lt;FRAMESET|&lt;NOFRAME|&lt;PLAINTEXT|&lt;A|&lt;LINK|&lt;MAP|&lt;BGSOUND|&lt;IMG|&lt;FORM|&lt;INPUT|&lt;SELECT|&lt;OPTION|&lt;TEXTAREA|&lt;APPLET|&lt;OBJECT|&lt;EMBED|&lt;NOSCRIPT|&lt;STYLE)\\s|ALERT[\\s\\x00]*\\()
+#sessionToken/requestToken长度
+application.sessionTokenLength=32
+#sessionContextKey加密时使用的盐值，防止被按规律破解的
+application.saltInSessionKeys=saLtAbC123
+#运行日志中对每个交易的记录日志中都会带requestNo，本参数定义requestNo的长度
+application.requestSequenceLength=8
+#交易日志表名
+application.bizLogTableName=交易日志表名(例如BIZ_LOG)
+#交易日志异步记录线程池大小，默认为 5
+application.bizLogRecorderTreadPoolSize=5
+#交易日志默认批量提交阈值，达到该值时提交，默认 100
+application.bizLogDataBatchCommitSize=100
+
+#当你的项目是有网页的web项目时，可以配置下面的默认错误网页
+application.defaultErrorPage=默认错误网页，例如errorpage/default_error.jsp
+
+
+#taskEngine
+#跑批任务的属性定义文件的文件名
+taskEngine.taskEngineConfigFile=quartz.properties
+
+#session
+#sessionToken的长度
+sessionConfig.sessionTokenLength=32
+#sessionContext的前缀
+sessionConfig.sessionContextKeyPrefix=session
+#是否启动单点登录，启动时后者登录会剔出前者的登录session
+sessionConfig.enableSSO=true
+#sessionToken缓存时的混淆盐值
+sessionConfig.saltInSessionKeys=saLtAbC123
+#runLog
+#运行日志中要包含的日志前缀内容，值为这些字段在sessionContext中的值
+runLog.prefixFieldsInLogContent=sessionToken, sessionCustNo, sessionClientIp
+
+#cache settings
+#缓存服务器，多个服务器使用逗号隔开名称，例如：redis, ehCache
+cache.providerName = ehCache
+#如果使用ehCache3，该属性需要指定，否则该项无用
+cache.ehCacheLocationInClassPath = ehCache3Config.xml
+#是否启动缓存组件
+cache.initCacheComponent = true
+#系统平台数据缓存的所属单元（分组名称）
+cache.systemParamCacheGroupName = testCenterSystemParamCache
+#sessionContext缓存的数据所属单元（分组名称）
+cache.sessionCacheGroupName = testCenterSessionCache
+#普通缓存内容在缓存服务器中的所属单元（分组名称），如果使用ehCache时，需要有alias与本属性的值一致的cache
+cache.dataCacheGroupName = testCenterCache
+#图片内容在缓存服务器中的所属单元（分组名称），如果使用ehCache时，需要有alias与本属性的值一致的cache
+cache.imageCacheGroupName = testCenterImageCache
+#临时缓存内容在缓存服务器中的所属单元（分组名称），如果使用ehCache时，需要有alias与本属性的值一致的cache
+cache.tempCacheGroupName = testCenterTempCache
+#平台数据永不过时
+cache.systemParamCacheExpireSeconds = -1
+#session数据缓存的超时秒数
+cache.sessionCacheExpireSeconds = 2400
+#普通缓存的失效秒数
+cache.dataCacheExpireSeconds = 1800
+#图片缓存的失效秒数
+cache.imageCacheExpireeSeconds = 600
+#临时缓存的失效秒数
+cache.tempCacheExpireeSeconds = 180
+#缓存时以key/value的形式保存的，下面字段定义了key的前缀，便于查看缓存，区分哪个系统的
+cache.cachedKeyPrefix = Demo
+#下面是与sessionContext并行缓存的字段，有些比较大的内容，不随着sessionContext的取存而在网络中传输
+cache.parallelCachedFieldsInSessionContext[0] = sessionDynamicData
+#当文本内容长度达到多少K时，在缓存服务器上存取时会采取压缩/解压处理
+cache.textCachedSizeLineThenCompress = 15
+#当使用二级缓存时，缓存同步器的数量，默认为1，如果你的系统不是集群部署的，这个参数就没意义，有没有设置都没关系；另外，如果你的系统交易量不大并发不高，则不设置也没关系
+cache.mqSynchronizeThreadPoolSize = 1
+
+#jms 配置
+#jms最大尝试连接次数，超过此值时停止尝试
+#jmsConfig.maxAttempts=10
+#mq服务器名称，默认为activeMq，如果你实际使用的是其他mq，则改为相应的名称，例如kafka
+#jmsConfig.mqServer=activeMq
+
+#activemq
+#如果有多个mq需求，下面的配置就复制多个,范式为：
+#activemq.业务名称.queueName=
+#activemq.业务名称.concurrency=消费者最小并发线程数-消费者最大并发线程数
+#例如下面是edk4j-demos中的配置
+activemq.demoMq.queueName=edk4jDemoQueue
+activemq.demoMq.concurrency=5-10
+
+#如果有2级缓存时，下面这两个参数必须配置，key值别变了，value值要根据项目命名一下
+activemq.cacheService.topicName=com.yourcompany.yourproject.cacheServiceTopic
+activemq.cacheService.concurrency=1
+
+#工作流配置
+#配置工作流的默认数据源名称，当你使用了edk4j多数据源时，可开启这项配置
+#application.defaultWorkFlowDataSourceName = yourDataSourceName
+</pre>
+	</div>
+</body>
+</html>

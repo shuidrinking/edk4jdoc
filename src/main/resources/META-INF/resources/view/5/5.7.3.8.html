@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		“从Listx提取指定行到context”Action说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		组件：<img src='../../image/icons/action/a008.png' style='margin-right:0.1rem;'>从Listx提取指定行到context
+	</div>
+	<div class="subTitleDiv addArrow">
+		备注或算法描述：把指定行的指定单元格的dataCell提取到context中，该组件更适用于循环等场景
+	</div>
+	<div class="subTitleDiv addArrow">
+		实现类：com.edk4j.core.action.CutOutDataCellToContextFromListxRowAction
+	</div>
+	<div class="subTitleDiv addArrow">
+		属性清单：
+	</div>
+	<table class="across">
+		<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:3rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+		<thead>
+			<tr>
+				<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style='text-align:center;'>1</td><td>listxId</td><td>列表id</td><td></td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>2</td><td>rowNumber</td><td>行号</td><td>优先级比rowNumberDataCellIdInContext高</td><td>1</td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>3</td><td>rowNumberDataCellIdInContext</td><td>保存行号的dataCell的Id</td><td>优先级比rowNumber属性低，当rowNumber有值时，本属性失效</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>4</td><td>cutOutAndThenRemove</td><td>提取后是否删除该行</td><td></td><td>false</td><td style='text-align:center;'>true</td><td>false<br>true</td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>5</td><td>listOfDataCellInMapx</td><td>要提取的列id</td><td>如果某列保存的是Listx，则不能使用该组件</td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>6</td><td>listOfDataCellInContext</td><td>提取列id对应的context中的id</td><td>从listx提取某行指定的单元格后，保存到context中对应的dataCell的id，按顺序对应</td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

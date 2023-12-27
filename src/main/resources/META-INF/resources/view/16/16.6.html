@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		16.6、http接口怎么调用
+	</div>
+	<div style="position:fixed;height:4.5rem;padding:0.05rem 0.2rem;;border-radius:0.1rem;right:0.2rem;bottom:0.1rem;background-color:#d6fffb;line-height:0.4rem;background-color: #ffe7d6; border: 1px solid #0081b0;">
+		<div style="width:100%;text-align:center;font-weight:bold;">
+			HttpCallApi工具类方法索引
+		</div>
+		（1）<a href="#method1">Get方式调用，获得答复报文字符串</a><br/>
+		（2）<a href="#method2">Get方式调用，获取CloseableHttpResponse答复内容载体</a><br/>
+		（3）<a href="#method3">Post方式发送json格式请求报文，获得答复报文字符串</a><br/>
+		（4）<a href="#method4">Post方式发送自定义格式的请求报文，获得返回报文字符串</a><br/>
+		（5）<a href="#method5">Post方式调用，获取CloseableHttpResponse答复内容载体</a><br/>
+		（6）<a href="#method6">Form方式提交，指定请求数据编码，获得CloseableHttpResponse答复内容载体</a><br/>
+		（7）<a href="#method7">Form方式提交，指定请求数据编码，获得答复报文字符串</a><br/>
+		（8）<a href="#method8">Form方式提交，请求数据以UTF-8编码，获得CloseableHttpResponse答复内容载体</a><br/>
+		（9）<a href="#method9">Form方式提交，请求数据以UTF-8编码，获得答复报文字符串</a><br/>
+		（10）<a href="#method10">提交多媒体表单，上传文件</a>
+	</div>
+	<div class="subContentDiv">
+		<p style="color:#ff0000;font-weight:bold;">
+			技术经理必须掌握
+		</p>
+		<p>
+			<label style="background-color:#ffff00;">通过http方式调用，我们约定edk4j的统一平台首推报文为json格式</label>，其次是form格式。
+		</p>
+		<p>
+			模仿<a href="javascript:window.open('../102/102.1.html', null, getWindowOpenFeature(200, 200));">edk4j-demos（技术点样例项目）</a>中的样例（启动后访问菜单“接口调用-->http接口调用”），仍然按照前面介绍的套路做！底层调用的就是下面的组件类。
+		</p>
+		<p>
+			<label style="font-weight:bold;">edk4j底层的http接口调用组件类</label>：com.edk4j.integration.HttpCallApi
+		</p>
+	</div>
+	<div class="subTitleDiv addArrow">
+		 方法清单：
+	</div>
+	<table>
+		<colgroup>
+			<col style="width:5rem;"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>方法概要</th>
+				<th>方法介绍</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td id="method1">（1）Get方式调用，获得答复报文字符串</td>
+				<td>
+					<table style="border:0;">
+						<tbody>
+							<tr>
+								<td>
+									<label style="font-weight:bold;color:#0089ff;">方法：</label><br/>
+									<label style="font-weight:bold;">callViaGetMethod</label> (CloseableHttpClient httpClient, RequestConfig requestConfig, String cookieString, String url, String resultCharSet) throws IOException, ParseException<br/>
+									<label style="font-weight:bold;color:#0089ff;">功能：</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">发送get请求，获得字符串类型的返回结果</label><br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">如果是https请求，在构造httpClient对象时，需要使用X509信任证书管理器</label><br/>
+									<label style="font-weight:bold;color:#0089ff;">参数：</label> <br/>
+									<label style="font-weight:bold;color:#45ad7d;">httpClient</label> CloseableHttpClient连接对象<br/>
+									<label style="font-weight:bold;color:#45ad7d;">requestConfig</label> httpClient的请求配置<br/>
+									<label style="font-weight:bold;color:#45ad7d;">cookieString</label> 请求的cookie字符串值，例如BaseConstant.LOCAL_PARAE+"="+LocaleContextHolder.getLocale()+";"<br/>
+									<label style="font-weight:bold;color:#45ad7d;">url</label> 请求地址<br/>
+									<label style="font-weight:bold;color:#45ad7d;">resultCharSet</label> 结果字符串编码<br/>
+									<label style="font-weight:bold;color:#0089ff;">返回：</label> <br/>
+									String类型答复报文的字符串<br/>
+									<label style="font-weight:bold;color:#0089ff;">抛出异常：</label> <br/>
+								IOException, ParseException
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td id="method2">（2）Get方式调用，获取CloseableHttpResponse答复内容载体</td>
+				<td>
+					<table style="border:0;">
+						<tbody>
+							<tr>
+								<td>
+									<label style="font-weight:bold;color:#0089ff;">方法：</label><br/>
+									<label style="font-weight:bold;">callViaGetMethod</label>(CloseableHttpClient httpClient, RequestConfig requestConfig, String cookieString, String url) throws IOException<br/>
+									<label style="font-weight:bold;color:#0089ff;">功能：</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">发送get请求并获得CloseableHttpResponse类型的返回结果，如果调用本方法，你需要对返回结果进一步自行解析提取你需要的数据。</label><br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">如果是https请求，在构造httpClient对象时，需要使用X509信任证书管理器</label><br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">注意：请时候用自行关闭CloseableHttpResponse</label><br/>
+									<label style="font-weight:bold;color:#0089ff;">参数：</label> <br/>
+									<label style="font-weight:bold;color:#45ad7d;">httpClient</label> CloseableHttpClient连接对象<br/>
+									<label style="font-weight:bold;color:#45ad7d;">requestConfig</label> httpClient的请求配置<br/>
+									<label style="font-weight:bold;color:#45ad7d;">cookieString</label> 请求的cookie字符串值，例如BaseConstant.LOCAL_PARAE+"="+LocaleContextHolder.getLocale()+";"<br/>
+									<label style="font-weight:bold;color:#45ad7d;">url</label> 请求地址<br/>
+									<label style="font-weight:bold;color:#0089ff;">返回：</label> <br/>
+									org.apache.http.client.methods.CloseableHttpResponse<br/>
+									<label style="font-weight:bold;color:#0089ff;">抛出异常：</label> <br/>
+									IOException
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td id="method3">（3）Post方式发送json格式请求报文，获得答复报文字符串</td>
+				<td>
+					<table style="border:0;">
+						<tbody>
+							<tr>
+								<td>
+									<label style="font-weight:bold;color:#0089ff;">方法：</label><br/>
+									<label style="font-weight:bold;">callViaPostMethod</label>(CloseableHttpClient httpClient, RequestConfig requestConfig, String cookieString, String url, String sendMsg, String resultCharSet) throws IOException, ParseException<br/>
+									<label style="font-weight:bold;color:#0089ff;">功能：</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">post发送JSON数据，获得字符串类型的返回结果</label><br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">如果是https请求，在构造httpClient对象时，需要使用X509信任证书管理器</label><br/>
+									<label style="font-weight:bold;color:#0089ff;">参数：</label> <br/>
+									<label style="font-weight:bold;color:#45ad7d;">httpClient</label> CloseableHttpClient连接对象<br/>
+									<label style="font-weight:bold;color:#45ad7d;">requestConfig</label> httpClient的请求配置<br/>
+									<label style="font-weight:bold;color:#45ad7d;">cookieString</label> 请求的cookie字符串值，例如BaseConstant.LOCAL_PARAE+"="+LocaleContextHolder.getLocale()+";"<br/>
+									<label style="font-weight:bold;color:#45ad7d;">url</label> 请求地址<br/>
+									<label style="font-weight:bold;color:#45ad7d;">sendMsg</label> json格式的请求报文<br/>
+									<label style="font-weight:bold;color:#45ad7d;">resultCharSet</label> 答复报文编码格式<br/>
+									<label style="font-weight:bold;color:#0089ff;">返回：</label> <br/>
+									String类型的答复报文字符串<br/>
+									<label style="font-weight:bold;color:#0089ff;">抛出异常：</label> <br/>
+									IOException, ParseException
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td id="method4">（4）Post方式发送自定义格式的请求报文，获得返回报文字符串</td>
+				<td>
+					<table style="border:0;">
+						<tbody>
+							<tr>
+								<td>
+									<label style="font-weight:bold;color:#0089ff;">方法：</label><br/>
+									<label style="font-weight:bold;">callViaPostMethod</label>(ContentType contentType, CloseableHttpClient httpClient, RequestConfig requestConfig, String cookieString, String url, String sendMsg, String resultCharSet) throws IOException, ParseException<br/>
+									<label style="font-weight:bold;color:#0089ff;">功能：</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">post发送数据，contentType自定义，获得字符串类型的返回结果</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">内容类型不限制，可以使用第一个参数指定</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">如果是https请求，在构造httpClient对象时，需要使用X509信任证书管理器</label> <br/>
+									<label style="font-weight:bold;color:#0089ff;">参数：</label> <br/>
+									<label style="font-weight:bold;color:#45ad7d;">contentType</label> 内容类型，可以直接使用org.apache.http.entity.ContentType类中定义的静态常量，如果为null，则默认使用ContentType.APPLICATION_JSON<br/>
+									<label style="font-weight:bold;color:#45ad7d;">httpClient</label> CloseableHttpClient连接对象<br/>
+									<label style="font-weight:bold;color:#45ad7d;">requestConfig</label> httpClient的请求配置<br/>
+									<label style="font-weight:bold;color:#45ad7d;">cookieString</label> 请求的cookie字符串值，例如BaseConstant.LOCAL_PARAE+"="+LocaleContextHolder.getLocale()+";"<br/>
+									<label style="font-weight:bold;color:#45ad7d;">url</label> 请求地址<br/>
+									<label style="font-weight:bold;color:#45ad7d;">sendMsg</label> 请求报文字符串<br/>
+									<label style="font-weight:bold;color:#45ad7d;">resultCharSet</label> 返回报文编码格式<br/>
+									<label style="font-weight:bold;color:#0089ff;">返回：</label> <br/>
+									String类型答复报文<br/>
+									<label style="font-weight:bold;color:#0089ff;">抛出异常：</label> <br/>
+									IOException, ParseException
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td id="method5">（5）Post方式调用，获取CloseableHttpResponse答复内容载体</td>
+				<td>
+					<table style="border:0;">
+						<tbody>
+							<tr>
+								<td>
+									<label style="font-weight:bold;color:#0089ff;">方法：</label><br/>
+									<label style="font-weight:bold;">callViaPostMethod</label>(ContentType contentType, CloseableHttpClient httpClient, RequestConfig requestConfig, String cookieString, String url, String sendMsg) throws IOException<br/>
+									<label style="font-weight:bold;color:#0089ff;">功能：</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">post发送数据，并获得CloseableHttpResponse类型的返回结果，对于返回报文，你需要进一步自行提取</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">如果是https请求，在构造httpClient对象时，需要使用X509信任证书管理器</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">注意：请时候用自行关闭CloseableHttpResponse</label> <br/>
+									<label style="font-weight:bold;color:#0089ff;">参数：</label> <br/>
+									<label style="font-weight:bold;color:#45ad7d;">contentType</label>  内容类型，可以直接使用org.apache.http.entity.ContentType类中定义的静态常量，如果为null，则默认使用ContentType.APPLICATION_JSON<br/>
+									<label style="font-weight:bold;color:#45ad7d;">httpClient</label>  CloseableHttpClient连接对象<br/>
+									<label style="font-weight:bold;color:#45ad7d;">requestConfig</label>  httpClient的请求配置<br/>
+									<label style="font-weight:bold;color:#45ad7d;">cookieString</label>  请求的cookie字符串值，例如BaseConstant.LOCAL_PARAE+"="+LocaleContextHolder.getLocale()+";"<br/>
+									<label style="font-weight:bold;color:#45ad7d;">url</label> 请求地址<br/>
+									<label style="font-weight:bold;color:#45ad7d;">sendMsg</label> 请求报文<br/>
+									<label style="font-weight:bold;color:#0089ff;">返回：</label> <br/>
+									org.apache.http.client.methods.CloseableHttpResponse<br/>
+									<label style="font-weight:bold;color:#0089ff;">抛出异常：</label> <br/>
+									IOException
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td id="method6">（6）Form方式提交，指定请求数据编码，获得CloseableHttpResponse答复内容载体</td>
+				<td>
+					<table style="border:0;">
+						<tbody>
+							<tr>
+								<td>
+									<label style="font-weight:bold;color:#0089ff;">方法：</label><br/>
+									<label style="font-weight:bold;">submitFormViaPostMethod</label>(CloseableHttpClient httpClient, RequestConfig requestConfig, String cookieString, String url, Map&lt;String, String&gt; params, Charset paramsCharSet) throws IOException<br/>
+									<label style="font-weight:bold;color:#0089ff;">功能：</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">post发送普通键值对数据，并获得CloseableHttpResponse类型的返回结果，你需要进一步加工提取返回报文</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">如果是https请求，在构造httpClient对象时，需要使用X509信任证书管理器</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">注意：请时候用自行关闭CloseableHttpResponse</label> <br/>
+									<label style="font-weight:bold;color:#0089ff;">参数：</label> <br/>
+									<label style="font-weight:bold;color:#45ad7d;">httpClient</label> CloseableHttpClient连接对象<br/>
+									<label style="font-weight:bold;color:#45ad7d;">requestConfig</label> httpClient的请求配置<br/>
+									<label style="font-weight:bold;color:#45ad7d;">cookieString</label> 请求的cookie字符串值，例如BaseConstant.LOCAL_PARAE+"="+LocaleContextHolder.getLocale()+";"<br/>
+									<label style="font-weight:bold;color:#45ad7d;">url</label> 请求地址<br/>
+									<label style="font-weight:bold;color:#45ad7d;">params</label> form参数的map<br/>
+									<label style="font-weight:bold;color:#45ad7d;">paramsCharSet</label> form数据的编码格式<br/>
+									<label style="font-weight:bold;color:#0089ff;">返回：</label> <br/>
+									org.apache.http.client.methods.CloseableHttpResponse<br/>
+									<label style="font-weight:bold;color:#0089ff;">抛出异常：</label> <br/>
+									IOException
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td id="method7">（7）Form方式提交，指定请求数据编码，获得答复报文字符串</td>
+				<td>
+					<table style="border:0;">
+						<tbody>
+							<tr>
+								<td>
+									<label style="font-weight:bold;color:#0089ff;">方法：</label><br/>
+									<label style="font-weight:bold;">submitFormViaPostMethod</label>(CloseableHttpClient httpClient, RequestConfig requestConfig, String cookieString, String url, Map&lt;String, String&gt; params, Charset paramsCharSet, String resultCharSet) throws IOException, ParseException<br/>
+									<label style="font-weight:bold;color:#0089ff;">功能：</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">post发送普通键值对数据，并获得String类型的返回结果</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">如果是https请求，在构造httpClient对象时，需要使用X509信任证书管理器</label> <br/>
+									<label style="font-weight:bold;color:#0089ff;">参数：</label> <br/>
+									<label style="font-weight:bold;color:#45ad7d;">httpClient</label> CloseableHttpClient连接对象<br/>
+									<label style="font-weight:bold;color:#45ad7d;">requestConfig</label> httpClient的请求配置<br/>
+									<label style="font-weight:bold;color:#45ad7d;">cookieString</label> 请求的cookie字符串值，例如BaseConstant.LOCAL_PARAE+"="+LocaleContextHolder.getLocale()+";"<br/>
+									<label style="font-weight:bold;color:#45ad7d;">url</label> 请求地址<br/>
+									<label style="font-weight:bold;color:#45ad7d;">params</label> form参数的map<br/>
+									<label style="font-weight:bold;color:#45ad7d;">paramsCharSet</label> form参数的编码格式<br/>
+									<label style="font-weight:bold;color:#45ad7d;">resultCharSet</label> 返回报文编码方式<br/>
+									<label style="font-weight:bold;color:#0089ff;">返回：</label> <br/>
+									String类型的返回报文<br/>
+									<label style="font-weight:bold;color:#0089ff;">抛出异常：</label> <br/>
+									IOException, ParseException
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td id="method8">（8）Form方式提交，请求数据以UTF-8编码，获得CloseableHttpResponse答复内容载体</td>
+				<td>
+					<table style="border:0;">
+						<tbody>
+							<tr>
+								<td>
+									<label style="font-weight:bold;color:#0089ff;">方法：</label><br/>
+									<label style="font-weight:bold;">submitFormViaPostMethod</label>(CloseableHttpClient httpClient, RequestConfig requestConfig, String cookieString, String url, Map&lt;String, String&gt; params, Charset paramsCharSet) throws IOException<br/>
+									<label style="font-weight:bold;color:#0089ff;">功能：</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">post发送普通键值对数据，并获得CloseableHttpResponse类型的返回结果，你需要进一步加工提取返回报文</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">如果是https请求，在构造httpClient对象时，需要使用X509信任证书管理器</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">注意：请时候用自行关闭CloseableHttpResponse</label> <br/>
+									<label style="font-weight:bold;color:#0089ff;">参数：</label> <br/>
+									<label style="font-weight:bold;color:#45ad7d;">httpClient</label> CloseableHttpClient连接对象<br/>
+									<label style="font-weight:bold;color:#45ad7d;">requestConfig</label> httpClient的请求配置<br/>
+									<label style="font-weight:bold;color:#45ad7d;">cookieString</label> 请求的cookie字符串值，例如BaseConstant.LOCAL_PARAE+"="+LocaleContextHolder.getLocale()+";"<br/>
+									<label style="font-weight:bold;color:#45ad7d;">url</label> 请求地址<br/>
+									<label style="font-weight:bold;color:#45ad7d;">params</label> form参数的map<br/>
+									<label style="font-weight:bold;color:#45ad7d;">paramsCharSet</label> form数据的编码格式<br/>
+									<label style="font-weight:bold;color:#0089ff;">返回：</label> <br/>
+									org.apache.http.client.methods.CloseableHttpResponse<br/>
+									<label style="font-weight:bold;color:#0089ff;">抛出异常：</label> <br/>
+									IOException
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td id="method9">（9）Form方式提交，请求数据以UTF-8编码，获得答复报文字符串</td>
+				<td>
+					<table style="border:0;">
+						<tbody>
+							<tr>
+								<td>
+									<label style="font-weight:bold;color:#0089ff;">方法：</label><br/>
+									<label style="font-weight:bold;">submitFormViaPostMethod</label>(CloseableHttpClient httpClient, RequestConfig requestConfig, String cookieString, String url, Map&lt;String, String&gt; params, Charset paramsCharSet, String resultCharSet) throws IOException, ParseException<br/>
+									<label style="font-weight:bold;color:#0089ff;">功能：</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">post发送普通键值对数据，并获得String类型的返回结果</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">如果是https请求，在构造httpClient对象时，需要使用X509信任证书管理器</label> <br/>
+									<label style="font-weight:bold;color:#0089ff;">参数：</label> <br/>
+									<label style="font-weight:bold;color:#45ad7d;">httpClient</label> CloseableHttpClient连接对象<br/>
+									<label style="font-weight:bold;color:#45ad7d;">requestConfig</label> httpClient的请求配置<br/>
+									<label style="font-weight:bold;color:#45ad7d;">cookieString</label> 请求的cookie字符串值，例如BaseConstant.LOCAL_PARAE+"="+LocaleContextHolder.getLocale()+";"<br/>
+									<label style="font-weight:bold;color:#45ad7d;">url</label> 请求地址<br/>
+									<label style="font-weight:bold;color:#45ad7d;">params</label> form参数的map<br/>
+									<label style="font-weight:bold;color:#45ad7d;">paramsCharSet</label> form参数的编码格式<br/>
+									<label style="font-weight:bold;color:#45ad7d;">resultCharSet</label> 返回报文编码方式<br/>
+									<label style="font-weight:bold;color:#0089ff;">返回：</label> <br/>
+									String类型的返回报文<br/>
+									<label style="font-weight:bold;color:#0089ff;">抛出异常：</label> <br/>
+									IOException, ParseException
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td id="method10">（10）提交多媒体表单，上传文件</td>
+				<td>
+					<table style="border:0;">
+						<tbody>
+							<tr>
+								<td>
+									<label style="font-weight:bold;color:#0089ff;">方法：</label><br/>
+									<label style="font-weight:bold;">uploadFileViaPostMethod</label>(CloseableHttpClient httpClient, RequestConfig requestConfig, String cookieString, String serverUrl, String formFileName, java.io.File file, Map&lt;String, Object&gt; paramMap)<br/>
+									<label style="font-weight:bold;color:#0089ff;">功能：</label> <br/>
+									<label style="font-weight:bold;padding-left:0.32rem;">上传文件到目标服务器，机制和网页中上传文件的Form一致，表单字段值以UTF-8方式编码</label> <br/>
+									<label style="font-weight:bold;color:#0089ff;">参数：</label> <br/>
+									<label style="font-weight:bold;color:#45ad7d;">httpClient</label> CloseableHttpClient连接对象<br/>
+									<label style="font-weight:bold;color:#45ad7d;">requestConfig</label> httpClient的请求配置<br/>
+									<label style="font-weight:bold;color:#45ad7d;">cookieString</label> 请求的cookie字符串值，例如BaseConstant.LOCAL_PARAE+"="+LocaleContextHolder.getLocale()+";"<br/>
+									<label style="font-weight:bold;color:#45ad7d;">serverUrl</label> 文件服务器url<br/>
+									<label style="font-weight:bold;color:#45ad7d;">formFileName</label> 上传提交时的文件在form中的字段名<br/>
+									<label style="font-weight:bold;color:#45ad7d;">file</label> 待上传的文件java.io.File类型<br/>
+									<label style="font-weight:bold;color:#45ad7d;">paramMap</label> 表单中其他参数Map<br/>
+									<label style="font-weight:bold;color:#0089ff;">返回：</label> <br/>
+									String类型答复报文<br/>
+									<label style="font-weight:bold;color:#0089ff;">抛出异常：</label> <br/>
+									IOException
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

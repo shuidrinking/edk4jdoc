@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			//CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		5.3.7、sessionContext.xml
+	</div>
+	<div class="subTitleDiv addArrow">
+		文件位置：${项目路径}/src/main/resources/edk4jConfig/sessionContext.xml
+	</div>
+	<div class="subTitleDiv addArrow">
+		该文件配置sessionContext的原型，即Session数据域定义
+	</div>
+	<div class="subTitleDiv addArrow">
+		样例如下：
+	</div>
+	<div class="subContentDiv addBorder">
+		<pre class="prettyprint lang-xml" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;sessionContext&gt;
+	&lt;dataCell id="sessionCustNo" label="登录账号"/&gt;
+	&lt;dataCell id="sessionLastLoginTime" label="上次登录时间"/&gt;
+	&lt;dataCell id="sessionEmployeeNo" label="工号"/&gt;
+	&lt;dataCell id="sessionUserName" label="用户姓名"/&gt;
+	&lt;dataCell id="sessionOrgNo" label="所属单位编号"/&gt;
+	&lt;dataCell id="sessionDeptNo" label="部门编号"/&gt;
+	&lt;dataCell id="sessionApproveType" label="当前身份类型：1-正式员工 2-试用期员工 3-离职员工"/&gt;
+	&lt;dataCell id="sessionGradeCode" label="职级编号"/&gt;
+	&lt;dataCell id="sessionPostCode" label="岗位编码"/&gt;
+	&lt;dataCell id="sessionMobile" label="手机号码"/&gt;
+	&lt;dataCell id="sessionCustMenu" label="用户菜单列表，本系统中是个双竖线分割的字符串"/&gt;
+	&lt;dataCell id="sessionCustBusiness" label="用户有权操作的交易列表，本系统中是个双竖线分割的字符串"/&gt;
+	&lt;dataCell id="sessionNeedChangePassword" label="是否需要登录时修改密码"/&gt;
+	...其他dataCell，具体项目中需求并不同...
+	&lt;listx id="sessionRoleList" label="用户的角色列表"&gt;
+		&lt;mapx&gt;
+			&lt;dataCell id="roleNo"/&gt;
+		&lt;/mapx&gt;
+	&lt;/listx&gt;
+       ...其他Listx，具体项目中需求并不同...
+&lt;/sessionContext&gt;
+</pre>
+	</div>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<style>
+		.sharp{
+			color:#166db7;
+			font-weight:bold;
+			font-size:0.18rem;
+			margin:0 0.1rem 0 0.36rem;
+		}
+		.lineIndent{
+			margin:0 0.1rem 0 0.2rem;
+		}
+	</style>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		23.11、附录：部署及启动ES和跟踪服务端样例
+	</div>
+	<div class="tabTitleDiv">在159.156.1.130服务器上的搭建记录</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv" style="padding-left:0.32rem;">
+		<b>用root用户登录调整linux参数，否则不能启动es，操作如下：</b><br>
+		<div style="margin-left:0.36rem;padding-left:0.32rem;border:1px dashed #e3e3e3;">
+			<b>（1）打开/etc/security/limits.conf，添加如下内容：</b><br/>
+			<div style="margin-left:0.36rem;padding-left:0.32rem;">
+				* soft nofile 65536<br>
+				* hard nofile 65536<br>
+				* soft nproc 2048<br>
+				* hard nproc 4096
+			</div>
+			<b>（2）打开/etc/sysctl.conf，添加如下内容：</b><br/>
+			<div style="margin-left:0.36rem;padding-left:0.32rem;">
+				vm.max_map_count=655360<br>
+				fs.file-max=655360
+			</div>
+			<b>（3）执行命令，使最新配置生效</b><br/>
+			<label class="sharp">$</label>sysctl -p<br>
+			<b>（4）重新登录终端，查看是否生效</b><br/>
+			<label class="sharp">$</label>ulimit -a<br/>
+			<label class="sharp">$</label>sysctl -a |grep vm.max_map_count<br/>
+			<label class="sharp">$</label>sysctl -a |grep fs.file-max
+		</div>
+		<br>
+		<font style="color:#ff0000;font-weight:bold;">以下操作用 【非root】用户</font><br>
+		<b>1、新建保存elasticsearch服务器的文件夹</b><br>
+			<label class="sharp">#</label>mkdir /home/soft/apps/elasticsearch-servers/<br>
+			<label class="sharp"></label>执行完以后，下载elasticsearch服务器压缩包，保存到上面新建的文件夹里<br><br>
+		<b>2、解压下载的es服务器压缩包</b><br>
+			<label class="sharp">#</label>cd /home/soft/apps/elasticsearch-servers/<br>
+			<label class="sharp">#</label>unzip ./elasticsearch-5.5.0.zip -d ./<br>
+			<label class="lineIndent"></label>删除压缩包：<br>
+			<label class="sharp">#</label>rm -f ./elasticsearch-5.5.0.zip<br>
+			<label class="lineIndent"></label>重命名解压后的文件夹：<br>
+			<label class="sharp">#</label>mv ./elasticsearch-5.5.0 ./elasticsearch-5.5.0-node1<br>
+			<label class="lineIndent"></label>再复制1份：<br>
+			<label class="sharp">#</label>cp -r ./elasticsearch-5.5.0-node1 ./elasticsearch-5.5.0-node2<br>
+			<br>
+			<label class="lineIndent"></label>这样，就有2个es服务器文件夹，我们要在一台机器上做伪集群。<br>
+			<br>
+			<label class="lineIndent"></label>下载es中文分词器，保存到/home/soft/apps/elasticsearch-servers/<br>
+			<label class="lineIndent"></label>然后把中午分词器解压到两个es文件夹中：<br>
+			<label class="sharp">#</label>cd /home/soft/apps/elasticsearch-servers/<br>
+			<label class="sharp">#</label>unzip ./elasticsearch-analysis-ik-5.5.0.zip -d /home/soft/apps/elasticsearch-servers/elasticsearch-5.5.0-node1/plugins/<br>
+			<label class="sharp">#</label>unzip ./elasticsearch-analysis-ik-5.5.0.zip -d /home/soft/apps/elasticsearch-servers/elasticsearch-5.5.0-node2/plugins/<br>
+		<br><br>
+		
+		<b>3、编辑elasticsearch服务器的配置文件</b><br>
+			<label class="sharp">#</label>vi /home/soft/apps/elasticsearch-servers/elasticsearch-5.5.0-node1/config/elasticsearch.yml<br>
+			<label style="margin-left:0.36rem">在该文件尾部追加下面内容：</label>
+			<p style="margin-left:0.36rem;padding-left:0.32rem;border:1px dashed #e3e3e3;">
+					#集群名称 所有集群节点要相同<br>
+					cluster.name: myname_es<br>
+					#本节点名称<br>
+					node.name: <font style="color:#ff0000;font-weight:bold;">es_node_1</font><br>
+					#允许节点成为master<br>
+					node.master: true<br>
+					#允许该节点存储数据 <br>
+					node.data: true<br>
+					#设置数据存储目录<br>
+					path.data: /home/soft/data/elasticsearch<font style="color:#ff0000;font-weight:bold;">1</font><br>
+					#设置日志存储目录<br>
+					path.logs: /home/soft/logs/elasticsearch<font style="color:#ff0000;font-weight:bold;">1</font><br>
+					#设置本机IP<br>
+					network.host: <font style="color:#ff0000;font-weight:bold;">159.156.1.130</font><br>
+					#设置http端口,默认为9200 <br>
+					http.port: <font style="color:#ff0000;font-weight:bold;">9200</font><br>
+					#设置tcp端口,默认是9300 <br>
+					transport.tcp.port: <font style="color:#ff0000;font-weight:bold;">9300</font><br>
+					#设置http对外提供服务,默认为true,开启 <br>
+					http.enabled: true<br>
+					#允许插件监控集群信息<br>
+					http.cors.enabled: true<br>
+					http.cors.allow-origin: "*"<br>
+					#避免elasticsearch集群脑裂，设置公式：集群节点总是/2+1<br>
+					discovery.zen.minimum_master_nodes: 1 <br>
+					discovery.zen.ping_timeout: 60s<br>
+					#设置集群主节点列表<br>
+					discovery.zen.ping.unicast.hosts:<font style="color:#ff0000;font-weight:bold;"> ["159.156.1.130:9300","159.156.1.130:9301"]</font>
+			</p>
+			<br>
+			<label class="sharp">#</label>vi /home/soft/apps/elasticsearch-servers/elasticsearch-5.5.0-node2/config/elasticsearch.yml<br>
+			<label style="margin-left:0.36rem">在该文件尾部追加下面内容：</label><br>
+			<p style="margin-left:0.36rem;padding-left:0.32rem;border:1px dashed #e3e3e3;">
+					#集群名称 所有集群节点要相同<br>
+					cluster.name: myname_es<br>
+					#本节点名称<br>
+					node.name: <font style="color:#ff0000;font-weight:bold;">es_node_2</font><br>
+					#允许节点成为master<br>
+					node.master: true<br>
+					#允许该节点存储数据<br>
+					node.data: true<br>
+					#设置数据存储目录<br>
+					path.data: /home/soft/data/elasticsearch<font style="color:#ff0000;font-weight:bold;">2</font><br>
+					#设置日志存储目录<br>
+					path.logs: /home/soft/logs/elasticsearch<font style="color:#ff0000;font-weight:bold;">2</font><br>
+					#设置本机IP<br>
+					network.host: <font style="color:#ff0000;font-weight:bold;">159.156.1.130</font><br>
+					#设置http端口,默认为9200<br>
+					http.port: <font style="color:#ff0000;font-weight:bold;">9201</font><br>
+					#设置tcp端口,默认是9300<br>
+					transport.tcp.port: <font style="color:#ff0000;font-weight:bold;">9301</font><br>
+					#设置http对外提供服务,默认为true,开启<br>
+					http.enabled: true<br>
+					#允许插件监控集群信息<br>
+					http.cors.enabled: true<br>
+					http.cors.allow-origin: "*"<br>
+					#避免elasticsearch集群脑裂，设置公式：集群节点总是/2+1<br>
+					discovery.zen.minimum_master_nodes: 1<br>
+					discovery.zen.ping_timeout: 60s<br>
+					#设置集群主节点列表<br>
+					discovery.zen.ping.unicast.hosts: <font style="color:#ff0000;font-weight:bold;">["159.156.1.130:9300","159.156.1.130:9301"]</font>
+			</p>
+			<br>
+		<b>4、编辑elasticsearch的jvm参数，把jvm内存参数都设置为1g</b><br>
+				<label class="sharp">#</label>vi /home/soft/apps/elasticsearch-servers/elasticsearch-5.5.0-node1/config/jvm.options<br>
+				<label class="sharp">#</label>vi /home/soft/apps/elasticsearch-servers/elasticsearch-5.5.0-node2/config/jvm.options<br>
+				<br>
+				<label class="lineIndent"></label>在文件里找到下面两项都改为1g<br>
+				<label class="lineIndent"></label>-Xms1g<br>
+				<label class="lineIndent"></label>-Xmx1g<br>
+			<br>
+		<b>5、建立elasticsearch服务器的数据文件保存文件夹，以及日志保存文件夹</b><br>
+				<label class="sharp">#</label>mkdir /home/soft/data/elasticsearch1<br>
+				<label class="sharp">#</label>mkdir /home/soft/data/elasticsearch2<br>
+				<label class="sharp">#</label>mkdir /home/soft/logs/elasticsearch1<br>
+				<label class="sharp">#</label>mkdir /home/soft/logs/elasticsearch2<br>
+			<br>
+		<b>6、新建“链路跟踪服务器”（是2个jar）文件的保存位置</b><br>
+			<label class="sharp">#</label>mkdir /home/soft/apps/jarWebServers<br>
+			<label class="lineIndent"></label>把“链路跟踪服务器”的2个jar保存到上面新建的目录里<br>
+			<br>
+		<b>7、建立elasticseach命令的软链接（用root操作）</b><br>
+			<label class="sharp">$</label>ln -s /home/soft/apps/elasticsearch-servers/elasticsearch-5.5.0-node1/bin/elasticsearch /usr/bin/elasticsearch1<br>
+  			<label class="sharp">$</label>ln -s /home/soft/apps/elasticsearch-servers/elasticsearch-5.5.0-node2/bin/elasticsearch /usr/bin/elasticsearch2<br>
+  			<br>
+  		<b>8、新建两个“链路跟踪服务器的启动脚本”</b><br>
+			<label class="sharp">#</label>vi /home/soft/apps/jarWebServers/zipkin-server.sh<br>
+			<label style="margin-left:0.36rem">文件内容为：</label><br>
+			<p style="margin-left:0.36rem;padding-left:0.32rem;border:1px dashed #e3e3e3;">
+				java -jar /home/soft/apps/jarWebServers/zipkin-server-2.21.0.jar --STORAGE_TYPE=elasticsearch --ES_HOSTS=<font style="color:#ff0000;font-weight:bold;">http://159.156.1.130:9200</font> --ES_INDEX_SHARDS=2 --ES_INDEX_REPLICAS=1 >> /home/soft/logs/zipkin-server-logs/zipkin-server.log 2>&1 &
+			</p>
+			<label class="sharp">#</label>vi /home/soft/apps/jarWebServers/execute-zipkin-dependencies.sh<br>
+			<label style="margin-left:0.36rem">文件内容为：</label><br>
+			<p style="margin-left:0.36rem;padding-left:0.32rem;border:1px dashed #e3e3e3;">	
+				STORAGE_TYPE=elasticsearch ES_HOSTS=<font style="color:#ff0000;font-weight:bold;">http://159.156.1.130:9200</font> java -jar /home/soft/apps/jarWebServers/zipkin-dependencies-2.4.2.jar >> /home/soft/logs/zipkin-dependencies-logs/zipkin-dependencies-run.log 2>&1 &
+			</p>
+		<b>9、建立“链路跟踪服务器的启动软链接”（用root操作）</b><br>
+	  		<label class="sharp">$</label>ln -s /home/soft/apps/jarWebServers/zipkin-server.sh /usr/bin/zipkin-server<br>
+	  	<b>10、建立调用链分析执行脚本的软链接（用root操作）</b><br>
+			<label class="sharp">$</label>ln -s /home/soft/apps/jarWebServers/execute-zipkin-dependencies.sh /usr/bin/execute-zipkin-dependencies<br>
+			<br>
+		<b>11、解压kibana服务器</b><br>
+			<label class="sharp">#</label>cd 到保存kibana压缩包的目录中<br>
+			<label class="sharp">#</label>tar -xf ./kibana-5.5.0-linux-x86_64.tar.gz -C /opt<br>
+			<label style="margin-left:0.36rem">编辑kibana配置文件：</label><br>
+			<label class="sharp">#</label>vi /opt/kibana-5.5.0-linux-x86_64/config/kibana.yml<br>
+			<label style="margin-left:0.36rem">文件内容为：</label><br>
+			<p style="margin-left:0.36rem;padding-left:0.32rem;border:1px dashed #e3e3e3;">
+				#kibana服务端口
+				server.port: 5601
+				#kibana服务地址，如果不指定，默认为loacalhost，那么在外部不能访问
+				server.host: "159.156.1.130"
+				# es地址
+				elasticsearch.url: http://159.156.1.130:9200
+			</p>
+		<b>12、创建kibana启动的sh脚本</b><br>
+			<label class="sharp">#</label>mkdir /opt/kibana-5.5.0-linux-x86_64/log<br>
+	  		<label class="sharp">#</label>vi /opt/kibana-5.5.0-linux-x86_64/bin/start-kibana.sh<br>
+			<label style="margin-left:0.36rem">文件内容为：</label><br>
+			<p style="margin-left:0.36rem;padding-left:0.32rem;border:1px dashed #e3e3e3;">
+				/opt/kibana-5.5.0-linux-x86_64/bin/kibana >> /opt/kibana-5.5.0-linux-x86_64/log/kibana.log 2>&1 &
+			</p>
+		<b>10、建立启动kibana服务器的软链接（用root操作）</b><br>
+			<label class="sharp">$</label>ln -s /opt/kibana-5.5.0-linux-x86_64/bin/start-kibana.sh /usr/bin/start-kibana<br>
+	</div>
+	<div class="tabTitleDiv">启动及停止</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv" style="padding-left:0.32rem;">
+		<b>上面部署完成，并且建立了启动的软链接，就可以用下面的快捷命令启动</b>
+		<br>
+		<br>
+		<b>启动elasticsearch，注意，不能用root启动，es自身禁止了root启动</b><br>
+		<label class="sharp">#</label>elasticsearch1 -d<br>
+		<label class="sharp">#</label>elasticsearch2 -d<br>
+		<b>启动链路跟踪服务器</b><br>
+		<label class="sharp">#</label>zipkin-server<br>
+		<b>每隔一段时间，比如30分钟，执行一次调用链分析</b><br>
+		<label class="sharp">#</label>execute-zipkin-dependencies<br>
+		<br><br>
+		<b>启动kibana服务器</b><br>
+		<label class="sharp">#</label>start-kinbana<br>
+		<b>停止elasticsearch：</b><br>
+		<label class="lineIndent"></label>没有停止命令，需要先使用  “ps -ef|grep elasticsearch” 命令查询进程号，然后使用 “kill -15 进程号”  关闭进程<br>
+		<b>停止zipkin-server：</b><br>
+		<label class="lineIndent"></label>没有停止命令，需要先使用  “ps -ef|grep zipkin” 命令查询进程号，然后使用 “kill -15 进程号”  关闭进程<br>
+		<b>停止kibana：</b><br>
+		<label class="lineIndent"></label>没有停止命令，需要先使用  “ps -ef|grep kibana” 命令查询进程号，然后使用 “kill -15 进程号”  关闭进程
+	</div>
+</body>
+</html>

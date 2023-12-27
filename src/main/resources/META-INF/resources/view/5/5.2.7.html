@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			//CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		5.2.7、edk4j中的BusinessAction是什么
+	</div>
+	<div class="subTitleDiv">
+		BusinessAction是java类，是业务流中业务逻辑执行的最小单元。
+	</div>
+	<div class="subTitleDiv addArrow">
+		（1）<label style="font-weight:bold;">设计原则</label>：逻辑单元原子化，每个Action功能尽量单一
+	</div>
+	<div class="subContentDiv">
+		一个BusinessAction类里只完成一件事情，不做把一堆复杂的逻辑混到一个类里处理，能拆分时尽量拆分。遵守这个原则，你的Bpm文件中配置的BusinessLogic就会非常好维护，需要改动时往往只需要修改edm4jBpm 配置文件就可以了。
+	</div>
+	<div class="subTitleDiv addArrow">
+		（2）编写BusinessAction类是开发的主要内容之一。
+	</div>
+	<div class="subTitleDiv addArrow">
+		（3）必须继承com.edk4j.core.businessprocessmanage.BusinessAction类，并实现execute方法。
+	</div>
+	<div class="subContentDiv">
+		如果不继承BusinessAction类，你在bpm中定义的业务逻辑就不能正确执行。execute方法的原型定义如下：
+	</div>
+		<div class="subContentDiv addBorder">
+<pre class="prettyprint lang-java" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+/**
+ * 执行业务逻辑
+ * @param context
+ * @return
+ * @throws BaseException
+ */
+public abstract String execute(Context context) throws TranFailException;
+</pre>
+		</div>
+		<div class="subTitleDiv addArrow">
+			（4）edk4j在BusinessAction抽象类里预置了两个返回常量：
+		</div>
+		<div class="subContentDiv addBorder">
+<pre class="prettyprint lang-java" id="codeShow2" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+/**
+ * 默认的处理返回正确值 "0"-正确
+ */
+public static final String OK="0";
+/**
+ * 默认的处理返回错误值 "-1"-不正确
+ */
+public static final String ERROR="-1";
+</pre>
+在我们edk系统中 &quot;0&quot; 表示执行成功。
+		</div>
+		<div class="subTitleDiv addArrow">
+			（5）来个模板吧
+		</div>
+		<div class="subContentDiv addBorder">
+			<pre class="prettyprint lang-java" id="codeShow3" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+import com.edk4j.core.businessprocessmanage.BusinessAction;
+import com.edk4j.core.datastructure.Context;
+import com.edk4j.core.exception.TranFailException;
+/**
+ * 简要描述这个Action的功能，不要发明一些javadoc里没有的@
+ * @author xxx(xxx@xxxxx.com)
+ * @version ----年--月--日
+ * @since JDK1.8
+ */
+public class XxxxxxxxxAction extends BusinessAction{
+	@Override
+	public String execute(Context context) throws TranFailException {
+		try {
+			/*
+			* 逻辑代码
+			*/
+			......
+		}
+		catch(TranFailException e) {
+			throw e;
+		}
+		catch(Exception e) {
+			throw new TranFailException("XXXX失败", e);
+		}
+		return OK;
+	}
+}
+			</pre>
+		</div>
+</body>
+</html>

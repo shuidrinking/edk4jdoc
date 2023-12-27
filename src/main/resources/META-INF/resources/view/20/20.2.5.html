@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		20.2.5、配置edk4jConfig.properties文件
+	</div>
+	<div class="subTitleDiv">
+		在该文件中配置topic的定义，包括topic名称，topic中分区数，每个topic分区的副本数。<label style="background-color:#ffff00;">注意下面内容中的对应关系</label>，你可以根据具体的业务来配置各自的topic。下面配置了3个业务的topic。
+		<br>在这里配置好以后，系统启动时将会按照配置自动建立topic。
+		<br><label style="background-color:#ffff00;">topic名称中严禁携带“点”和“下划线”两个符号，即"."和"_"。</label>
+	</div>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-properties" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+#############jms settings############################
+#mq服务器名称
+jmsConfig.mqServer = kafka
+#############kafka topic settings############################
+businessA.kafka.topicName = topicBusinessA
+businessB.kafka.topicName = topicBusinessB
+businessC.kafka.topicName = topicBusinessC
+spring.kafka.topics.topicBusinessA.num-partitions = 5
+spring.kafka.topics.topicBusinessA.replication-factor = 3
+spring.kafka.topics.topicBusinessB.num-partitions = 5
+spring.kafka.topics.topicBusinessB.replication-factor = 3
+spring.kafka.topics.topicBusinessC.num-partitions = 5
+spring.kafka.topics.topicBusinessC.replication-factor = 3
+</pre>
+	</div>
+</body>
+</html>

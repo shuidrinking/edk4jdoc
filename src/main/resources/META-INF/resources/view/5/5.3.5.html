@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			//CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		5.3.5、ehCache3Config.xml
+	</div>
+	<div class="subTitleDiv addArrow">
+		文件位置：${项目路径}/src/main/resources/ehCache3Config.xml
+	</div>
+	<div class="subTitleDiv addArrow">
+		该文件中配置ehCache3本地缓存规则，规则如下：
+	</div>
+	<div class="subContentDiv">
+		<div class="item">
+			（1）在edk中将缓存分为三组：默认缓存组（缓存业务数据）、图片缓存组（缓存例如图片验证码）、临时缓存组（缓存临时数据）
+		</div>
+		<div class="item">
+			（2）&lt;ehcache:cache-template&gt;该节点中通过&lt;ehcache:expiry&gt;节点设置每个缓存分组的过期时间
+		</div>
+		<div class="item">
+			（3）每组缓存都通过&lt;ehcache:cache&gt;节点设置，并且通过指向上面第2项中设置的模板，引入过期时间，其属性uses-template="....Template" 的值必须是上面第2项中节点的name。特别要注意的是，这里的&lt;ehcache:cache&gt;节点的alias属性，必须和edk4jConfig.properties中的这5个项目值一致：
+		
+		</div>
+	</div>
+	<div class="subContentDiv addBorder">
+		<pre class="prettyprint lang-properties" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+#系统平台数据缓存的所属单元（分组名称），如果使用ehCache时，需要有alias与本属性的值一致的cache
+cache.systemParamCacheGroupName = ${projectName}SystemParamCache
+#sessionContext缓存的数据所属单元（分组名称），如果使用ehCache时，需要有alias与本属性的值一致的cache
+cache.sessionCacheGroupName = ${projectName}SessionCache
+#普通缓存内容在缓存服务器中的所属单元（分组名称），如果使用ehCache时，需要有alias与本属性的值一致的cache，如果使用ehCache时，需要有alias与本属性的值一致的cache
+cache.dataCacheGroupName = ${projectName}Cache
+#图片内容在缓存服务器中的所属单元（分组名称），如果使用ehCache时，需要有alias与本属性的值一致的cache，如果使用ehCache时，需要有alias与本属性的值一致的cache
+cache.imageCacheGroupName = ${projectName}ImageCache
+#临时缓存内容在缓存服务器中的所属单元（分组名称），如果使用ehCache时，需要有alias与本属性的值一致的cache，如果使用ehCache时，需要有alias与本属性的值一致的cache
+cache.tempCacheGroupName = ${projectName}TempCache
+			</pre>
+	</div>
+	<div class="subTitleDiv addArrow">
+		开发人员需要认真阅读并比对edkDemo中的配置文件，下面是配置样例：
+	</div>
+	<div class="subContentDiv addBorder">
+		<pre class="prettyprint lang-xml" id="codeShow2" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE xml&gt;
+&lt;ehcache:config xmlns:ehcache="http://www.ehcache.org/v3" xmlns:jcache="http://www.ehcache.org/v3/jsr107"&gt;
+	&lt;ehcache:cache-template name="${projectName}SystemParamCacheTemplate"&gt;
+	&lt;/ehcache:cache-template&gt;
+	&lt;ehcache:cache-template name="${projectName}SessionCacheTemplate"&gt;
+		&lt;ehcache:expiry&gt;
+			&lt;ehcache:tti unit="seconds"&gt;1800&lt;/ehcache:tti&gt;
+		&lt;/ehcache:expiry&gt;
+	&lt;/ehcache:cache-template&gt;
+	&lt;ehcache:cache-template name="${projectName}DataCacheTemplate"&gt;
+		&lt;ehcache:expiry&gt;
+			&lt;ehcache:tti unit="seconds"&gt;1800&lt;/ehcache:tti&gt;
+		&lt;/ehcache:expiry&gt;
+	&lt;/ehcache:cache-template&gt;
+	&lt;ehcache:cache-template name="${projectName}ImgCacheTemplate"&gt;
+		&lt;ehcache:expiry&gt;
+			&lt;ehcache:tti unit="seconds"&gt;600&lt;/ehcache:tti&gt;
+		&lt;/ehcache:expiry&gt;
+	&lt;/ehcache:cache-template&gt;
+	&lt;ehcache:cache-template name="${projectName}TmpCacheTemplate"&gt;
+		&lt;ehcache:expiry&gt;
+			&lt;ehcache:tti unit="seconds"&gt;180&lt;/ehcache:tti&gt;
+		&lt;/ehcache:expiry&gt;
+	&lt;/ehcache:cache-template&gt;
+	&lt;ehcache:cache alias="${projectName}SystemParamCache" uses-template="${projectName}SystemParamCacheTemplate"&gt;
+    	&lt;ehcache:key-type&gt;java.lang.String&lt;/ehcache:key-type&gt;
+    	&lt;ehcache:value-type&gt;java.lang.Object&lt;/ehcache:value-type&gt;
+        &lt;ehcache:heap unit="entries"&gt;100&lt;/ehcache:heap&gt;
+    &lt;/ehcache:cache&gt;
+    &lt;ehcache:cache alias="${projectName}SessionCache" uses-template="${projectName}SessionCacheTemplate"&gt;
+    	&lt;ehcache:key-type&gt;java.lang.String&lt;/ehcache:key-type&gt;
+    	&lt;ehcache:value-type&gt;java.lang.Object&lt;/ehcache:value-type&gt;
+        &lt;ehcache:heap unit="entries"&gt;10000&lt;/ehcache:heap&gt;
+    &lt;/ehcache:cache&gt;
+    &lt;ehcache:cache alias="${projectName}DataCache" uses-template="${projectName}DataCacheTemplate"&gt;
+    	&lt;ehcache:key-type&gt;java.lang.String&lt;/ehcache:key-type&gt;
+    	&lt;ehcache:value-type&gt;java.lang.Object&lt;/ehcache:value-type&gt;
+        &lt;ehcache:heap unit="entries"&gt;10000&lt;/ehcache:heap&gt;
+    &lt;/ehcache:cache&gt;
+    &lt;ehcache:cache alias="${projectName}ImgCache" uses-template="${projectName}ImgCacheTemplate"&gt;
+    	&lt;ehcache:key-type&gt;java.lang.String&lt;/ehcache:key-type&gt;
+    	&lt;ehcache:value-type&gt;java.lang.Object&lt;/ehcache:value-type&gt;
+        &lt;ehcache:heap unit="entries"&gt;1000&lt;/ehcache:heap&gt;
+    &lt;/ehcache:cache&gt;
+    &lt;ehcache:cache alias="${projectName}TmpCache" uses-template="${projectName}TmpCacheTemplate"&gt;
+    	&lt;ehcache:key-type&gt;java.lang.String&lt;/ehcache:key-type&gt;
+    	&lt;ehcache:value-type&gt;java.lang.Object&lt;/ehcache:value-type&gt;
+        &lt;ehcache:heap unit="entries"&gt;100&lt;/ehcache:heap&gt;
+    &lt;/ehcache:cache&gt;
+&lt;/ehcache:config&gt;
+</pre>
+	</div>
+</body>
+</html>

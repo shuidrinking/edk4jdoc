@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			//PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		24.4、特别注意项
+	</div>
+	<div class="subTitleDiv">
+		如果业务逻辑的“启用事务”属性设置的是“否”，而在逻辑中有步骤启用了事务，此时，无论在步骤中设置的是“独立事务”还是“沿用当前事务”，在执行过程中一律都会按“独立事务”来处理！<br>
+		这点在开发过程中需要特别注意！
+	</div>
+</body>
+</html>

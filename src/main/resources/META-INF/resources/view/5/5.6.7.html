@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.7、edk4j内置数学计算工具
+	</div>
+	<div class="subTitleDiv">
+		金额精确计算，全部要用BigDecimal进行处理，除此之外，本类中还提供了其他数据写计算工具方法。
+	</div>
+	<div class="subTitleDiv">
+		类：com.edk4j.core.util.MathUtil
+	</div>
+	<div class="subTitleDiv">
+		方法清单：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:8rem;">
+					public static String subtract(String subtrahendValue, String minuendValue)
+				</td>
+				<td style="color:#3f5fbf">
+					用BigDecimal对数值相减
+					<br>subtrahendValue 被减数
+					<br>subtrahendValue 减数
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String add(String value1, String value2)
+				</td>
+				<td style="color:#3f5fbf">
+					提供精确的加法运算。
+					<br>value1 被加数
+					<br>value2 加数
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String multiply(String value1, String value2)
+				</td>
+				<td style="color:#3f5fbf">
+					提供精确的乘法运算
+					<br>value1 被乘数
+					<br>value2 乘数
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String div(String value1, String value2, int scale)
+				</td>
+				<td style="color:#3f5fbf">
+					提供（相对）精确的除法运算。当发生除不尽的情况时，由scale参数指定精度，以后的数字四舍五入。
+					<br>value1 被除数
+					<br>value2 除数
+					<br>scale 表示表示需要精确到小数点以后几位
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String round(String value, int scale)
+				</td>
+				<td style="color:#3f5fbf">
+					提供精确的小数位四舍五入处理
+					<br>value 需要四舍五入的数字
+					<br>scale 小数点后保留几位
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static int convertsToInt(String value)
+				</td>
+				<td style="color:#3f5fbf">
+					提供精确的类型转换(Int)不进行四舍五入
+					<br>value 需要被转换的数字
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String returnMax(String value1, String value2)
+				</td>
+				<td style="color:#3f5fbf">
+					返回两个数中大的一个值
+					<br>value1 需要被对比的第一个数
+					<br>value2 需要被对比的第二个数
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String returnMin(String value1, String value2)
+				</td>
+				<td style="color:#3f5fbf">
+					返回两个数中小的一个值
+					<br>value1 需要被对比的第一个数
+					<br>value2 需要被对比的第二个数
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static int compareTo(String value1, String value2)
+				</td>
+				<td style="color:#3f5fbf">
+					精确对比两个数字，如果两个数一样则返回0，如果value1比value2大则返回1，反之返回-1
+					<br>value1 需要被对比的第一个数
+					<br>value2 需要被对比的第二个数
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String formatToInt(String value)
+				</td>
+				<td style="color:#3f5fbf">
+					格式化为带千分位的整型
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String formatFixedTo2(String value)
+				</td>
+				<td style="color:#3f5fbf">
+					格式化为带千分位的数字，保留两位小数
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String formatFixedTo4(String value)
+				</td>
+				<td style="color:#3f5fbf">
+					格式化为带千分位的数字，保留4位小数
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String formatFixedTo2AndAddPercent(String value)
+				</td>
+				<td style="color:#3f5fbf">
+					格式化为带千分位的数字，保留2位小数，尾部带百分号
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String formatFixedTo4AndAddPercent(String value)
+				</td>
+				<td style="color:#3f5fbf">
+					格式化为带千分位的数字，保留4位小数，尾部带百分号
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String percentFormatFixedTo2(String value)
+				</td>
+				<td style="color:#3f5fbf">
+					格式化为百分比，保留2位小数，会将原值乘以100后格式化，返回结果的尾部带百分号
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String percentFormatFixedTo4(String value)
+				</td>
+				<td style="color:#3f5fbf">
+					格式化为百分比，保留4位小数，会将原值乘以100后格式化，返回结果的尾部带百分号
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

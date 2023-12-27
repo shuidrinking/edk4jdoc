@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		20.1.2、配置edk4jConfig.properties
+	</div>
+	<div class="contentDiv">
+		<p><span style="color:#3f7f5f">#############jms settings############################</span></p>
+		<p><span style="color:#3f7f5f">#当服务器不可达时，最大尝试连接次数，默认为3次，你可通过此项配置</span></p>
+		<p><span style="color:black">jmsConfig.maxAttempts = </span><span style="color:#2a00ff">10</span></p>
+		<p><span style="color:#3f7f5f">#mq服务器名称</span></p>
+		<p><span style="color:black">jmsConfig.mqServer = </span><span style="color:#2a00ff">activeMq</span></p>
+		<p><span style="color:#3f7f5f">#activemq</span></p>
+		<p><span style="color:#3f7f5f">#</span><span style="color:#3f7f5f">如果有多个</span><span style="color:#3f7f5f">mq</span><span style="color:#3f7f5f">需求，下面的配置就复制多个</span><span style="color:#3f7f5f">,</span><span style="color:#3f7f5f">范式为：</span></p>
+		<p><span style="color:#3f7f5f">activemq.</span><span style="color:#3f7f5f">业务名称</span><span style="color:#3f7f5f">.queueName=</span></p>
+		<p><span style="color:#3f7f5f">activemq.</span><span style="color:#3f7f5f">业务名称</span><span style="color:#3f7f5f">.concurrency=</span><span style="color:#3f7f5f">消费者最小并发线程数</span><span style="color:#3f7f5f">-</span><span style="color:#3f7f5f">消费者最大并发线程数</span></p>
+		<p><span style="color:#3f7f5f">activemq.</span><span style="color:#3f7f5f">业务名称</span><span style="color:#3f7f5f">.topicName=</span></p>
+		<p><span style="color:#3f7f5f">activemq.</span><span style="color:#3f7f5f">业务名称</span><span style="color:#3f7f5f">.concurrency=</span><span style="color:#3f7f5f">消费者最小并发线程数</span><span style="color:#3f7f5f">-</span><span style="color:#3f7f5f">消费者最大并发线程数，</span><span style="background-color:yellow"><span style="color:red">没有特殊情况，请设置成</span></span><span style="background-color:yellow"><span style="color:red">1</span></span><span style="background-color:yellow"><span style="color:red">，否则每个线程都会处理一次</span></span><span style="background-color:yellow"><span style="color:red">topic</span></span><span style="background-color:yellow"><span style="color:red">，导致数据重复处理</span></span></p>
+		<p><span style="color:#3f7f5f">#</span><span style="color:#3f7f5f">名称要根据业务来命名</span></p>
+		<p><span style="color:black">activemq.demoMqQueue.queueName=</span><span style="color:#2a00ff">com.edk4j.edk4jdemos.emoQueue</span></p>
+		<p><span style="color:#3f7f5f">#</span><span style="color:#3f7f5f">接收</span><span style="color:#3f7f5f">queue</span><span style="color:#3f7f5f">的线程数，范式为&ldquo;最小值</span><span style="color:#3f7f5f">-</span><span style="color:#3f7f5f">最大值&rdquo;，</span><span style="color:#3f7f5f">queue</span><span style="color:#3f7f5f">线程不会重复处理数据，因为一个</span><span style="color:#3f7f5f">queue</span><span style="color:#3f7f5f">只能被接收一次，</span><span style="color:#3f7f5f">activeMQ</span><span style="color:#3f7f5f">就会清理掉了，所以一条</span><span style="color:#3f7f5f">queue</span><span style="color:#3f7f5f">只会由某个线程接收到</span></p>
+		<p><span style="color:black">activemq.demoMqQueue.concurrency=</span><span style="color:#2a00ff">5-10</span></p>
+		<p><span style="color:black">activemq.smsMq.queueName=</span><span style="color:#2a00ff">com.edk4j.edk4jdemos.smsQueue</span></p>
+		<p><span style="color:black">activemq.smsMq.concurrency=</span><span style="color:#2a00ff">5-10</span></p>
+		<p><span style="color:black">activemq.demoMqTopic.topicName=</span><span style="color:#2a00ff"> com.edk4j.edk4jdemos.demoTopic</span></p>
+		<p><span style="color:#3f7f5f">#</span><span style="color:#3f7f5f">对于</span><span style="color:#3f7f5f">topic</span><span style="color:#3f7f5f">接受者的线程数，你最好只设置成</span><span style="color:#3f7f5f">1</span><span style="color:#3f7f5f">，否则会重复处理数据，因为一个</span><span style="color:#3f7f5f">topic</span><span style="color:#3f7f5f">会向所有的接收者发送，你要是使用多线程时，每个线程都会接到</span></p>
+		<p><span style="color:black">activemq.demoMqTopic.concurrency=</span><span style="color:#2a00ff">1</span></p>
+	</div>
+	<div class="contentDiv">
+		（1）上面配置的范式解释：
+		activemq.业务名称.queueName=生产者和消费者约定的p2p模式下的Queue消息队列名
+		<br/>activemq.业务名称.topicName=生产者和消费者约定的pub/sub模式下的Topic消息队列名
+		<br/>activemq.业务名称.concurrency=p2p模式下消费者线程并发数控制
+		<br/>（2）这里的配置的两个值在消费者方法的注解@JmsListener中会使用到,详见下面“编写消费者”一小节内容
+		<br/>@JmsListener(destination = "${activemq.demoMq.queueName}", concurrency = "${activemq.demoMq.concurrency}")（当然这个注解不止这两个属性，详见后面小节）
+		<br/>（3）生产者的队列名是通过Action的属性来设置的，详见下面“编写生产者”小节的内容。
+		<br/>（4）配置中的concurrency是应对生产者的生产速度较大，而消费者的消费速度较小的情况，此时对消费者启用多线程并发处理，及时消化堆积在队列中的消息。<label style="color:#ff0000">p2p模式下，对Queue的消费队列可以采用多线程，但是对于pub/sub模式下的Topic队列，没有特殊情况时请设置为1，不然会造成每个线程都处理一遍，会导致数据重复等错误。</label>
+		<br/>（5）每个使用mq的业务场景，都需要这两个配置值
+	</div>
+</body>
+</html>

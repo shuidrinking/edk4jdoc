@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../../css/dom.css"/>
+	<script type="text/javascript" src="../../../javascript/core/domUtil.js"></script>
+	<style>
+		blockquote {
+		    padding: 0.1rem;
+		    border-left: 0.1rem solid #eee;
+		    font-size:0.2rem;
+		    margin-left:0.05rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		Activiti 数据库表结构 ACT_ID_MEMBERSHIP
+	</div>
+	<div class="contentDiv">
+		<blockquote>
+			<p>用户与分组对应信息表( act_id_membership )</p>
+		</blockquote>
+		<p style="padding:0.05rem;">
+			用来保存用户的分组信息。
+		</p>
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"><col style="width:3rem;"><col style="width:2rem;"><col style="width:1rem;"><col style="width:1rem;"><col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>字段名称</th>
+					<th>字段描述</th>
+					<th>数据类型</th>
+					<th>主键</th>
+					<th>为空</th>
+					<th>取值说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>USER_ID</td>
+					<td>用户ID</td>
+					<td>nvarchar(64)</td>
+					<td>√</td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>GROUP_ID</td>
+					<td>用户组ID</td>
+					<td>nvarchar(64)</td>
+					<td>√</td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

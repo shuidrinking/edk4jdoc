@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		99.2、如何检查重复提交
+	</div>
+	<div class="tabTitleDiv">重复提交的 “时间戳”机制原理</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		一个交易分N步走时，第N-1步或者更前面某一步先从后台获得时间戳<br/>
+		再第N步提交时，在请求参数中携带时间戳<br/>
+		后台会有组件检查时间戳，如果时间戳和后台比对不一致时，按重复提交处理
+	</div>
+	<div class="tabTitleDiv">后台实现套路</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="item addArrow">传统模式下，使用Spring时的做法</div>
+		<div class="subContentDiv">
+			（1）	在第N-1步的Controller方法上加入下面的注解：<br/>
+			@BaseController(addTimeStampToResult=true)<br/>
+			前台接收的结果中会有timeStamp字段，这个字段在第N步提交时用到<br/><br/>
+			
+			（2）	在第N步的Controller方法上加入下面的注解：<br/>
+			@BaseController(checkTimeStamp=true)<br/><br/>
+			
+			（3）	第N步前台提交的参数中，把前面获得的timeStamp设置到请求参数中<br/>
+			字段名也是timeStamp<br/>
+			
+			（4）	可以了，不需要其他动作
+		</div>
+		<div class="item addArrow">edk4j中的做法</div>
+		<div class="subContentDiv">
+			（1）	在第N-1步的MVC配置中设置属性：<br/>
+				addTimeStampToResult="true"（将“返回时添加时间戳”设置为true）<br/>
+				然后在你的MVCController实现类的postHandle方法中实现逻辑：检查addTimeStampToResult为true时，向sessionContext中添加时间戳，字段名也是timeStamp，并向返回结果中添加时间戳字段，字段名也是timeStamp。<br/>
+			（2）	在第N步的MVC配置中设置属性：<br/>
+				checkTimeStamp="true"（将“检查时间戳”设置为true）<br/>
+				然后在你的MVCController实现类的preHandle方法中实现逻辑：检查checkTimeStamp为true时，检查前台提交的时间戳字段是否和sessionContext中的时间戳是否不一致，不一致时按重复提交处理，一致时将sessionContext里的时间戳内容清除<br/>
+			（3）	可以了，不需要其他动作
+		</div>
+	</div>
+	<div class="tabTitleDiv">前台怎么控制刷新时间戳（密码输错等情况下使用）</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		edk4j内核中内置用来刷新timeStamp的SpringController，用法和ajax调用业务一样。<br/>
+		当客户输入密码错误等情况发生时，你的回调函数里应该紧接着把刷新时间戳的动作做了，运行时访问：<br/>
+		http://yourApplicationName/refreshTimeStamp<br/>
+		参数{"requestToken":"xxxxxxx"}<br/>
+		把刷新后的timeStamp拿到了就可以继续提交了<br/>
+		不过，错误有很多种，不能让所有的错误都刷新时间戳，要根据具体交易酌情对待
+	</div>
+</body>
+</html>

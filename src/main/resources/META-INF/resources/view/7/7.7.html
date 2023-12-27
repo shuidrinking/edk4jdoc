@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		7.7、RequestParamSafeChecker接口
+	</div>
+	<div class="tabTitleDiv">1、接口说明</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<label style="font-weight:bold;">接口</label>：com.edk4j.core.service.RequestParamSafeChecker
+		<br/><label style="font-weight:bold;">作用</label>：入参安全性检查
+		<br/><label style="font-weight:bold;">demo中的实现参考类</label>：
+		<br/><label style="font-weight:bold;">实现类中必须使用注解和beanName</label>: <label style="background-color:#ffff00;">@Service(value=BeanConstant.requestParamSafeCheckerBeanName)</label>
+	</div>
+	<div class="tabTitleDiv">2、方法清单</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-java" style="width:100%;padding-left:0.5rem;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+/**
+ * 检查非法值的正则表达式
+ */
+public static Pattern invalidValuePattern = Pattern.compile(BaseConstant.REQUEST_PARAMETER_SAFECHECK_PATTERN, Pattern.CASE_INSENSITIVE);
+/**
+ * 验证入参的对象中是否安全
+ * 注意：不要用这个方法去检查文件或者流对象
+ * @param paramObject 可以为form中的表单值，或者入参的VO，或者入参中的集合
+ */
+public abstract boolean isInputObjectSafe(Object paramObject) ;
+/**
+ * 检查request参数，在方法内自定义进行解析检查
+ * @param request
+ */
+public abstract boolean isRequestSafe(HttpServletRequest request);
+/**
+ * 对单个字段值实施验证
+ * @param valueString
+ * @return
+ */
+public abstract boolean isStringValueSafe(String valueString);
+		</pre>
+	</div>
+</body>
+</html>

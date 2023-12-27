@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/sdTabControl.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/SDTabControl.js"></script>
+	<style type="text/css">
+		.note{
+			padding:0.3rem;
+		}
+		.note>div{
+			height:1rem;
+			min-height:unset;
+			width:2.4rem;
+			padding-top:0.2rem;
+			margin:0.1rem 0.1rem;
+			-webkit-transform:rotate(0) !important;
+			-moz-transform:rotate(0) !important;
+			-o-transform:rotate(0) !important;
+		}
+		.lessText{
+			font-weight:bold;
+			margin:0 0.5rem 0 0.05rem;
+			color:#2ccccc;
+			font-size:0.2rem;
+		}
+		.moreText{
+			font-weight:bold;
+			margin:0 0 0 0.05rem;
+			color:#cc422c;
+			font-size:0.2rem;
+		}
+	</style>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		1.2、“edk4j开发平台”的目标和理念
+	</div>
+	<div style="margin:0.05rem;">
+		<div id="tabs" class="sd_tab">
+			<div class="sd_tab_in" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),1);">基础设施下沉</div>
+			<div class="sd_tab_out" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),2);">简化开发</div>
+			<div class="sd_tab_out" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),3);">提高能效降低成本</div>
+		</div>
+		<div id="tabContents" class="tabContentDiv">
+			<div style="text-align:center;">
+				<video src="../../image/business/1/1.2-1.mp4" poster="../../image/business/1/1.2-1.png" controls style="height:8rem;"></video>
+			</div>
+			<div class="note" style="display:none;">
+			 	<div>
+				 	<div style="text-indent:0.4rem; line-height:0.4rem">
+				 		大幅降低“编写代码”在开发工作量中的比例。
+				 	</div>
+				 </div>
+				 <div>
+				 	<div style="text-indent:0.4rem; line-height:0.4rem">
+				 		解除“业务逻辑设计”与“实现细节”之间的耦合。
+				 	</div>
+				 </div>
+				 <div>
+				 	<div style="text-indent:0.4rem; line-height:0.4rem">
+				 		清除“业务模型”与“逻辑模型”之间的复杂度。
+				 	</div>
+				 </div>
+			</div>
+			<div style="display:none;padding-left:0.3rem;background:url(../../image/business/1/1.2-2.png) no-repeat ;background-size: 1rem;background-position: 3rem center;">
+				代码更<label class="lessText">少</label>能力更<label class="moreText">多</label><br>
+				缺陷更<label class="lessText">少</label>上线更<label class="moreText">快</label><br>
+				测试更<label class="lessText">少</label>质量更<label class="moreText">好</label><br>
+				运维更<label class="lessText">少</label>成本更<label class="moreText">省</label>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.10、edk4j内置随机码生成工具
+	</div>
+	<div class="subTitleDiv addArrow">
+		该类的用途十分广泛，凡是需要随机数的地方都可以使用。<br>
+	</div>
+	<div class="subTitleDiv addArrow">
+		该类中有一个默认种子常量，作为默认的&ldquo;随机种子&rdquo;，生成的随机数的范围从随机种子中获取。
+	</div>
+	<div class="subContentDiv">
+		public static final String[] DEFAULT_CHAR_SCOP = new String[] {"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+		<br>该种子中定义的随机数取值范围为: 0-9，a-z，A-Z
+	</div>
+	<div class="subTitleDiv addArrow">
+		类：com.edk4j.core.util.RandomCodeUtil
+	</div>
+	<div class="subTitleDiv addArrow">
+		方法清单：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:10rem;">
+					public static String randomByScope(int length, String scope)
+				</td>
+				<td style="color:#3f5fbf">
+					自定义随机2要素，生成指定长度的随机码
+					<br>length 生成的随机码长度
+					<br>scope 生成的随机码取值范围，例如&quot;0123456789&quot;则取值范围为数字
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String randomByScope(int length, String[] scopeArray)
+				</td>
+				<td style="color:#3f5fbf">
+					自定义随机2要素，生成指定长度的随机码
+					<br>length 指定长度
+					<br>scopeArray 取值范围数组，例如{&quot;0&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;,&quot;9&quot;}则取值范围为数字
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String random(int fixedLength, String prefix, String[] scopeArray, String delimiter)
+				</td>
+				<td style="color:#3f5fbf">
+					自定义随机4要素，生成指定长度的随机码
+					<br>fixedLength 指定长度（该长度不包括前缀长度）
+					<br>prefix 随机数的前缀
+					<br>scopeArray 取值范围数组
+					<br>delimiter 各个字符之前的分隔符
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String random(int length)
+				</td>
+				<td style="color:#3f5fbf">
+					生成指定长度的随机码，生成结果中每一位字母的取值范围为0-9|a-z|A-Z
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getUUIDAppendRandom(String delimiter, int appendRandomLength)
+				</td>
+				<td style="color:#3f5fbf">
+					采用uuid码+指定长度随机码的方式得到随机数，该方法会消耗50毫秒左右的时间，使用UUID的成本要注意
+					<br>delimiter UUID和随机码之间的连接符
+					<br>appendRandomLength UUID后添加的随机码长度
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

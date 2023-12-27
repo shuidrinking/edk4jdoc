@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		“批量增删改执行器”Action说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		组件：<img src='../../image/icons/action/a020.png' style='margin-right:0.1rem;'>批量增删改执行器
+	</div>
+	<div class="subTitleDiv addArrow">
+		备注或算法描述：执行增删改的SQL ，批量处理Listx中的数据到数据库，SQL类型可为INSERT、UPDATE、DELETE，返回值为SQL执行所影响的数据条数
+	</div>
+	<div class="subTitleDiv addArrow">
+		实现类：com.edk4j.core.repository.jdbc.DMLSqlBatchExecuteAction
+	</div>
+	<div class="subTitleDiv addArrow">
+		属性清单：
+	</div>
+	<table class="across">
+		<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:3rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+		<thead>
+			<tr>
+				<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style='text-align:center;'>1</td><td>dataSourceName</td><td>数据源名称</td><td></td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>2</td><td>newTransactionFlag</td><td>使用独立事务</td><td>请选择事务类型，true:独立事务；false:沿用当前事务</td><td>false</td><td style='text-align:center;'>true</td><td>false<br>true</td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>3</td><td>paramListxId</td><td>Listx的id</td><td>context里保存的批量执行的参数列表的Listx的Id，querySql里‘?变量名’中的‘变量名’就是listx中的mapx中的DataCell的id</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>4</td><td>querySql</td><td>执行SQL</td><td>增删改SQL ，SQL类型可为INSERT、UPDATE、DELETE。SQL中通过 '?dataCellId' 占位符将context中的数据设置为参数。如果占位符中的id在listx中不存在时会从context中取值。该属性优先级比querySqlDataCellId高。SQL语句中【不支持】in (?listxId.dataCellId)。</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>5</td><td>querySqlDataCellId</td><td>保存待执行SQL的字段id</td><td>context里保存SQL的DataCell的Id，该属性的优先级比querySql低</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

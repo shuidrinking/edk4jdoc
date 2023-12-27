@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		20.1.7、测试
+	</div>
+	<div class="contentDiv">
+		<img src="../../image/business/20/20.1.7-1.png"/>
+		<br/>前台提交后，生产者会将消息推送到activemq服务器，后台查看消费者的日志：<br/>
+		2018-04-20 12:47:43,441 INFO  DefaultMessageListenerContainer-1 c.s.e.s.i.DemoActiveMQTopicConsumer - BizService [Host: admin-PC, RequestNo: N/A] 从activeMQ服务器获得Topic消息：topic message, 1
+	</div>
+	<div class="contentDiv">
+		<img src="../../image/business/20/20.1.7-2.png"/>
+		<br/>前台提交后，生产者会将消息推送到activemq服务器，后台查看消费者的日志：<br/>
+		2018-04-20 12:47:40,499 INFO  DefaultMessageListenerContainer-1 c.s.e.s.i.DemoActiveMQQueueConsumer - BizService [Host: admin-PC, RequestNo: N/A] 从activeMQ服务器获得Queue消息：hello mq 小伙子, 1
+	</div>
+</body>
+</html>

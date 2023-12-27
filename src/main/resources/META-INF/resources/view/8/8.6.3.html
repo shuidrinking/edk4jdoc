@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			CodePrettyUtil.escapeInnerHTML('codeShow2', 'codeShow2');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		8.6.3、第3步：配置application.properties文件
+	</div>
+	<div class="subTitleDiv addArrow">
+		（1）配置application.properties文件
+	</div>
+	<div class="subContentDiv addBorder">
+		<p style="color:#3f7f5f">#禁止spring默认的jpa，<label style="color:#ff0000;font-weight:bold;">这个项不能少，否则项目无法正确启动。</label></p>
+		spring.jta.enabled = <label style="color:#2a00ff">false</label><br><br>
+		<p style="color:#3f7f5f">
+			#启用edk4j多数据源引擎开关，值为true时启用，值为false时不启动多数据源引擎：<br>
+			#如果不启动多数据源，则仍然使用普通的jdbc设置spring.datasource.jndi-name；<br>
+			#如果启用了多数据源，则会忽略普通jdbc的配置项spring.datasource.jndi-name。
+		</p>
+		edk4j.jta.enabled = <span style="color:#2a00ff">true</span>
+	</div>
+	<div class="subTitleDiv addArrow">
+		（2）配置application-{profile}.properties文件
+	</div>
+	<div class="subContentDiv addBorder">
+		<label style="background-color:#00ff00;font-weight:bold;">在这里配置数据源定义</label>，<label style="background-color:#00ffff;font-weight:bold;">你需要将以前的数据源定义注释掉</label>，然后添加“多数据源场景”下的配置：
+		<br/>
+		<a style="font-weight:bold;font-size:0.15rem">下面是使用jndi时的配置方式，需要在服务器中把jndi配置添加好，然后在这里指向jndi的配置。对于jndi的配置，我们下一节会介绍。这里定义了两个数据源，名称分别为ds1和ds2</a>
+		<br/>
+		<div class="contentDiv">
+<pre class="prettyprint properties" id="codeShow1" style="font-weight:bold;">
+#jta multiple datasource support
+edk4j.jta.datasource.ds1.dbType = MYSQL
+edk4j.jta.datasource.ds1.jndiName = java:comp/env/jdbc/your_ds1
+edk4j.jta.datasource.ds1.asDefault = true
+edk4j.jta.datasource.ds2.dbType = MYSQL
+edk4j.jta.datasource.ds2.jndiName = java:comp/env/jdbc/your_ds2
+#【注意】上面的jndiName是为tomcat写的，在weblogic、websphere等服务器中，jndiName写法有点区别，要写成jndiName = jdbc/your_ds
+</pre>
+		</div>
+		<a style="font-weight:bold;font-size:0.15rem">如果不使用服务器的jndi，你可以使用下面的配置方式来写，需要强调的是，还有一些数据库连接池的属性这里没列出来，你可以自行研究连接池还有哪些属性可以设置，添加上去，只要名称写对，一定会生效</a>
+		<br/>
+		<div class="contentDiv">
+<pre class="prettyprint properties" id="codeShow2" style="font-weight:bold;">
+
+#mysql数据源配置样例
+edk4j.jta.datasource.db1.dbType=MYSQL
+edk4j.jta.datasource.db1.driverClassName=com.mysql.jdbc.Driver
+edk4j.jta.datasource.db1.url=jdbc:mysql://xxx.xxx.xxx.xxx:3306/your_database?charSet=utf8mb4
+edk4j.jta.datasource.db1.user=用户名
+edk4j.jta.datasource.db1.password=密码
+edk4j.jta.datasource.ds1.asDefault = true
+edk4j.jta.datasource.db1.maxPoolSize=100
+edk4j.jta.datasource.db1.minPoolSize=10
+#当目标数据库是mysql时，atomikos的pinGlobalTxToPhysicalConnection这个属性不能缺少
+edk4j.jta.datasource.db1.pinGlobalTxToPhysicalConnection=true
+
+#db2数据源配置样例
+edk4j.jta.datasource.db2.dbType=DB2
+edk4j.jta.datasource.db2.driverClassName=com.mysql.jdbc.Driver
+edk4j.jta.datasource.db2.user=用户名
+edk4j.jta.datasource.db2.password=密码
+edk4j.jta.datasource.db2.asDefault = false
+edk4j.jta.datasource.db2.serverName=具体服务器的url地址，例如localhost
+edk4j.jta.datasource.db2.databaseName=具体的schema名称
+edk4j.jta.datasource.db2.portNumber=6789
+edk4j.jta.datasource.db2.driverType=4
+edk4j.jta.datasource.db2.maxPoolSize=100
+edk4j.jta.datasource.db2.minPoolSize=10
+</pre>
+		</div>
+		<a style="font-weight:bold;">在多个数据源中设置一个作为默认数据源：</a><br/>
+		（1）edk4j.jta.datasource.某数据源.asDefault = true或false<br/>
+			该属性指定数据源是否为“默认数据源”，如果你没设置该属性，那么，系统在启动时会随机选择一个数据库做默认数据源，一般情况下这是实际项目不允许的<br/>
+	</div>
+</body>
+</html>

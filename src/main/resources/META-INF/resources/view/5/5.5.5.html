@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			//CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		5.5.5、交易日志怎么记录
+	</div>
+	<div class="subTitleDiv addArrow">
+		什么是交易日志
+	</div>
+	<div class="subContentDiv">
+		交易日志是指持久化将交易要素记录到数据库或文件中，记录内容至少包括：谁、什么时候、通过什么渠道、使用什么设备、ip是多少、做了哪个交易、交易具体数据内容。
+	</div>
+	<div class="subContentDiv">
+		交易日志具有“准确”、“不杂不漏”的要求，具有“不可抵赖”的证据性质。
+	</div>
+	<div class="subTitleDiv addArrow">
+		如何记录交易日志
+	</div>
+	<div class="subContentDiv">
+		（1）edk4j平台中默认biz_log表用于持久化交易日志，该表表名可配置，也可自定义。
+	</div>
+	<div class="subContentDiv">
+		（2）需要在具体的项目里编写实现类，实现该接口：com.edk4j.core.log.BizLogger，实现下面的方法：
+	</div>
+	<div class="subContentDiv">
+		<pre class="prettyprint lang-java" id="codeShow1" style="width:100%;padding-left:1rem;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+/**
+ * 实施日志记录，该方法的调用，必须放在service方法的finally中
+ * @param requestNo 请求编号
+ * @param context 本次交易上下文
+ * @param bizName 功能英文名称
+ * @param logDefine  日志定义
+ * @param throwable 执行逻辑过程中抛出的异常
+ * @param useMillis biz执行耗时
+ * @throws Exception
+ */
+public void log(String requestNo, Context context, String bizName, LogDefine logDefine, Throwable throwable, long useMillis);
+
+/**
+ * 启动日志数据记录到数据库的数据库线程池
+ */
+public void startRecorderThread();
+</pre>
+	</div>
+	<div class="subContentDiv">
+		（3）详见后面的“交易日志记录专题”一章。
+	</div>
+</body>
+</html>

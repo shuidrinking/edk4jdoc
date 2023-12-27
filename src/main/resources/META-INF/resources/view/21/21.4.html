@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			CodePrettyUtil.escapeInnerHTML('codeShow2', 'codeShow2');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		21.4、mvn打包跳过test
+	</div>
+	<div class="tabTitleDiv">不做test，且不打包test下的代码</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<pre class="prettyprint lang-properties" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+#mvn打包命令中加入参数
+-Dmaven.test.skip=true
+</pre>
+	</div>
+	<div class="tabTitleDiv">不做test，但是会编译打包test下的代码</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<pre class="prettyprint lang-xml" id="codeShow2" style="font-weight:bold;color:#3f7f5f;">
+#1、mvn打包命令中加入参数
+-DskipTests
+
+#2、maven-surefire-plugin插件参数
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-surefire-plugin</artifactId>
+	<configuration>
+		<skip>true</skip>
+	</configuration>
+</plugin>
+        
+#3、pom.xml里配置属性
+<properties>
+    <skipTests>true</skipTests>
+</properties>
+</pre>
+	</div>
+	
+</body>
+</html>

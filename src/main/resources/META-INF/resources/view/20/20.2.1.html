@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		20.2.1、kafka简介
+	</div>
+	<div class="contentDiv">
+		<p style="text-indent:0.32rem">
+			Kafka是分布式发布-订阅消息系统,它最初由 LinkedIn 公司开发，使用 Scala语言编写,之后成为 Apache 项目的一部分。在Kafka集群中，没有“中心主节点”的概念，集群中所有的服务器都是对等的，因此，可以在不做任何配置的更改的情况下实现服务器的的添加与删除，同样的消息的生产者和消费者也能够做到随意重启和机器的上下线。
+		</p>
+		<img src="../../image/business/20/20.2.1-1.gif"/>
+		<br/>
+		<label style="font-size:0.14rem;text-align:center;padding-left:2rem;">Kafka消息系统生产者和消费者部署关系图</label><br/>
+		<a style="font-weight:bold;">kafka术语表：</a><br/>
+		<table class="across">
+			<colgroup>
+				<col style="width:2rem;"/>
+				<col style="width:2rem;"/>
+				<col/>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>中文名</th>
+					<th>英文名</th>
+					<th>解释</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>生产者</td>
+					<td>producer</td>
+					<td>是消息的产生的源头，负责生成消息并发送到Kafka服务器。</td>
+				</tr>
+				<tr>
+					<td>消费者</td>
+					<td>consumer</td>
+					<td>是消息的使用方，负责消费Kafka服务器上的消息。</td>
+				</tr>
+				<tr>
+					<td>主题</td>
+					<td>topic</td>
+					<td>
+						由用户定义并配置在Kafka服务器，用于建立生产者和消息者之间的订阅关系：生产者发送消息到指定的Topic下，消息者从这个Topic下消费消息。在逻辑上可以理解为“队列”。
+					</td>
+				</tr>
+				<tr>
+					<td>分区</td>
+					<td>partition</td>
+					<td>一个Topic下面会分为很多分区，例如：“kafka-test”这个Topic下可以分为6个分区，分别由两台服务器提供，那么通常可以配置为让每台服务器提供3个分区，假如服务器ID分别为0、1，则所有的分区为0-0、0-1、0-2和1-0、1-1、1-2。Topic物理上的分组，一个 topic可以分为多个 partition，每个 partition 是一个有序的队列。partition中的每条消息都会被分配一个有序的 id（offset）。</td>
+				</tr>
+				<tr>
+					<td>服务器节点</td>
+					<td>broker</td>
+					<td>即Kafka的服务器，用户存储消息，Kafa集群中的一台或多台服务器统称为 broker。</td>
+				</tr>
+				<tr>
+					<td>消费者分组</td>
+					<td>group</td>
+					<td>用于归组同类消费者，在Kafka中，多个消费者可以共同消息一个Topic下的消息，每个消费者消费其中的部分消息，这些消费者就组成了一个分组，拥有同一个分组名称，通常也被称为消费者集群。</td>
+				</tr>
+				<tr>
+					<td>偏移量</td>
+					<td>offset</td>
+					<td>消息存储在Kafka的Broker上，消费者拉取消息数据的过程中需要知道消息在文件中的偏移量，这个偏移量就是所谓的Offset。</td>
+				</tr>
+			</tbody>
+		</table>
+		<br/>
+		<a style="font-weight:bold;">网络参考资料：</a><br/>
+		（1）https://blog.csdn.net/dapeng1995/article/details/81536862<br/>
+		（2）https://www.nowcoder.com/discuss/232100<br/>
+		（3）https://www.cnblogs.com/alan319/p/8651434.html<br/>
+		（4）https://blog.csdn.net/qq_35571554/article/details/82593159<br/>
+		（5）https://blog.csdn.net/u012050154/article/details/78592854<br/>
+		（6）https://mp.weixin.qq.com/s/Vz_7B1AyINXkgs02PCGWNA
+	</div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../../css/dom.css"/>
+	<script type="text/javascript" src="../../../javascript/core/domUtil.js"></script>
+	<style>
+		blockquote {
+		    padding: 0.1rem;
+		    border-left: 0.1rem solid #eee;
+		    font-size:0.2rem;
+		    margin-left:0.05rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		Activiti 数据库表结构 ACT_GE_BYTEARRAY
+	</div>
+	<div class="contentDiv">
+		<blockquote>
+			<p>二进制数据表，存储通用的流程定义和流程资源。（act_ge_bytearray）</p>
+		</blockquote>
+		<p style="padding:0.05rem;">
+			保存流程定义图片和xml、Serializable(序列化)的变量,即保存所有二进制数据，特别注意类路径部署时候，不要把svn等隐藏文件或者其他与流程无关的文件也一起部署到该表中，会造成一些错误（可能导致流程定义无法删除）
+		</p>
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"><col style="width:3rem;"><col style="width:2rem;"><col style="width:1rem;"><col style="width:1rem;"><col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>字段名称</th><th>字段描述</th><th>数据类型</th><th>主键</th><th>为空</th><th>取值说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>ID_</td>
+					<td>ID_</td>
+					<td>nvarchar(64)</td>
+					<td>√</td>
+					<td></td>
+					<td>主键ID</td>
+				</tr>
+				<tr>
+					<td>REV_</td>
+					<td>乐观锁</td>
+					<td>integer</td>
+					<td></td>
+					<td>√</td>
+					<td>Version</td>
+				</tr>
+				<tr>
+					<td>USER_ID_</td>
+					<td>用户ID</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>用户ID</td>
+				</tr>
+				<tr>
+					<td>NAME_</td>
+					<td>名称</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>附件名称</td>
+				</tr>
+				<tr>
+					<td>DESCRIPTION_</td>
+					<td>描述</td>
+					<td>nvarchar(4000)</td>
+					<td></td>
+					<td>√</td>
+					<td>描述</td>
+				</tr>
+				<tr>
+					<td>TYPE_</td>
+					<td>类型</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>附件类型</td>
+				</tr>
+				<tr>
+					<td>TASK_ID_</td>
+					<td>任务实例ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>节点实例ID</td>
+				</tr>
+				<tr>
+					<td>PROC_INST_ID_</td>
+					<td>流程实例ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>流程实例ID</td>
+				</tr>
+				<tr>
+					<td>URL_</td>
+					<td>URL_</td>
+					<td>nvarchar(4000)</td>
+					<td></td>
+					<td>√</td>
+					<td>附件地址</td>
+				</tr>
+				<tr>
+					<td>CONTENT_ID_</td>
+					<td>字节表的ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>ACT_GE_BYTEARRAY的ID</td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

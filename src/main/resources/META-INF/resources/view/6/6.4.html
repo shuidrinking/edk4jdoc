@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		6.4、各种实体类别混用
+	</div>
+	<div class="subContentDiv">
+		（1）本节内容是针对“传统开发方式”而言
+	</div>
+	<div class="subContentDiv">
+		（2）为什么要有数据库表映射类、Form类、Response类，而不是混用一个类？
+	</div>
+	<div class="subContentDiv">
+		（3）因为每种实体类的职能不同，并不是说有些字段名字一样了就做一个大类混用。冗余会造成系统运行时的额外开销
+	</div>
+	<div class="subTitleDiv addArrow">
+		1、在一个交易中有这么几个数据实体类(vo/pojo/entity之类的名字)：
+	</div>
+	<div class="subContentDiv">
+		（1）	数据库映射实体类<br/>
+		（2）	前段传入类<br/>
+		（3）	返回给前段的类<br/>
+		（4）	hibernate查询条件类
+	</div>
+	<div class="subTitleDiv addArrow">
+		2、这四种类的字段，一般简单的交易中差不多。但是这几个类的用途都是不一样的：
+	</div>
+	<div class="subContentDiv">
+		（1）	实体映射类负责和数据库表映射<br/>
+		（2）	前段传入的类负责携带前段传入的字段到逻辑中<br/>
+		（3）	返回给前段的类将后台处理完的结果带给前段<br/>
+		（4）	查询条件类在查询时作为条件传给hibernate的jpa执行层
+	</div>
+	<div class="subTitleDiv addArrow">
+		3、前端传入查询条件有时多有时少，返回对象也是一样道理
+	</div>
+	<div class="subContentDiv">
+		所以无论从程序结构上“分工明确”的角度讲，还是从“代码清晰、可维护性高”的角度讲，还是从应用场景的角度讲，这些类是需要各自独立出来的，<br/>
+		所以，严禁使用同一个类来负责多个层面的工作，即使各个层面需要的类中字段一样，也必须要把类分开。
+	</div>
+	<div class="subTitleDiv addArrow">
+		4、所有的这些类,都要实现toString方法,必须实现,对日志只有好处没有坏处
+	</div>
+</body>
+</html>

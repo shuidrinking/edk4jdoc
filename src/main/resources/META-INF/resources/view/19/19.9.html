@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		19.9、附录2：taskEngine.properties文件详解
+	</div>
+	<div class="contentDiv">
+		<pre class="prettyprint language-properties" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+#============================================================================
+# 下面是TaskEngine需要的配置，参见后面的章节“19.11、附录4：不使用quartz框架怎么办的接口说明”
+# 被注释掉的配置是默认值，如果有自定义实现，需要放开
+#============================================================================
+#集群管理类
+taskEngine.clusterManagerClass
+#任务管理类
+taskEngine.taskManagerClass
+#据库操作实施执行类
+taskEngine.DBDelegateClass
+#任务执行异常报警类
+taskEngine.WarnManagerClass
+#数据库连接提供类，【注入】如果你不提供个性化的实现类，引擎里会使用自带的连接器，但是此时你必须配置后面的taskEngine.JNDI属性！也就是说taskEngine.DBConnectionProviderClass和taskEngine.JNDI必须有一个必须被设置
+taskEngine.DBConnectionProviderClass
+#任务是否要报警的裁判类，引擎内置默认实现类里的算法是“执行时间>任务定义中的最大执行时间阈值”
+taskEngine.runningTaskAbnormalVoterClass
+#是否对集群未正常签到以及任务异常进行报警并且不自动由调度器处理，默认为true
+taskEngine.warnAndDisableAutoScheduleFlag=true
+#任务报警文件保存目录，如果taskEngine.warnFlag为false时，这个值就没用了。注意这里是以/开头的，在所有linux下好理解，windows下将会保存到tomcat等测试服务器工作空间所在磁盘下
+taskEngine.warnFileSavePath=/home/edk4j-task/taskWarnFiles/
+#当系统重启时，是否清理本服务器名下处于“被获取、执行中”等遗留的有触发前科的任务，默认是true，如果这个值为false，每次系统重启，任务库里都会按任务定义一次检查重置的
+taskEngine.clearJobStoreWhenStart = true
+#是否记录任务运行的状态历史到数据库，默认为true
+taskEngine.logTaskRunStateHistory = true
+#任务扫描器的扫描周期，执行时间过长的任务，单位毫秒
+taskEngine.scanTasksInterval
+#单位毫秒，集群扫描器的扫描周期，扫描非正常签到的节点
+taskEngine.clusterWarnInterval
+#下面这个配置项暂时无用，可选值为：SPRING或者edk4j，业务系统用什么就填写什么，目前没使用该值
+#taskEngine.businessFrameWorkName
+#集成的调度框架的表结构前缀，引擎里默认集成quartz框架，其前缀是qrtz_，无视大小写，如果自行实现引擎接口而使用了其他调度框架时，下面的配置就可以被忽略
+taskEngine.ScheduleFramework.tablePrefix=QRTZ_ 
+#下面配置项设置数据源的jndi名称，一般保持和QUARTZ的一致，下面给出的是tomcat里的写法，如果是weblogic等服务器时jndi名称格式略有不同
+#【注意】下面这个配置项可以为空，如果为空时上面的taskEngine.DBConnectionProviderClass就不能为空，即：taskEngine.DBConnectionProviderClass和taskEngine.JNDI必须有一个必须被设置
+taskEngine.JNDI=java:comp/env/jdbc/jndi名称
+#【注意以下配置是2.0.0版新增属性】下面一组数据库连接配置
+#taskEngine.dbUrl=
+#taskEngine.dbDriverClassName=com.mysql.cj.jdbc.Driver
+#taskEngine.dbUsername=
+#taskEngine.dbPassword=
+#taskEngine.maxConnection=1
+#当跑批服务器上只有1张网卡时，该配置无需填写。多张网卡，需要在配置文件中指定跑批服务器的ip，如果不指定的话会随机取一个，这样会对日志和管理带来混乱。
+taskEngine.hostIp
+		</pre>
+	</div>
+</body>
+</html>

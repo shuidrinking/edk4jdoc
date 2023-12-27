@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		20.2.8、编写消费者Service
+	</div>
+	<div class="tabTitleDiv">消费者编写规范</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="item addArrow">
+			消费者类都以service组件的方式存在。
+		</div>
+		<div class="item addArrow">
+			消费者类中，在其方法上添加注解@KafkaListener，便可使其方法监听对应的topic，拉取消息进行消费。对于@KafkaListener注解的设置范式如下：
+		</div>
+		<div class="subContentDiv addBorder">
+			<p><span style="color:#646464">@KafkaListener</span><span style="color:black">(</span></p>
+			<p><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; id=</span><span style="color:#2a00ff">&quot;yourConsumerId&quot;</span>,</p>
+			<p><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;topics=</span>{<span style="color:#2a00ff">&quot;yourTopicName1&quot;</span>,<span style="color:#2a00ff">&quot;yourTopicName2&quot;</span>......},</p>
+			<p><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groupId=</span><span style="color:#2a00ff">&quot;yourGroupId&quot;</span><span style="color:black">, </span></p>
+			<p><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; topicPartitions={</span><span style="color:#646464">@TopicPartition</span><span style="color:black">(topic=</span><span style="color:#2a00ff">&quot;youTopicName&quot;</span><span style="color:black">,partition="pIndex"<span style="color:black">)}, </span></p>
+			<p><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;containerFactory=</span><span style="color:#2a00ff">&quot;</span><span style="color:#2a00ff">消费监听工厂类的</span><span style="color:#2a00ff">beanName&quot;</span></p>
+			<p><span style="color:black">&nbsp;)</span></p>
+		</div>
+		<div class="item addArrow">
+			对@KafkaListener注解设置范式解释如下：
+		</div>
+		<div class="subContentDiv">
+			<div>
+				（1）其中id必须指定，消费哪个topic也必须指定！指定topic名称可以通过多个属性来完成，但是，这几个属性是互斥的，也就是说互斥的属性使用时只能保留1个，互斥的属性有topics和topicPartitions还有topicPatten。
+			</div>
+			<div>
+				（2）其中containnerFactory属性如果为空，则会使用spring默认的监听工厂，消费是按条消费的，一条一条的拉取了消费。如果非空，则其必须是ConcurrentKafkaListenerContainerFactory类的实例，你可以在@Configuration类中生成实例并使用@Bean添加到spring的IOC容器中
+			</div>
+			<div>
+				（3）edk4j-kafka包中提供了2个containerFactory的bean，可以选择性的使用：
+			</div>
+			<div class="subContentDiv">
+				<table class="across">
+					<colgroup>
+						<col style="width:6rem;"/>
+						<col/>
+					</colgroup>
+					<thead>
+						<tr>
+							<th>beanName</th>
+							<th>监听器说明</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Constant.ManualAckListenerContainerFactoryName</td>
+							<td>
+								单条消费，手动提交<br/><label style="background-color:#ffff00;">具体项目中可以自行编写同名的bean覆盖</label>
+							</td>
+						</tr>
+						<tr>
+							<td>Constant.BatchManualAckListenerContainerFactoryName</td>
+							<td>
+								批量消费，手动提交<br/><label style="background-color:#ffff00;">具体项目中可以自行编写同名的bean覆盖</label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="tabTitleDiv">消费者Service样例</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="subTitleDiv">
+			在这个样例中有三个方法，会分别从3个topic里拉取消息进行消费
+		</div>
+		<pre class="prettyprint lang-java" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+package com.edk4j.edk4jdemos.business.kafka.service;
+import java.util.List;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.stereotype.Service;
+import com.edk4j.kafka.contant.Constant;
+import com.edk4j.core.log.Trace;
+
+/**
+ * 样例消费者服务类
+ * @author liuxiaosong(shuidrinking@126.com)
+ * @version 2019年10月25日
+ * @since jdk1.7
+ */
+@Service
+public class DemoConsumerService {
+	/**
+	 * 对edk4jConfig.properties中配置的businessA.kafka.topicName这个topic进行消费
+	 * 未配置containerFactory属性，此时会使用spring默认的消息监听容器
+	 * @param record
+	 */
+	@KafkaListener(id="businessAConsumer",topics="${businessA.kafka.topicName}")
+	public void receiveMessage(ConsumerRecord<?, ?> record){
+		StringBuilder sb = new StringBuilder();
+		sb.append("key=").append(record.key());
+		sb.append(", value=").append(record.value());
+		sb.append(", offset=").append(record.offset());
+		sb.append(", partition=").append(record.partition());
+		sb.append(", topic=").append(record.topic());
+		sb.append(", timestamp=").append(record.timestamp());
+		Trace.info(DemoConsumerService.class, Trace.Component_BizService, "\n从topic1接收消息{}" ,sb.toString());
+	}
+
+	/**
+	 * 对edk4jConfig.properties中配置的businessB.kafka.topicName这个topic进行消费
+	 * @param record
+	 */
+	@KafkaListener(id="businessBConsumer",topics="${businessB.kafka.topicName}",containerFactory=Constant.ManualAckListenerContainerFactoryName)
+	public void receiveMessage1(ConsumerRecord&lt;String, String&gt; record,Acknowledgment acknowledgment){
+		StringBuilder sb = new StringBuilder();
+		sb.append("[key=").append(record.key());
+		sb.append(", value=").append(record.value());
+		sb.append(", offset=").append(record.offset());
+		sb.append(", partition=").append(record.partition());
+		sb.append(", topic=").append(record.topic());
+		sb.append(", timestamp=").append(record.timestamp()).append("]");
+		Trace.info(DemoConsumerService.class, Trace.Component_BizService, "\n从topic2接收消息，具体内容 ：\n{}\n", sb.toString());
+		//这里需要手工提交
+		acknowledgment.acknowledge();
+	}
+
+	/**
+	 * 对edk4jConfig.properties中配置的businessC.kafka.topicName这个topic进行消费
+	 * @param record
+	 * @param acknowledgment
+	 */
+	@KafkaListener(id="businessCConsumer",topics="${businessC.kafka.topicName}",containerFactory=Constant.BatchManualAckListenerContainerFactoryName)
+	public void receiveMessage2(List&lt;ConsumerRecord&lt;?,?&gt;&gt; records,Acknowledgment acknowledgment){
+		StringBuilder sb = new StringBuilder();
+		for(ConsumerRecord<?,?> record : records){
+		       sb.append("[key=").append(record.key());
+		       sb.append(", value=").append(record.value());
+		       sb.append(", offset=").append(record.offset());
+		       sb.append(", partition=").append(record.partition());
+		       sb.append(", topic=").append(record.topic());
+		       sb.append(", timestamp=").append(record.timestamp()).append("]");
+		}
+		Trace.info(DemoConsumerService.class, Trace.Component_BizService, "\n从topic3接收消息数：{}，具体内容 ：\n{}\n", new String[] {""+records.size(), sb.toString()});
+		//这里需要手工提交
+		acknowledgment.acknowledge();
+	}
+}
+</pre>
+	</div>
+</body>
+</html>

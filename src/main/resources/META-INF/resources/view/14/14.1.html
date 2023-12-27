@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		14.1、平台内置的统一异常处理器
+	</div>
+	<div class="tabTitleDiv">统一异常处理器的工作内容</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		（1）捕获异常，提取异常中的“错误码”和“错误信息”；<br>
+		（2）将异常内容格式化后返回给请求端，或者跳转到特定的错误页面。<br>
+		在<a href="../5/5.2.9.html">5.2.9章节</a>已经说明了edk4j平台中的异常定义规范。异常处理器提取异常信息时，需要按规范中的约束来正确提取。<br>
+		edk4j项目中抛出异常后，默认是由平台内置的“统一异常处理器”来完成统一处理。
+	</div>
+	<div class="tabTitleDiv">获取“错误码”和“错误信息”的算法</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<label style="font-weight:bold;">如果抛出的异常是com.edk4j.core.exception.BaseException类型的，其根据errorCode获取errorMessage的算法为：：</label><br>
+		（1）如果edk4j中定义的errorInfoService服务类存在于项目中，则调用之，从数据库中的“错误定义表(pub_error_define)”中，根据错误码查询错误信息；<br>
+		（2）如果数据库中查询不到，则调用ConfigPropertiesReader.getPropertyValue方法，则在springConfig/i18n/**.properties配置文件中查找错误码对应的错误信息；<br>
+		（3）如果配置文件中找不到，则调用e.getMessage()方法，从exception对象自身中获取异常信息。<br>
+		
+		<label style="font-weight:bold;">如果抛出的异常不是继承自com.edk4j.core.exception.BaseException</label>，则errorCode默认设置为“100000”，errorMessage取其自带的异常信息。<br>
+	</div>
+	<div class="tabTitleDiv">以何种方式返回异常信息</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		如果在交易的mvc中设置了跳转页面，并且在其对应的MvcController中使用了这句：request.setAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID, Boolean.TRUE)<br>
+		则返回ModelAndView对象，该对象携带errorCode和errorMessage，并指向在edk4jConfig.properties中定义的错误页面（配置项为application.defaultErrorPage=错误页面）<br>
+		否则，将errorCode和errorMessage格式化到json格式的字符串中返回
+	</div>
+</body>
+</html>

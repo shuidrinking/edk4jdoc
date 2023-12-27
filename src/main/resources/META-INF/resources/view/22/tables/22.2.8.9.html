@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../../css/dom.css"/>
+	<script type="text/javascript" src="../../../javascript/core/domUtil.js"></script>
+	<style>
+		blockquote {
+		    padding: 0.1rem;
+		    border-left: 0.1rem solid #eee;
+		    font-size:0.2rem;
+		    margin-left:0.05rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		Activiti 数据库表结构 act_hi_taskinst 
+	</div>
+	<div class="contentDiv">
+		<blockquote>
+			<p>历史任务实例表( act_hi_taskinst )</p>
+		</blockquote>
+		<p style="padding:0.05rem;">
+		</p>
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"><col style="width:3rem;"><col style="width:2rem;"><col style="width:1rem;"><col style="width:1rem;"><col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>字段名称</th>
+					<th>字段描述</th>
+					<th>数据类型</th>
+					<th>主键</th>
+					<th>为空</th>
+					<th>取值说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>ID_</td>
+					<td>ID_</td>
+					<td>nvarchar(64)</td>
+					<td>√</td>
+					<td></td>
+					<td>主键ID</td>
+				</tr>
+				<tr>
+					<td>PROC_DEF_ID_</td>
+					<td>流程定义ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>流程定义ID</td>
+				</tr>
+				<tr>
+					<td>TASK_DEF_KEY_</td>
+					<td>节点定义ID</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>节点定义ID</td>
+				</tr>
+				<tr>
+					<td>PROC_INST_ID_</td>
+					<td>流程实例ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>流程实例ID</td>
+				</tr>
+				<tr>
+					<td>EXECUTION_ID_</td>
+					<td>执行实例ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>执行实例ID</td>
+				</tr>
+				<tr>
+					<td>NAME_</td>
+					<td>名称</td>
+					<td>varchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>名称</td>
+				</tr>
+				<tr>
+					<td>PARENT_TASK_ID_</td>
+					<td>父节点实例ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>父节点实例ID</td>
+				</tr>
+				<tr>
+					<td>DESCRIPTION_</td>
+					<td>描述</td>
+					<td>nvarchar(400)</td>
+					<td></td>
+					<td>√</td>
+					<td>描述</td>
+				</tr>
+				<tr>
+					<td>OWNER_</td>
+					<td>实际签收人 任务的拥有者</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>签收人（默认为空，只有在委托时才有值）</td>
+				</tr>
+				<tr>
+					<td>ASSIGNEE_</td>
+					<td>签收人或被委托</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>签收人或被委托</td>
+				</tr>
+				<tr>
+					<td>START_TIME_</td>
+					<td>开始时间</td>
+					<td>datetime</td>
+					<td></td>
+					<td></td>
+					<td>开始时间</td>
+				</tr>
+				<tr>
+					<td>CLAIM_TIME_</td>
+					<td>提醒时间</td>
+					<td>datetime</td>
+					<td></td>
+					<td>√</td>
+					<td>提醒时间</td>
+				</tr>
+				<tr>
+					<td>END_TIME_</td>
+					<td>结束时间</td>
+					<td>datetime</td>
+					<td></td>
+					<td>√</td>
+					<td>结束时间</td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

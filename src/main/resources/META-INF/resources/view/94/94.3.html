@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			CodePrettyUtil.escapeInnerHTML('codeShow2', 'codeShow2');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		94.3、封装boot-starter可能遇到的问题
+	</div>
+	<div class="tabTitleDiv">1、spring.factories中申明的类得不到增强</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="subTitleDiv addArrow">@Autowired、@Resource、@PostConstruct等注解没有生效</div>
+		<div class="subTitleDiv addArrow">获取不到配置文件中的配置值</div>
+	</div>
+	<div class="tabTitleDiv">2、启动日志中有以下warn</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<pre class="prettyprint lang-properties" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+Cannot enhance @Configuration bean definition 'xxxx' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
+</pre>
+	</div>
+	<div class="tabTitleDiv">3、错误原因分析</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		beanFatory.beanDefinitionMap中第一个bean定义很重要:ConfigurationClassPostProcessor：这是个非常关键的类，基本上我们自定义的bean都是通过这个类注册的，下面这些注解都是在这个类中处理的：
+<pre class="prettyprint lang-properties" id="codeShow2" style="font-weight:bold;color:#3f7f5f;">
+	@Configuration
+	@Component
+	@PropertySource
+	@PropertySources
+	@ComponentScan
+	@ComponentScans
+	@Import
+	@ImportResource
+	@Bean
+</pre>
+		对所有bean的enhance（增强）都是在ConfigurationClassPostProcessor#postProcessBeanFactory方法中实现的，<br><br>
+		而增强失败，说明我们定义的自动装配类被<label style="font-weight:bold;background-color:#e3e3e3">“过早初始化”</label><br><br>		
+		
+		进一步分析，自动装配类里装配了一个@Bean方法，返回的类型是BeanFactoryPostProcessor（BeanDefinitionRegistryPostProcessor是其子类），
+		这个BeanDefinitionRegistryPostProcessor类型bean必须先初始化，而且是通过实例工厂方法来创建实例，
+		实例方法必须通过实例来调用，先实例化所有配置类，但这时postProcessBeanFactory对那些配置类的实例增强代码还没有执行，所以它拿到的都是些刚刚new出来的bean，里面没有值。
+		<br><br>
+		BeanFactoryPostProcessor类型的bean在AbstractApplicationContext#refresh#invokeBeanFactoryPostProcessors中提前初始化，<br>
+		但注意自动装配类中的@Resource、@Import等注解是需要AutowiredAnnotationBeanPostProcessor这个BeanPostProcessor，它在AbstractApplicationContext#refresh#registerBeanPostProcessors中初始化的，
+		registerBeanPostProcessors是在invokeBeanFactoryPostProcessors后执行的，因此就导致了前面说的问题。
+	</div>
+	<div class="tabTitleDiv">4、解决办法</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		如果我们的自动装配类中，必须要装配了一个@Bean方法，返回的类型是BeanFactoryPostProcessor/BeanDefinitionRegistryPostProcessor，那么就在这个方法前添加static<br>
+	</div>
+	<div class="tabTitleDiv">5、网上资料</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<a href="https://blog.csdn.net/xinyuwang007/article/details/118975460" target="_blank">https://blog.csdn.net/xinyuwang007/article/details/118975460</a><br>
+	</div>
+</body>
+</html>

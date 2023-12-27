@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			CodePrettyUtil.escapeInnerHTML('codeShow2', 'codeShow2');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		94.1、spring.factories说明
+	</div>
+	<div class="tabTitleDiv">1、spring.factories的作用</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		spring-boot提供的类似Java SPI的功能，可以实现让spring扫描包扫描不到的bean对象实例化、个性化bean的初始化。<br>
+		通常用在你的jar作为第三方依赖时使用。<br>
+		具体场景：依赖你jar的用户并不会在他的Boot配置中设置你的包名到@ComponentScan中，而你的jar内却有bean需要注册到spring容器中。<br>
+		借助spring.factories可以解决上面的问题。
+	</div>
+	<div class="tabTitleDiv">2、spring.factories的使用方法</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		新建文件src/main/resources/META-INF/spring.factories，在文件中配置以下内容：
+<pre class="prettyprint lang-properties" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+你的AutoConfiguration类1的Qulified Name,\
+你的AutoConfiguration类2的Qulified Name,\
+...
+你的AutoConfiguration类n的Qulified Name
+</pre>
+	</div>
+	<div class="tabTitleDiv">3、加载顺序说明</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="subTitleDiv addArrow">
+			spring.factories加载的顺序在spring中是最优先的，它比@ComponentScan的顺序高
+		</div>
+		<div class="subTitleDiv addArrow">
+			spring.factories加载的组件中如果依赖了@ConditionalOnProperty标注的组件类，则配置属性的值还没又被设置进去
+		</div>
+	</div>
+	<div class="tabTitleDiv">4、AutoConfiguration类样例</div>
+	<div class="tabTitleLine"></div>
+<pre class="prettyprint java blue-border" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+
+package com.edk4j.track.spring.boot.autoconfigure;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * 本自动化配置类用于初始化edk4j-track内的spring组件
+ * 在spring.factories中已经设置如下内容：
+ * org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+ * com.edk4j.track.spring.boot.autoconfigure.Edk4jTrackAutoConfiguration
+ */
+@Configuration
+@ComponentScan({Edk4jTrackAutoConfiguration.REPORT_PACKAGE})
+public class Edk4jTrackAutoConfiguration{
+	public static final String REPORT_PACKAGE="com.edk4j.track.report";
+}
+</pre>
+	<div class="tabTitleDiv">5、SpringFactoriesLoader负责加载spring.factories</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		spring-boot初始化入口：org.springframework.boot.SpringApplication#getSpringFactoriesInstances<br>
+		进而遍历spring.factories中的配置：org.springframework.core.io.support.SpringFactoriesLoader#loadSpringFactories(ClassLoader classLoader)
+		最后对这些AutoConfiguration的类进行实例化
+		
+		因此，在这些AutoConfiguration类实例化时，配置参数还没有开始读取
+	</div>
+</body>
+</html>

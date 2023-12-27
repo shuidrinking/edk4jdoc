@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../../css/dom.css"/>
+	<script type="text/javascript" src="../../../javascript/core/domUtil.js"></script>
+	<style>
+		blockquote {
+		    padding: 0.1rem;
+		    border-left: 0.1rem solid #eee;
+		    font-size:0.2rem;
+		    margin-left:0.05rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		Activiti 数据库表结构 ACT_RE_MODEL
+	</div>
+	<div class="contentDiv">
+		<blockquote>
+			<p>流程设计模型部署表( act_re_model )</p>
+		</blockquote>
+		<p style="padding:0.05rem;">
+			流程设计器设计流程后，保存数据到该表。
+		</p>
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"><col style="width:3rem;"><col style="width:2rem;"><col style="width:1rem;"><col style="width:1rem;"><col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>字段名称</th>
+					<th>字段描述</th>
+					<th>数据类型</th>
+					<th>主键</th>
+					<th>为空</th>
+					<th>取值说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>ID_</td>
+					<td>ID_</td>
+					<td>nvarchar(64)</td>
+					<td>√</td>
+					<td></td>
+					<td>ID_</td>
+				</tr>
+				<tr>
+					<td>REV_</td>
+					<td>乐观锁</td>
+					<td>int</td>
+					<td></td>
+					<td>√</td>
+					<td>乐观锁</td>
+				</tr>
+				<tr>
+					<td>NAME_</td>
+					<td>名称</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>名称</td>
+				</tr>
+				<tr>
+					<td>KEY_</td>
+					<td>KEY_</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>分类</td>
+				</tr>
+				<tr>
+					<td>CATEGORY_</td>
+					<td>分类</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>分类</td>
+				</tr>
+				<tr>
+					<td>CREATE_TIME_</td>
+					<td>创建时间</td>
+					<td>datetime</td>
+					<td></td>
+					<td>√</td>
+					<td>创建时间</td>
+				</tr>
+				<tr>
+					<td>LAST_UPDATE_TIME_</td>
+					<td>最新修改时间</td>
+					<td>datetime</td>
+					<td></td>
+					<td>√</td>
+					<td>最新修改时间</td>
+				</tr>
+				<tr>
+					<td>VERSION_</td>
+					<td>版本</td>
+					<td>int</td>
+					<td></td>
+					<td>√</td>
+					<td>版本</td>
+				</tr>
+				<tr>
+					<td>META_INFO_</td>
+					<td>META_INFO_</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>以json格式保存流程定义的信息</td>
+				</tr>
+				<tr>
+					<td>DEPLOYMENT_ID_</td>
+					<td>部署ID</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>部署ID</td>
+				</tr>
+				<tr>
+					<td>EDITOR_SOURCE_VALUE_ID_</td>
+					<td></td>
+					<td>datetime</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>EDITOR_SOURCE_EXTRA_VALUE_ID_</td>
+					<td></td>
+					<td>datetime</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

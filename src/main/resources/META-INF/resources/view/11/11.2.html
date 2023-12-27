@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		11.2、交易日志专题
+	</div>
+	<div class="subTitleDiv addArrow">
+		1、建立交易日志记录表
+	</div>
+	<div class="subContentDiv">
+		<label style="color:#ff0000;">这个动作由技术经理完成</label><br/>
+		edk4j-dataBase的ddl中默认有一张表BIZ_LOG，所以一般不需要重新建表，但是，如果好几个edk4j应用共享同一个数据库，此时就需要对不同的应用建立不同的表，你只需要修改一下BIZ_LOG的表名，表内的字段保持一致就好了。除非你需要特殊的表，这种情况下需要相应实现“交易日志接口”操作这张表。
+	</div>
+	<div class="subTitleDiv addArrow">
+		2、配置交易日志表名
+	</div>
+	<div class="subContentDiv">
+		<label style="color:#ff0000;">这个动作由技术经理完成</label><br/>
+		在edk4jConfig.properties中设置交易日志表的表名：<br/>
+		<div style="border:1px solid #eeeeee;">
+			<label style="color:#3f7f7f">#如果你不设置这个参数，它的默认值是BIZ_LOG</label><br/>
+			application.bizLogTableName=交易日志表名(例如BIZ_LOG)
+		</div>
+	</div>
+	<div class="subTitleDiv addArrow">
+		3、配置交易日志保存到数据库的连接池大小
+	</div>
+	<div class="subContentDiv">
+		<label style="color:#ff0000;">这个动作由技术经理完成</label><br/>
+		在edk4j中，交易日志保存到数据库的动作是异步完成的，这个主要是为了提高系统的响应速度。因此，在edk4jConfig.properties中需要设置保存到数据库的记录器连接池大小，默认是5，你可以根据系统并发量大小等情况设置。
+		<div style="border:1px solid #eeeeee;">
+			<label style="color:#3f7f7f">#如果你不设置这个参数，它的默认大小是5</label><br/>
+			application.bizLogRecorderTreadPoolSize=5
+		</div>
+	</div>
+	<div class="subTitleDiv addArrow">
+		4、实现交易日志接口
+	</div>
+	<div class="subContentDiv">
+		<label style="color:#ff0000;">这个动作由技术经理完成</label><br/>
+		edk4j提供了一个交易日志接口以及一个默认实现类，但是在你的项目中，技术经理应该也编写一个实现类。在你项目中建立名为log包，例如：com.mycompany.myproject.log，在其中添加交易日志实现类<br/>
+		实现接口：com.edk4j.core.log.BizLogger<br/>
+		必须对该类添加注解 <label style="background-color:#ffff00">@Service(value="bizLogger")</label><br/>
+		参考实现类：com.edk4j.edk4jdemos.log.BizLoggerImpl<br/>
+		此处不做代码赘述
+	</div>
+	<div class="subTitleDiv addArrow">
+		5、申明交易日志
+	</div>
+	<div class="subContentDiv">
+		<label style="color:#ff0000;">这个动作开发人员必须掌握</label><br/>
+		在需要记录交易日志的businessLogic里，第一步就设置为记录交易日志，如下：
+		<div style="border:1px solid #eeeeee;">
+			<p><span style="color:teal">&lt;</span><span style="background-color:silver"><span style="color:#3f7f7f">start</span></span><span style="color:teal">&gt;</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:teal">&lt;route</span> <span style="color:#7f007f">toAction</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;logDefineStep&quot;</span></em><span style="color:teal">/&gt;</span></p>
+			<p><span style="color:teal">&lt;/</span><span style="background-color:silver"><span style="color:#3f7f7f">start</span></span><span style="color:teal">&gt;</span></p>
+			<p><span style="color:teal">&lt;</span><span style="color:#3f7f7f">action</span> <span style="color:#7f007f">className</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;com.edk4j.core.action.BizLogDefineAction&quot;</span></em> <span style="color:#7f007f">id</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;logDefineStep&quot;</span></em><span style="color:teal">&gt;</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:teal">&lt;</span><span style="color:#3f7f7f">property</span> <span style="color:#7f007f">id</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;businessCode&quot;&nbsp;</span></em><span style="color:#7f007f">value</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;</span></em><em><span style="color:#2a00ff">交易码，这个属性一般不要添加进来，因为mvc配置时已经有指定交易码了！只有在这种场景下才设置：某个bl被好几个mvc公用。</span></em><em><span style="color:#2a00ff">&quot;</span></em> <span style="color:teal">/&gt;</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:teal">&lt;</span><span style="color:#3f7f7f">property</span> <span style="color:#7f007f">id</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;loggerContentFormat&quot;&nbsp;</span></em><span style="color:#7f007f">value</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;</span></em><em><span style="color:#2a00ff">日志内容表达式，例如：内容内容内容内容，某业务值：</span></em><em><span style="color:#2a00ff">${field1}，${field2}....</span></em><em><span style="color:#2a00ff">把这个交易的关键信息记录都进去</span></em><em><span style="color:#2a00ff">&quot;</span></em> <span style="color:teal">/&gt;</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:teal">&lt;route</span> <span style="color:#7f007f">toAction</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;</span></em><em><span style="color:#2a00ff">下一个</span></em><em><span style="color:#2a00ff">Step&quot;</span></em><span style="color:teal">/&gt;</span></p>
+			<p><span style="color:teal">&lt;/</span><span style="color:#3f7f7f">action</span><span style="color:teal">&gt;</span></p>
+		</div>
+	</div>
+	<div class="subTitleDiv addArrow">
+		6、传统开发模式下，spring组件中交易日志怎么做
+	</div>
+	<div class="contentDiv">
+		<pre class="prettyprint language-java" style="width:100%;padding-left:0.5rem;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';" id="codeShow1">
+import com.edk4j.core.log.BizLogger;
+import com.edk4j.core.log.LogDefine;
+import com.edk4j.core.businessprocessmanage.BusinessAction;
+public class SomeAction extends BusinessAction {
+       /**
+        * 交易日志记录工具类
+        */
+       @Autowired
+       private BizLogger bizLogger;
+       LogDefine logDefine = new LogDefine("交易码", "${field1}xxxxx${field2}xxxxx");
+       @Override
+       public String execute(Context context) throws TranFailException {
+              Exception exception = null;
+              long start = System.currentMillis();
+              try{
+                     ......
+              }
+              catch(.... e){
+                     exception = e;
+              }
+              finally{
+                     /*
+                      * 记录日志
+                      */
+                     bizLogger.log(RequestUtil.getRequestSequence(), context, "交易英文名", this.logDefine, exception, System.currentMillis()-start);
+              }
+       }
+}
+		</pre>
+	</div>
+</body>
+</html>

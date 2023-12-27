@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		“获取序列号”Action说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		组件：<img src='../../image/icons/action/a018.png' style='margin-right:0.1rem;'>获取序列号
+	</div>
+	<div class="subTitleDiv addArrow">
+		备注或算法描述：
+	</div>
+	<div class="subTitleDiv addArrow">
+		实现类：com.edk4j.core.repository.jdbc.QuerySequenceAction
+	</div>
+	<div class="subTitleDiv addArrow">
+		属性清单：
+	</div>
+	<table class="across">
+		<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:3rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+		<thead>
+			<tr>
+				<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style='text-align:center;'>1</td><td>dataSourceName</td><td>数据源名称</td><td></td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>2</td><td>sequenceName</td><td>序列号名称</td><td></td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>3</td><td>mysqlFunctionName</td><td>获取序列号的函数名（仅限mysql）</td><td>本字段仅限于使用mysql数据库时有效。请设置获取序列号的函数名。</td><td>nextVal</td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>4</td><td>resultFieldIdInContext</td><td>保存结果的DataCell的Id</td><td>序列号获得后将结果保存到context中目标DataCell的Id</td><td></td><td style='text-align:center;'>false</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>5</td><td>formatSequenceLength</td><td>结果长度</td><td>请填写整数</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>6</td><td>leftPaddingChar</td><td>长度不足时左边要填充的字符</td><td>例如：当你填写0时，结果长度设置为8，数据库中获得的结果是121，则最终结果是00000121</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>7</td><td>prefix</td><td>序列号前缀</td><td>如果这个属性不空时，prefixFieldIdInContext的设置无效！有前缀时实际返回结果的长度=prefix.length+formatSequenceLength</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>8</td><td>prefixFieldIdInContext</td><td>context中保存序列号前缀值的字段id</td><td>如果属性prefix有值时，生成序列号时将无视本字段！有前缀时实际返回结果的长度=prefix.length+formatSequenceL</td><td></td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

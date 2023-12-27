@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		6.8、edk4j中的开发约定，开发人员必须记牢
+	</div>
+	<div class="subTitleDiv addArrow">
+		1、edk4j返回给前端的内容格式约定
+	</div>
+	<div class="subContentDiv">
+		（1） 返回结果的格式，是在MvcController的postHandle方法中设置的，这个根据具体需要进行处理，我们提倡使用json格式。
+	</div>
+	<div class="subContentDiv">
+		（2） 返回结果中有两个必有的字段，默认是 resultCode 和 resultMessage，当处理正确时resultCode="0"，resultMessage="ok"。当然，也不是非要这两个字段，edk4j中可以很灵活的处理：你可以在businessLogic的输出字段中定义，或者在MvcController.postHandle方法中设置
+	</div> 
+	<div class="subTitleDiv addArrow">
+		2、edk4j中Action类返回结果的约定
+	</div>
+	<div class="subContentDiv">
+		正确情况下返回 "0" ，如果返回其他值，默认不认为是正确的，除非在你的业务逻辑里有做对这些特殊结果的判定。
+	</div>
+	<div class="subTitleDiv addArrow">
+		3、edk4j中Action类的抛出异常约定
+	</div>
+	<div class="subContentDiv">
+		execute方法抛出的异常必须是TranFailException，因为在action这个层面，就是交易层面，明确告诉客户什么业务做不下去，出什么问题了，而不是给客户抛出一些莫名其妙的客户不理解的异常。
+	</div>
+	<div class="subTitleDiv addArrow">
+		4、edk4j存储过程出参的约定
+	</div>
+	<div class="subContentDiv">
+		所有存储过程必须要有一个输出参数，该参数在context中保存的字段名是procRetCode，至于这个字段的值自己定义，例如有些项目里返回 "00000" 表示正确。
+	</div>
+	<div class="subContentDiv">
+		对这个字段的值是否正确，这个判定动作也在businessLogic里自定义处理，调用存储过程的Action组件里不会处理的。
+	</div>
+	<div class="subTitleDiv addArrow">
+		5、mvc文件命名约定
+	</div>
+	<div class="subContentDiv">
+		文件名必须以 .edk4jMvc结尾
+	</div>
+	<div class="subTitleDiv addArrow">
+		6、业务逻辑分组中具体的BusinessLogic命名约定
+	</div>
+	<div class="subContentDiv">
+		文件名必须以.edk4jBpm结尾
+	</div>
+	<div class="subContentDiv">
+		BusinessLogic标签中的id属性，必须以BL后缀结尾
+	</div>
+	<div class="subTitleDiv addArrow">
+		7、Action类命名约定
+	</div>
+	<div class="subContentDiv">
+		类名必须以Action 后缀结尾
+	</div>
+	<div class="subTitleDiv addArrow">
+		8、Repository类命名约定
+	</div>
+	<div class="subContentDiv">
+		必须以Repository后缀结尾
+	</div>
+	<div class="subTitleDiv addArrow">
+		9、Controller类命名约定
+	</div>
+	<div class="subContentDiv">
+		必须以Controller后缀结尾
+	</div>
+	<div class="subTitleDiv addArrow">
+		10、Service类命名约定
+	</div>
+	<div class="subContentDiv">
+		接口定义必须以Service后缀结尾，如果是service接口的实现类，一般必须以ServiceImpl后缀结尾
+	</div>
+	<div class="subTitleDiv addArrow">
+		11、报文配置类命名约定
+	</div>
+	<div class="subContentDiv">
+		请求报文实体类必须以Request后缀结尾，一般写成“接口编号+Request”，例如CB0001Request
+	</div>
+	<div class="subContentDiv">
+		答复报文实体类必须以Response后缀结尾，一般写成“接口编号+Response”，例如CB0001Response
+	</div>
+	<div class="subTitleDiv addArrow">
+		12、Context和SessionContext的管理约定
+	</div>
+	<div class="subContentDiv">
+		Context的建立、销毁、与SessionContext的上下级关系确立，这些动作在开发层面无需关心，平台会自动完成。
+	</div>
+	<div class="subContentDiv">
+		对于SessionContext的建立，由MvcController负责完成。
+	</div>
+	<div class="subContentDiv">
+		对于SessionContext向缓存服务器更新的动作，在MvcController.postHandle方法里完成。
+	</div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../../css/dom.css"/>
+	<script type="text/javascript" src="../../../javascript/core/domUtil.js"></script>
+	<style>
+		blockquote {
+		    padding: 0.1rem;
+		    border-left: 0.1rem solid #eee;
+		    font-size:0.2rem;
+		    margin-left:0.05rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		EDK工作流引擎数据库表--流程连线配置表ACTX_NODE_ROUTE
+	</div>
+	<div class="contentDiv">
+		<blockquote>
+			<p>保存连线配置信息</p>
+		</blockquote>
+		<p style="padding:0.05rem;">
+		</p>
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"><col style="width:3rem;"><col style="width:2rem;"><col style="width:1rem;"><col style="width:1rem;"><col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>字段名称</th>
+					<th>字段描述</th>
+					<th>数据类型</th>
+					<th>主键</th>
+					<th>为空</th>
+					<th>取值说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>id</td>
+					<td>主键ID</td>
+					<td>bigint</td>
+					<td>√</td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>node_id</td>
+					<td>节点表主键ID</td>
+					<td>bigint</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>candidate_user</td>
+					<td>候选人</td>
+					<td>varchar(32)</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>candidate_role</td>
+					<td>候选角色</td>
+					<td>varchar(32)</td>
+					<td></td>
+					<td>√</td>
+					<td>归为candidateGroup</td>
+				</tr>
+				<tr>
+					<td>candidate_department</td>
+					<td>候选部门</td>
+					<td>varchar(32)</td>
+					<td></td>
+					<td>√</td>
+					<td>归为candidateGroup</td>
+				</tr>
+				<tr>
+					<td>deal_user_type</td>
+					<td>任务处理人类型</td>
+					<td>char(1)</td>
+					<td></td>
+					<td>√</td>
+					<td>0-候选人 1-候选组 2-发起人</td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

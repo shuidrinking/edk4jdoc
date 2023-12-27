@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../../css/dom.css"/>
+	<script type="text/javascript" src="../../../javascript/core/domUtil.js"></script>
+	<style>
+		blockquote {
+		    padding: 0.1rem;
+		    border-left: 0.1rem solid #eee;
+		    font-size:0.2rem;
+		    margin-left:0.05rem;
+		}
+	</style>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		Activiti 数据库表结构 ACT_RU_EXECUTION
+	</div>
+	<div class="contentDiv">
+		<blockquote>
+			<p>运行时流程执行实例表( act_ru_execution )</p>
+		</blockquote>
+		<p style="padding:0.05rem;">
+		</p>
+		<table class="across">
+			<colgroup>
+				<col style="width: 3rem;">
+				<col style="width: 3rem;">
+				<col style="width: 2rem;">
+				<col style="width: 1rem;">
+				<col style="width: 1rem;">
+				<col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>字段名称</th>
+					<th>字段描述</th>
+					<th>数据类型</th>
+					<th>主键</th>
+					<th>为空</th>
+					<th>取值说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>ID_</td>
+					<td>ID_</td>
+					<td>nvarchar(64)</td>
+					<td>√</td>
+					<td></td>
+					<td>ID_</td>
+				</tr>
+				<tr>
+					<td>REV_</td>
+					<td>乐观锁</td>
+					<td>int</td>
+					<td></td>
+					<td>√</td>
+					<td>乐观锁</td>
+				</tr>
+				<tr>
+					<td>PROC_INST_ID_</td>
+					<td>流程实例ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td></td>
+					<td>流程实例ID</td>
+				</tr>
+				<tr>
+					<td>BUSINESS_KEY_</td>
+					<td>业务主键ID</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>业务主键ID</td>
+				</tr>
+				<tr>
+					<td>PARENT_ID_</td>
+					<td>父节点实例ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>父节点实例ID</td>
+				</tr>
+				<tr>
+					<td>PROC_DEF_ID_</td>
+					<td>流程定义ID</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>流程定义ID</td>
+				</tr>
+				<tr>
+					<td>SUPER_EXEC_</td>
+					<td>SUPER_EXEC_</td>
+					<td>nvarchar(64)</td>
+					<td></td>
+					<td>√</td>
+					<td>SUPER_EXEC_</td>
+				</tr>
+				<tr>
+					<td>ACT_ID_</td>
+					<td>节点实例ID</td>
+					<td>nvarchar(255)</td>
+					<td></td>
+					<td>√</td>
+					<td>节点实例ID即ACT_HI_ACTINST中ID</td>
+				</tr>
+				<tr>
+					<td>IS_ACTIVE_</td>
+					<td>是否存活</td>
+					<td>tinyint</td>
+					<td></td>
+					<td>√</td>
+					<td>是否存活</td>
+				</tr>
+				<tr>
+					<td>IS_CONCURRENT_</td>
+					<td>是否并行</td>
+					<td>tinyint</td>
+					<td></td>
+					<td>√</td>
+					<td>是否为并行(true/false）</td>
+				</tr>
+				<tr>
+					<td>IS_SCOPE_</td>
+					<td>IS_SCOPE_</td>
+					<td>tinyint</td>
+					<td></td>
+					<td>√</td>
+					<td>IS_SCOPE_</td>
+				</tr>
+				<tr>
+					<td>IS_EVENT_SCOPE_</td>
+					<td>IS_EVENT_SCOPE_</td>
+					<td>tinyint</td>
+					<td></td>
+					<td>√</td>
+					<td>IS_EVENT_SCOPE_</td>
+				</tr>
+				<tr>
+					<td>SUSPENSION_STATE_</td>
+					<td>是否挂起</td>
+					<td>tinyint</td>
+					<td></td>
+					<td>√</td>
+					<td>挂起状态 1激活 2挂起</td>
+				</tr>
+				<tr>
+					<td>CACHED_ENT_STATE_</td>
+					<td></td>
+					<td>int</td>
+					<td></td>
+					<td>√</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

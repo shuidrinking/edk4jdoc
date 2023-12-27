@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		20.2.6、编写生产者Action
+	</div>
+	<div class="subTitleDiv">
+		如果发送消息要在action中完成时，你可以参照下面的action。
+	</div>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-java" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+package com.edk4j.edk4jdemos.business.kafka.action;
+import javax.annotation.Resource;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.util.concurrent.ListenableFutureCallback;
+import com.edk4j.core.businessprocessmanage.BusinessAction;
+import com.edk4j.core.datastructure.Context;
+import com.edk4j.core.exception.TranFailException;
+import com.edk4j.core.log.Trace;
+import com.edk4j.core.util.StringUtil;
+/**
+ * BusinessA业务的生产者Action
+ * @author liuxiaosong(shuidrinking@126.com)
+ * @version 2019年10月25日
+ * @since jdk1.7
+ */
+public class BusinessAProducerAction extends BusinessAction{
+       /**
+        * 设置topic名称
+        */
+       private String topicName = "businessA";
+       /**
+        * 保存消息内容的DataCellId
+        */
+       private String messageDataCellId;
+       public void setMessageDataCellId(String messageDataCellId) {
+              this.messageDataCellId = messageDataCellId;
+       }
+       public String getMessageDataCellId() {
+              return messageDataCellId;
+       }
+
+       /**
+        * 注入消息发送组件
+        */
+       @Resource
+       private KafkaTemplate&lt;String, String&gt; kafkaTemplate;
+       /**
+        * 发送消息后的回调bean
+        */
+       private ListenableFutureCallback&lt;SendResult&lt;String, String&gt;&gt; callBackBean= new ListenableFutureCallback&lt;SendResult&lt;String, String&gt;&gt;() {
+              @Override
+              public void onSuccess(SendResult&lt;String, String&gt; result) {
+                     Trace.info(BusinessAProducerAction.class, Trace.Component_Action, "\n发送成功\n{}", result.toString());
+              }
+              @Override
+              public void onFailure(Throwable ex) {
+                     Trace.error(BusinessAProducerAction.class, Trace.Component_Action, "发送失败", ex);
+              }
+       };
+       @Override
+       public String execute(Context context) throws TranFailException {
+              if(StringUtil.isBlank(messageDataCellId)) {
+                     throw new TranFailException("保存消息内容的DataCellId未指定，请设置属性messageDataCellId");
+              }
+              //这里只是简单的发送字符串消息，你完全可以组装复杂的消息
+              String message=(String)context.getDataValue(messageDataCellId);
+              Trace.info(BusinessAProducerAction.class, Trace.Component_Action, "发送消息 => {}", message);
+              this.sendMessage(this.topicName, message);
+              return BusinessAction.OK;
+       }
+
+       /**
+        * 生产消息，指定topic，但是不指定partition，也不指定消息的key
+        * @param topic
+        * @param key
+        * @param message
+        */
+       private void sendMessage(String topic, String message) {
+              kafkaTemplate.send(topic, message).addCallback(callBackBean);
+       }
+       /**
+        * 生产消息，指定topic，指定消息的key，但是不指定partition
+        * @param topic
+        * @param key
+        * @param message
+        */
+       private void sendMessage(String topic, String key, String message) {
+              kafkaTemplate.send(topic, key, message).addCallback(callBackBean);
+       }
+
+       /**
+        * 生产消息，指定topic，指定partition
+        * @param topic
+        * @param message
+        */
+       private void sendPartitionMessage(String topic, Integer partition, String key, String message) {
+              kafkaTemplate.send(topic, partition, key, message).addCallback(callBackBean);
+       }
+}
+</pre>
+	</div>
+</body>
+</html>

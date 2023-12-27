@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/language/lang-sql.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		98.3.2、“Mysql大数据分页查询”action
+	</div>
+	<div class="contentDiv">
+		<p style="text-indent:0.32rem;">
+			该action在2020年2月份推出，必须将本地maven库中的edk-core.jar更新到不晚于2020年2月以后的版本，否则早期版本中没有这个action。
+		</p>
+		<p style="text-indent:0.32rem;">
+			该action采用的做法：“<label style="font-weight:bold;color:#00ffff">主查询的sql</label> + <label style="font-weight:bold;color:#ff0000"> inner join</label> + <label style="font-weight:bold;color:#0000ff">  (分页查出主表主键的sql)</label>”，其中“主查询的sql”在设计时，需要先找到一张表作为主表；inner join 是分页的关键，在inner join 内联查询中“已分页好的主表主键”；你必须将所有“主表的条件”写到“分页查出主表主键的sql”中。
+		</p>
+		<p style="text-indent:0.32rem;font-weight:bold;">
+			在介绍该action 前，我们针对这种查询手法，先举个例子。
+		</p>
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<label style="font-weight:bold;">题目如下：</label><br/>
+						（1）	测试表stress_test_query<br/>
+						（2）要求“查出指定在指定时间范围内的数据’”。如果有300万条数据，那么“分页查询”时，就不能使用edk中提供的普通的分页查询组件，否则会造成严重的性能问题。
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label style="font-weight:bold;background-color:#ffff00">1.建立测试表，并在pub_sequence表中新增一个序列号</label>：
+						<br/>
+<pre class="prettyprint lang-sql" id="codeShow1">
+/**
+ * 用于测试edk中不同的分页查询组件
+ */
+DROP TABLE IF EXISTS stress_test_query;
+CREATE TABLE stress_test_query
+(
+  st_id		bigint(20) 	NOT NULL AUTO_INCREMENT comment 'id',
+  st_cust_no	VARCHAR(20)	 comment '客户号',
+  st_cust_name		VARCHAR(20) comment '名称',
+  st_job_name	VARCHAR(20) comment '工作名称',
+  st_address	VARCHAR(128) comment '联系地址',
+  st_salary		decimal(12,2) comment '工资',
+  st_mobile_no	varchar(16) comment '手机号码',
+  st_email	varchar(64)	comment '邮箱编号',
+  st_description	varchar(512)	comment '备注',
+  st_create_time	datetime comment '创建时间',
+  PRIMARY KEY (st_id)
+)
+comment = "用于测试edk中不同的分页查询组件"
+ENGINE = InnoDB
+DEFAULT CHARSET = utf8mb4
+COLLATE = utf8mb4_bin;
+create index index_stress_test_query1 on stress_test_query(st_cust_no);
+create index index_stress_test_query2 on stress_test_query(st_cust_name, st_mobile_no);
+
+/*
+ * 新增序列号
+ */
+delete from pub_sequence where code='custNoSequence';
+INSERT INTO pub_sequence (code, name, current_value, min_value, max_value, increment) 
+VALUES ('custNoSequence', '客户号序列', '1000000000', '1000000000', '9999999999', '1');
+</pre>
+						<label style="font-weight:bold;background-color:#ffff00">2.编写构造测试数据的存储过程</label>：
+						<br/>
+<pre class="prettyprint lang-sql" id="codeShow2">
+DROP procedure IF EXISTS proc_batch_make_data;
+
+delimiter $$
+create procedure proc_batch_make_data(loopstart int, loopend int)
+begin
+	DECLARE n int DEFAULT loopstart;
+	set @exesql = 'INSERT INTO stress_test_query(st_cust_no, st_cust_name, st_job_name, st_address, st_salary, st_mobile_no, st_email, st_description, st_create_time) values ';
+	set @exedata = '';
+	WHILE n <= loopend DO
+		set @exedata = concat(@exedata,"(nextVal('custNoSequence')", ", '姓名", n , "', '工作", n, "', '地址", n, "', ", n*10+n, ", 18888000000+",n ,", 'user",n,"@edk4j.com'", ", NULL", ", now())");
+		/*每1000个提交一次*/
+		if n % 1000 = 0
+		then
+			set @exesql = concat(@exesql,@exedata,";");
+			
+			prepare stmt from @exesql;
+			execute stmt;
+			DEALLOCATE prepare stmt;
+			commit;
+			
+			set @exesql = 'INSERT INTO stress_test_query(st_cust_no, st_cust_name, st_job_name, st_address, st_salary, st_mobile_no, st_email, st_description, st_create_time)  values ';
+			set @exedata = "";
+		else
+			set @exedata = concat(@exedata,',');
+		end if;
+		set n = n + 1;
+	END WHILE;
+	
+	/*如果总数不足1000时，补充分号并提交*/
+	if right(@exedata,1)=','
+	then
+		set @exedata = TRIM(both ',' from @exedata);
+		set @exesql = concat(@exesql, @exedata, ";");
+		prepare stmt from @exesql;
+		execute stmt;
+		DEALLOCATE prepare stmt;
+		commit;
+	end if;
+end$$
+delimiter ;
+</pre>
+						
+						<br/><label style="background-color:#ffff00">3.调用存储过程造数据，这里造100万，你可以模仿下面的调法，自己造多条</label>
+<pre class="prettyprint lang-sql" id="codeShow3">
+call proc_batch_make_data(1, 3000000);
+</pre>
+						<br/><label style="background-color:#ffff00">4.分析查询比对</label>
+						<br/><label style="color:#028068;font-weight:bold;">/*使用inner join内联手法分页查询，将biz_log表选择为主表，条件字段置于内联查询中，在内联sql中做分页查询查出主表主键：*/</label>
+<pre class="prettyprint lang-sql" id="codeShow4">
+SELECT
+	t.st_id,
+	t.st_cust_no,
+	t.st_cust_name,
+	t.st_job_name,
+	t.st_address,
+	t.st_salary,
+	t.st_mobile_no,
+	t.st_email,
+	t.st_description,
+	date_format(
+		t.st_create_time,
+		'%Y-%m-%d %H:%i:%s'
+	) AS create_time
+FROM
+	stress_test_query t
+INNER JOIN (
+	select st_id from stress_test_query
+	where st_mobile_no>'18888090003'
+	order by st_mobile_no
+	LIMIT 0,10
+) temp ON t.st_id = temp.st_id;
+</pre>
+
+						<br/><label style="color:#028068;font-weight:bold;">/*使用临时表法分页查询，分页的动作是放在最外层的，子查询其实是建了一张临时表：*/</label>
+<pre class="prettyprint lang-sql" id="codeShow5">
+SELECT
+	*
+FROM
+	(
+		SELECT
+			t.st_id,
+			t.st_cust_no,
+			t.st_cust_name,
+			t.st_job_name,
+			t.st_address,
+			t.st_salary,
+			t.st_mobile_no,
+			t.st_email,
+			t.st_description,
+			date_format(
+				t.st_create_time,
+				'%Y-%m-%d %H:%i:%s'
+			) AS create_time
+		FROM
+			stress_test_query t
+		WHERE
+			st_mobile_no > '18888090003'
+		ORDER BY
+			st_mobile_no
+	) AS tmp
+LIMIT 0,10
+</pre>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label style="font-weight:bold;">比对查询效率：</label><br/>
+						很明显，inner jion内联手法效率会高很多，这种分页方法效率要比临时表分页法高【400多倍】（笔者电脑上测试，15毫秒：7000毫秒）
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p style="text-indent:0.32rem;font-weight:bold;">
+			下面我们介绍action，该action的实现类为“com.edk4j.core.repository.jdbc.PageQueryViaInnerJoinSQLAction”，在edk的ide中，可以直接使用。该action的说明如下：
+		</p>
+		<table>
+			<tbody>
+				<tr>
+					<td>
+					<label style="font-weight:bold;">功能描述：</label>
+					<br/><label style="color:#0000ff">定制SQL分页查询多笔数据，SQL中通过对主表inner jion实现分页，原理是：inner jion中的sql作为分页点，先确定目标页的数据主键，再on到主表的主键进行主体查询，最后将结果存入到listx中
+					<br/>本action使用时要特别注意：确定“目标页的数据的主键”的查询条件，必须写在inner jion的sql中，不能把条件放在主体sql中，否则，相当于拿到1页数据了，又做了一次过滤。</label>
+					<br/><br/><label style="font-weight:bold;">参数说明：</label>
+					<br/>（1）<label style="color:#00a04f;font-weight:bold;">dataSourceName</label>, String类型，数据源名称 
+					<br/>（2）<label style="color:#00a04f;font-weight:bold;">querySql</label>，String类型，主体查询SQL，通过 '?变量名' 的方式定义输入参数，该属性非空时querySqlDataCellId属性的设置无效（即该属性优先级比querySqlDataCellId高）
+					<br/>例如： SELECT WFL_CSTNO FROM CB_WAGE_FLOW WHERE WFL_CSTNO like %?custormId% 
+					<br/>（3）<label style="color:#00a04f;font-weight:bold;">querySqlDataCellId</label> ，String类型，context里保存SQL的DataCell的Id（其中保存的SQL中，通过 '?变量名' 的方式定义输入参数）
+					<br/>（4）<label style="color:#00a04f;font-weight:bold;">innerJoinSql</label>，String类型，inner jion分页点SQL，通过 '?变量名' 的方式定义输入参数，该属性非空时innerJoinSqlDataCellId属性的设置无效（即该属性优先级比innerJoinSqlDataCellId高） 
+					<br/>（5）<label style="color:#00a04f;font-weight:bold;">innerJoinSqlDataCellId</label>，String类型，保存innerJoinPagePointSql的dataCell 
+					<br/>（6）<label style="color:#00a04f;font-weight:bold;">mainTableAlias</label>，String类型，主体表别名 
+					<br/>（7）<label style="color:#00a04f;font-weight:bold;">joinColumnNameList</label>，List类型，多个字段用“||”分隔，主体SQL中用于内联的条件字段
+					<br/>（8）<label style="color:#00a04f;font-weight:bold;">listxName</label>，String类型，保存结果的Listx在context中的字段名
+					<br/>（9）<label style="color:#00a04f;font-weight:bold;">outputFieldListInMapx</label>，List类型，结果中每行数据各个字段在Mapx中的字段名，多个字段使用"||"分割
+					<br/>（10）<label style="color:#00a04f;font-weight:bold;">beginPositionFieldName</label>，String类型，存放起始条数字段名称（未指定时，默认为beginPosition，默认值为1）
+					<br/>（11）<label style="color:#00a04f;font-weight:bold;">showNumFieldName</label>，String类型，存放查询条数字段名称（未指定时，默认为showNum，默认值为10）
+					<br/>（12）<label style="color:#00a04f;font-weight:bold;">queryTotalCount</label>，boolean类型，是否查询单页数据时，一并将总数查出 （13）totalNumFieldName，String类型，存放总条数字段名称，默认为totalNum，如果queryTotalCount=false，则该字段无用
+					<br/><br/><label style="font-weight:bold;">使用案例：</label>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p style="font-weight:bold;text-indent:0.32rem">
+			使用可视化ide，为项目“添加edk支持”，选择“添加web项目功能模块”，会自动生成功能代码<br/>
+			打开“src/main/resources/edkConfig/bpmConfig/system/tradeAuditBpm.edkBpm”，其中queryUserTradeHistoryBL里使用了该action；<br/>
+		</p>
+	</div>
+</body>
+</html>

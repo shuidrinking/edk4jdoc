@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.16、edk4j内置数据库连接工具
+	</div>
+	<div class="subTitleDiv">
+		用于需要自己在action类中使用数据库连接的场景中。
+	</div>
+	<div class="subTitleDiv">
+		类：com.edk4j.core.repository.jdbc.DBAccess
+	</div>
+	<div class="subTitleDiv">
+		方法清单：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:9rem;">
+					public static Connection getConnectionFromDataSource()
+				</td>
+				<td style="color:#3f5fbf">
+					从系统定义的数据源中获得数据库连接
+					<br>这里获得的数据源，其自动提交属性已经被关闭，所以需要你代码里commit
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static void cleanResources(PreparedStatement pstmt)
+				</td>
+				<td style="color:#3f5fbf">
+					关闭PreparedStatment
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static void cleanResources(PreparedStatement pstmt, ResultSet resultSet)
+				</td>
+				<td style="color:#3f5fbf">
+					关闭PreparedStatement 、ResultSet
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static void releaseConnection(Connection connection)
+				</td>
+				<td style="color:#3f5fbf">
+					释放数据库连接，释放后，其自动提交属性被打开
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

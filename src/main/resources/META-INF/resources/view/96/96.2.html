@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+		<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			CodePrettyUtil.escapeInnerHTML('codeShow2', 'codeShow2');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		96.2、使用smartdoc生成api文档
+	</div>
+	<div class="tabTitleDiv">无入侵式文档生成工具：smart-doc</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<label style="font-weight:bold;">smart-doc官网：</label><a href="https://smart-doc-group.github.io/#/zh-cn/?id=smart-doc" target="about_blank">https://smart-doc-group.github.io/#/zh-cn/?id=smart-doc</a>
+	</div>
+	<div class="tabTitleDiv">smart-doc用法</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="subTitleDiv addArrow">在项目中新建配置文件：${项目根目录}/src/main/resources/smart-doc.json</div>
+<pre class="prettyprint properties" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+	#smart-doc.json文件内容：
+	{
+	   "outPath": "绝对路径文件夹或者项目下的相对路径，例如：./target/api-doc"
+	}
+</pre>
+	<div class="subTitleDiv addArrow">在pom文件中使用smart-doc插件</div>
+<pre class="prettyprint lang-xml" id="codeShow2" style="font-weight:bold;color:#3f7f5f;">
+	......
+	<properties>
+		<smart-doc.version>2.7.6</smart-doc.version>
+	</properties>
+	......
+	<plugin>
+		<groupId>com.ly.smart-doc</groupId>
+		<artifactId>smart-doc-maven-plugin</artifactId>
+		<version>${smart-doc.version}</version>
+		<configuration> 
+			<configFile>./src/main/resources/smart-doc.json</configFile>  
+			<projectName>${project.description}</projectName>  
+			<includes>
+				<!--格式为：groupId:artifactId;参考如下-->
+				<!--也可以支持正则式如：com.alibaba:.* -->
+			</includes> 
+		</configuration>
+		<executions>
+			<execution>
+				<!--如果不需要在执行编译时启动smart-doc，则将phase注释掉-->
+				<phase>compile</phase>
+				<goals>
+					<!--smart-doc提供了html、openapi、markdown等goal，可按需配置-->
+					<goal>html</goal>
+				</goals>
+			</execution>
+		</executions>
+	</plugin>
+</pre>
+	<div class="subTitleDiv addArrow">使用maven命令生成文档</div>
+<pre class="prettyprint lang-xml" id="codeShow2" style="font-weight:bold;color:#3f7f5f;">
+	//生成html
+	mvn -Dfile.encoding=UTF-8 smart-doc:html
+	//生成markdown
+	mvn -Dfile.encoding=UTF-8 smart-doc:markdown
+	//生成adoc
+	mvn -Dfile.encoding=UTF-8 smart-doc:adoc
+	//生成postman json数据
+	mvn -Dfile.encoding=UTF-8 smart-doc:postman
+	// 生成 Open Api 3.0+,Since smart-doc-maven-plugin 1.1.5
+	mvn -Dfile.encoding=UTF-8 smart-doc:openapi
+	// 生成文档推送到Torna平台
+	mvn -Dfile.encoding=UTF-8 smart-doc:torna-rest
+	
+	// Apache Dubbo RPC文档
+	// Generate html
+	mvn -Dfile.encoding=UTF-8 smart-doc:rpc-html
+	// Generate markdown
+	mvn -Dfile.encoding=UTF-8 smart-doc:rpc-markdown
+	// Generate adoc
+	mvn -Dfile.encoding=UTF-8 smart-doc:rpc-adoc
+	
+	// 生成dubbo接口文档推送到torna
+	mvn -Dfile.encoding=UTF-8 smart-doc:torna-rpc
+</pre>
+	</div>
+	<div class="tabTitleDiv">文档在线平台：Torna</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<label style="font-weight:bold;">Torna官网：</label><a href="https://torna.cn" target="about_blank">https://torna.cn/</a>
+	</div>
+	<div class="tabTitleDiv">smart-doc + Torna使文档自动化在线</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<label style="font-weight:bold">整合方法：</label>
+		<div class="subContentDiv">
+			<a href="https://torna.cn/dev/smart-doc.html#%E6%95%B4%E5%90%88smart-doc" target="about_blank">smart-doc给出的整合手册</a><br>
+			<a href="https://smart-doc-group.github.io/#/zh-cn/torna/tornaIntegration" target="about_blank">Torna给出的整合手册</a>
+		</div>
+	</div>
+	<div class="tabTitleDiv">smart-doc其他精彩</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<label style="font-weight:bold;">smart-doct讨论区：</label><a href="https://github.com/TongchengOpenSource/smart-doc/discussions" target="about_blank">https://github.com/TongchengOpenSource/smart-doc/discussions</a>
+	</div>
+</body>
+</html>

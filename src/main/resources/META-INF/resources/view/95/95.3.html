@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			CodePrettyUtil.escapeInnerHTML('codeShow2', 'codeShow2');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		95.3、设置项目的jdk版本、编码
+	</div>
+	<div class="tabTitleDiv">项目编译属性配置（以pom为例）</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<pre class="prettyprint lang-xml" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+	<!-- 1、申明属性，有些属性是maven的plugin约定的 -->
+	<properties>
+		<project.build.encoding>UTF-8</project.build.encoding>
+		<java.version>1.8</java.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+	<!-- 2、在plugins里配置项目属性 -->
+	<plugins>
+		<!-- 下面的2个编译打包插件，2选1即可，如果是war型项目，建议使用maven编译插件。-->
+		<!-- 选项一：maven官方的编译插件 -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.11.0</version>
+			<configuration>
+				<source>${java.version}</source>
+				<target>${java.version}</target>
+				<encoding>${project.build.encoding}</encoding>
+			</configuration>
+		</plugin>
+		<!-- 选项二：spring-boot的编译插件 -->
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+			<version>2.7.12</version>
+		</plugin>
+	</plugins>
+</pre>
+	</div>
+	<div class="tabTitleDiv">打包时生成javadoc包</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<pre class="prettyprint lang-xml" id="codeShow2" style="font-weight:bold;color:#3f7f5f;">
+	<properties>
+		<project.build.encoding>UTF-8</project.build.encoding>
+	</properties>
+	
+	<profiles>
+		<!-- 屏蔽jdk1.8及更高版本在生成javaDoc时的注释格式检查 -->
+		<profile>
+			<id>java8-doclint-disabled</id>
+			<activation>
+				<jdk>[1.8,)</jdk>
+			</activation>
+			<properties>
+				<additionalparam>-Xdoclint:none</additionalparam>
+			</properties>
+		</profile>
+	</profiles>
+	
+	<plugins>
+		<!-- 引入生成javadoc的插件 -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-javadoc-plugin</artifactId>
+			<!-- 屏蔽jdk1.8及更高版本在生成javaDoc时的注释格式检查 -->
+			<configuration>
+				<additionalparam>-Xdoclint:none</additionalparam>
+				<charset>${project.build.encoding}</charset>
+				<docencoding>${project.build.encoding}</docencoding>
+			</configuration>
+			<executions>
+				<execution>
+					<id>attach-javadocs</id>
+					<goals>
+						<goal>jar</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
+</pre>
+	</div>
+</body>
+</html>

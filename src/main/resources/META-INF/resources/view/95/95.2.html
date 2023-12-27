@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow2', 'codeShow2');
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		95.2、只用springboot的依赖包不用springboot-parent
+	</div>
+	<div class="tabTitleDiv">配置要素</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<pre class="prettyprint lang-xml" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+	<!-- 1、不在pom中设置parent节点 -->
+	
+	<!-- 2、引入spring-boot-dependencies依赖 -->
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-dependencies</artifactId>
+		<version>${spring-boot.version}</version>
+		<type>pom</type>
+		<scope>import</scope>
+	</dependency>
+	
+	<!-- 3、需要其他依赖包时按需引入 -->
+	
+</pre>
+	</div>
+	<div class="tabTitleDiv">一个项目pom配置样例</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<pre class="prettyprint lang-xml" id="codeShow2" style="font-weight:bold;color:#3f7f5f;">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>com.edk4j</groupId>
+	<artifactId>star-server</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>star-server</name>
+	<description>the backend of edk4j-star web application builder</description>
+	
+	<properties>
+		<!-- dependency build folder, it will create a folder named "lib" in this path -->
+		<project.build.lib.directory>/star_builder_deployment</project.build.lib.directory>
+		<project.build.encoding>UTF-8</project.build.encoding>
+		<java.version>1.8</java.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<smart-doc.version>2.7.6</smart-doc.version>
+		<javax-cache.version>1.0.0</javax-cache.version>
+		<spring-boot.version>2.7.16</spring-boot.version>
+		<tomcat.version>8.5.60</tomcat.version>
+		<mybatis.spring.boot.starter.version>1.3.5</mybatis.spring.boot.starter.version>
+		<!-- 更低版本会有log4Shell(CVE-2021-44228)漏洞 -->
+		<log4j2.version>2.17.2</log4j2.version>
+		<com.lmax.disruptor.version>3.4.4</com.lmax.disruptor.version>
+		<json-lib.version>2.4</json-lib.version>
+		<ezmorph.version>1.0.6</ezmorph.version>
+		<httpclient.version>4.5.9</httpclient.version>
+		<freemarker.version>2.3.31</freemarker.version>
+		<lombok.version>1.16.22</lombok.version>
+		<pingyin4j.version>2.5.0</pingyin4j.version>
+		<ezmorph.version>1.0.6</ezmorph.version>
+		<mysql.version>8.0.30</mysql.version>
+		<commons-lang.version>2.4</commons-lang.version>
+		<commons-lang3.version>3.2.1</commons-lang3.version>
+		<commons-io.version>2.4</commons-io.version>
+		<commons-net.version>3.0.1</commons-net.version>
+		<commons-fileupload.version>1.4</commons-fileupload.version>
+		<commons-discovery.version>0.2</commons-discovery.version>
+		<commons-compress.version>1.18</commons-compress.version>
+		<httpclient.version>4.5.9</httpclient.version>
+		<slf4j.version>1.7.36</slf4j.version>
+		<jedis.version>2.9.3</jedis.version>
+		<ehcache3.version>3.2.3</ehcache3.version>
+		<aspectj.version>1.8.14</aspectj.version>
+		<assertj.version>3.22.0</assertj.version>
+		<jackson-bom.version>2.13.5</jackson-bom.version>
+	</properties>
+	<dependencies>
+		<!-- spring boot 依赖 --> 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-dependencies</artifactId>
+			<version>${spring-boot.version}</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring-boot.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${assertj.version}</version>
+		</dependency>
+		<!-- spring-boot-test从2.2开始默认集成junit4, 但是2.6以后需要自行引入junit5套件 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${spring-boot.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- junit执行套件 -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-runner</artifactId>
+			<version>1.10.0</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- 配置文件处理 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<version>${spring-boot.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<!-- 使用监控请求 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
+
+		<!-- mybatis依赖，在mapper接口中使用注解实现注册 -->
+		<!-- <dependency> <groupId>org.mybatis.spring.boot</groupId> <artifactId>mybatis-spring-boot-starter</artifactId> 
+			<version>${mybatis.spring.boot.starter.version}</version> </dependency> -->
+
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<version>3.5.3.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-generator</artifactId>
+			<version>3.5.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>${freemarker.version}</version><!--$NO-MVN-MAN-VER$ -->
+		</dependency>
+
+		<!-- vo dto等实体类getersetter代码补充工具，设置为provided，只在编译阶段生效 -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version><!--$NO-MVN-MAN-VER$ -->
+			<scope>provided</scope>
+		</dependency>
+		<!--mysql驱动 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
+		</dependency>
+		<!-- 日志工具包 -->
+		<!-- slf4j依赖 -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<!-- log4j2依赖 ，下面的依赖包中集成了log4j2的系列包-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
+
+		<!-- log4j2异步日志需要 -->
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>${com.lmax.disruptor.version}</version>
+		</dependency>
+		<!-- 汉语拼音工具包 -->
+		<dependency>
+			<groupId>net.sourceforge</groupId>
+			<artifactId>pinyin4j</artifactId>
+			<version>${pingyin4j.version}</version>
+		</dependency>
+		<!-- 高版本jdk解析xml工具，备用 -->
+		<!-- <dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.2.12</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.2.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>2.2.10</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
+		</dependency> -->
+		<!-- jackson在spring内已经集成，此处额外引入jackson对yarm的支持包 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+			<version>${jackson-bom.version}</version>
+		</dependency>
+		<!-- 不能结合实体类使用jackson时使用 -->
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>${json-lib.version}</version>
+		</dependency>
+		<!-- json-lib的对象转换器 -->
+		<dependency>
+			<groupId>net.sf.ezmorph</groupId>
+			<artifactId>ezmorph</artifactId>
+			<version>${ezmorph.version}</version>
+		</dependency>
+
+		<!-- maven invoker -->
+		<dependency>
+			<groupId>org.apache.maven.shared</groupId>
+			<artifactId>maven-invoker</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+
+		<!-- sshd和sftp客户端 -->
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.54</version>
+		</dependency>
+		<!-- 缓存依赖 -->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>${jedis.version}</version>
+		</dependency>
+		<!-- 不使用spring ehcache，本平台自定义实现 -->
+		<dependency>
+			<groupId>javax.cache</groupId>
+			<artifactId>cache-api</artifactId>
+			<version>${javax-cache.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>${ehcache3.version}</version>
+		</dependency>
+		<!-- apache commons工具包 -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>${commons-fileupload.version}</version>
+		</dependency>
+		
+		<!-- webp图片解码器 -->
+		<dependency>
+			<groupId>org.sejda.imageio</groupId>
+			<artifactId>webp-imageio</artifactId>
+			<version>0.1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		<!-- 二维码生成器  -->
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.5.0</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!--打包时去除第三方依赖-->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.7.12</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>true</executable>
+					<layout>ZIP</layout>
+					<!-- 
+					这里是填写需要包含进去的jar，如果没有则nothing
+					 -->
+					<includes>
+						<include>
+							<groupId>nothing</groupId>
+							<artifactId>nothing</artifactId>
+						</include>
+					</includes>
+				</configuration>
+			</plugin> 
+			<!-- <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.encoding}</encoding>
+				</configuration>
+			</plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.1.2</version>
+				<configuration>
+					<skipTests>true</skipTests>
+					<!-- 要排除的jar -->
+					<!-- <packagingExcludes>WEB-INF/lib/**/*.jar</packagingExcludes> -->
+				</configuration>
+			</plugin>
+			<!--拷贝依赖到jar外面的lib目录 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.2</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<!--指定的依赖路径 -->
+							<outputDirectory>${project.build.lib.directory}/lib</outputDirectory>
+							<excludeTransitive>false</excludeTransitive>
+							<stripVersion>false</stripVersion>
+							<includeScope>runtime</includeScope>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!--使用命令mvn -Dfile.encoding=UTF-8 smart-doc:html 生成api文档-->
+			<plugin>
+				<groupId>com.github.shalousun</groupId>
+				<artifactId>smart-doc-maven-plugin</artifactId>
+				<version>${smart-doc.version}</version>
+				<configuration>
+					<includes>
+						<!--格式为：groupId:artifactId;参考如下-->
+						<!--也可以支持正则式如：com.alibaba:.* -->
+						<include>com.edk4j:star-server</include>
+					</includes>
+					<excludes>
+						<exclude>com.edk4j.star.application:.*</exclude>
+					</excludes>
+					<!--指定生成文档的使用的配置文件-->
+					<configFile>./src/main/resources/smart-doc.json</configFile>
+					<!--指定项目名称-->
+					<projectName>“速搭”低代码应用搭建平台</projectName>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>html</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+
+</pre>
+	</div>
+</body>
+</html>

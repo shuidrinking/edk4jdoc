@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		21.2、打包为可独立运行的jar
+	</div>
+	<div class="subTitleDiv">
+		要将项目打包为可独立运行的jar，必须如下做：<br>
+		首先，项目类型必须是jar类型，你可以直接将pom.xml中的war修改为jar。<br>
+		其次，需要按照上一节中的步骤，将项目修改为“使用springBoot方式启动项目”。<br>
+		最后，任选下面一种套路，修改打包设置。<br>
+		运行maven install打包成功后，直接用命令 java -jar yourArtifactId.jar便可运行启动。<br>
+		<label style="background-color:#ffff00;">【注意】</label>：如果项目的parent并非spring-boot-parent，那么执行mvn命令必须加入参数： spring-boot:repackage，例如：<label style="background-color:#e2e2e2;border-radius: 0.02rem;padding:0 0.1rem;">mvn clean package spring-boot:repackage</label><br>
+		<label style="background-color:#ffff00;">对于微服务、纯接口型的项目，可以打包为jar运行，但是对于web项目，没必要这样做，可运行的jar本质上就是内嵌了一个tomcat，这要比独立tomcat部署的方式在运维便捷、性能、以及灵活度上差。</label>
+	</div>
+	<div class="tabTitleDiv">套路一</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="item">
+			（1）将src/main/webapp文件夹系的静态资源全部挪到src/main/resources/static文件夹下
+		</div>
+		<div class="item">
+			（2）修改pom.xml，在&lt;plugins&gt;标签中，添加如下所示的spring-boot-maven-plugin插件：
+		</div>
+		<div class="subContentDiv">
+			<pre class="prettyprint lang-xml" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;plugin&gt;
+	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+	&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+&lt;/plugin&gt;
+</pre>
+		</div>
+	</div>
+	<div class="tabTitleDiv">套路二</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="item">
+			（1）在pom.xml的&lt;plugins&gt;标签中，【添加】如下所示的spring-boot-maven-plugin插件
+		</div>
+		<div class="subContentDiv">
+			<pre class="prettyprint lang-xml" id="codeShow3" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;plugin&gt;
+	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+	&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+&lt;/plugin&gt;
+</pre>
+		</div>
+		<div class="item">
+			（2）在&lt;build&gt;标签中，【添加】&lt;resources&gt;标签，分别对java、 配置文件、以及静态资源做打包指定处理
+		</div>
+		<div class="item">
+			以上两点修改样例如下：
+		</div>
+		<div class="subContentDiv addBorder">
+			<pre class="prettyprint lang-xml" id="codeShow2" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;build&gt;
+	&lt;resources&gt;
+		&lt;!--
+		class文件和依赖的jar会自动添加，可以不申明，因此这段注释掉只作为参考
+		&lt;resource&gt;
+			&lt;directory&gt;src/main/java&lt;/directory&gt;
+			&lt;includes&gt;
+				&lt;include&gt;**/*.*&lt;/include&gt;
+			&lt;/includes&gt;
+			&lt;filtering&gt;true&lt;/filtering&gt;
+		&lt;/resource&gt;
+		--&gt;
+		&lt;!-- 配置文件打包设置 --&gt;
+		&lt;resource&gt;
+			&lt;directory&gt;src/main/resources&lt;/directory&gt;
+			&lt;includes&gt;
+				&lt;include&gt;**/**&lt;/include&gt;
+			&lt;/includes&gt;
+			&lt;filtering&gt;true&lt;/filtering&gt;
+		&lt;/resource&gt;
+		&lt;!-- 将静态文件打包，静态文件将位于BOOT-INFO/classes/static目录 --&gt;
+		&lt;resource&gt;
+			&lt;directory&gt;src/main/webapp&lt;/directory&gt;
+			&lt;targetPath&gt;static&lt;/targetPath&gt;
+			&lt;includes&gt;
+				&lt;include&gt;**/**&lt;/include&gt;
+			&lt;/includes&gt;
+			&lt;excludes&gt;
+				&lt;!-- 过滤WEB-INF下的内容 --&gt;
+				&lt;exclude&gt;WEB-INF/**/**&lt;/exclude&gt;
+			&lt;/excludes&gt;
+			&lt;filtering&gt;true&lt;/filtering&gt;
+		&lt;/resource&gt;
+	&lt;/resources&gt;
+	&lt;plugins&gt;
+		&lt;plugin&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+		&lt;/plugin&gt;
+		&ltplugin&gt;
+			&ltgroupId&gt;org.apache.maven.plugins&lt/groupId&gt;
+			&ltartifactId&gt;maven-resources-plugin&lt/artifactId&gt;
+			&ltdependencies&gt;
+				&ltdependency&gt;
+					&ltgroupId&gt;org.apache.maven.shared&lt/groupId&gt;
+					&ltartifactId&gt;maven-filtering&lt/artifactId&gt;
+					&ltversion&gt;1.3&lt/version&gt;
+				&lt/dependency&gt;
+			&lt/dependencies&gt;
+		&lt/plugin&gt;
+	&lt;/plugins&gt;
+&lt;/build&gt;
+</pre>
+		</div>
+	</div>
+</body>
+</html>

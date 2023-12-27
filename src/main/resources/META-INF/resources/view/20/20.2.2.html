@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		20.2.2、kafka中的一些重要规则
+	</div>
+	<div class="subTitleDiv">
+		（1）kafka是重量级的消息总线，必须使用zookeeper来实现集群，从而完成分布式协作、分布式锁定、HA高可用等功能支持，如果是单机版的kafka，则不能很好的体现kafka的性能； 
+			kafaka集群的 broker，和 Consumer 都需要连接zookeeper。Producer 直接连接 Broker，Topic 分区被放在不同的 Broker 中，保证 Producer 和 Consumer 错开访问 Broker，避免访问单个 Broker造成过度的IO压力，使得负载均衡。
+	</div>
+	<div class="subTitleDiv">
+		（2）消费者自己“拉取”消息，并且没有消息确认机制，broker不会主动推送；
+	</div>
+	<div class="subTitleDiv">
+		（3）无论生产或者消费，与kafka交互都要指定topic；
+	</div>
+	<div class="subTitleDiv">
+		（4）producer发送是异步的，broker上存储是有序的，consumer获取时是按存储顺序有序获得，因此consumer获取的消息顺序已经失去了producer发送时的顺序；
+	</div>
+	<div class="subTitleDiv">
+		（5）消费者的参数中，"enable-auto-comkit"，当为true则消费该消息，下次再消费就不能消费了，当为false时消费该消息，下次还能消费；
+	</div>
+	<div class="subTitleDiv">
+		（6）众消费者的group-id相同时，kafka中的topic类似activemq中的"queue"，一条消息只会被同组内的一个消费者消费；如果众消费者的group-id不同时，kafaka中的topic类似activemq中的"topic"，一条消息可以被所有消费者消费；
+	</div>
+	<div class="subTitleDiv">
+		（7）老版本的kafka中，借助zookeerper保存了每个topic下的每个partition被每个group消费的offset 。新版kafka把这个offsert保存到了一个__consumer_offsert的topic下 ，这个__consumer_offsert 有50个分区，通过将group的id哈希值%50的值来确定要保存到那一个分区。
+	</div>
+</body>
+</html>

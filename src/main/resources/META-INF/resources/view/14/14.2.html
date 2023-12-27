@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		14.2、自定义统一异常处理器
+	</div>
+	<div class="tabTitleDiv">自定义的必要性</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		项目中需要个性化的处理异常，而平台内置的异常处理器无法满足时，例如：<br>
+		（1）需要个性化的异常信息格式化返回内容，不一定非要用json格式返回，errorCode和errorMessage字段名也要换成其他的；<br>
+		（2）需要针对不同错误码，跳转到不同的错误页面；<br>
+		（3）针对来自不同的渠道的请求，答复不同的反馈内容，移动端的需要返回格式化报文，PC端需要跳转到错误页面；
+	</div>
+	<div class="tabTitleDiv">开发套路</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<label style="font-weight:bold;">遵循spring的统一异常处理器开发规范，依照下面条路进行开发：</label><br>
+		（1）开发自定义异常处理器类；<br>
+		（2）为该类添加@ControllerAdvice(annotations = {Controller.class, RestController.class})，使其拦截处理请求交互中产生的异常；<br>
+		（3）为该类添加@Order注解，并设置value比0更小，如此才能提高优先级，覆盖平台内置的统一异常处理器；<br>
+		（4）在类中添加针对具体异常类型的方法，并在方法上添加注解两个注解：<br>
+			<label style="padding-left:0.32rem;">@ExceptionHandler(value = {异常类.class})</label><br>
+			<label style="padding-left:0.32rem;">@ResponseBody</label><br>
+	</div>
+	<div class="tabTitleDiv">自定义统一异常处理器样例类</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<div class="button deepBlueButton" onclick="doCopyText('codeShow1');" style="position:absolute;top:6.2rem;right:0.5rem;">点此复制</div>
+<pre class="prettyprint lang-java" id="codeShow1" style="height:5rem;overflow-y:scroll;font-weight:bold;font-size:0.14rem;line-height:0.15rem;">
+package com.mycomponey.myproject.exception;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.Charset;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.edk4j.core.business.system.service.ErrorInfoService;
+import com.edk4j.core.config.ApplicationConfig;
+import com.edk4j.core.constant.BaseConstant;
+import com.edk4j.core.constant.BaseErrorCode;
+import com.edk4j.core.exception.BaseException;
+import com.edk4j.core.exception.BaseExceptionHandler;
+import com.edk4j.core.log.Trace;
+import com.edk4j.core.util.ConfigPropertiesReader;
+import com.edk4j.core.util.StringUtil;
+
+/**
+ * 统一异常处理器
+ * <p>本类的优先级高于edk平台内置的“统一异常处理器”，方法：使用@Order注解，其value比0小</p>
+ * <p>注意，edk平台内置的统一异常处理器中，会处理com.edk4j.core.exception.BaseException以及java.lang.Exception两种类型的异常；</p>
+ * <p><b>spring中多个“统一异常处理器”的竞争规则</b>：<br>
+ * 	如果多个“统一异常处理器”中，在@ExceptionHandler里申明了同样的异常类型，那么谁的order值更小，就由谁来处理<br>
+ * 如果多个“统一异常处理器”中，在@ExceptionHandler里各自申明了不同的异常类型，那么谁有申明就由谁处理，跟order值没关系 </p>
+ */
+@ControllerAdvice(annotations = {Controller.class, RestController.class})
+//只要设置的order值比0小，就能使本类的优先级比“edk平台内置的统一异常处理器的优先级”更高
+@Order(-1)
+public class MyExceptionHandler{
+	/**
+	 * 该service并非必须
+	 */
+	@SuppressWarnings("unused")
+	@Autowired(required=false)
+	private ErrorInfoService errorInfoService;
+	
+	@Autowired
+	private ApplicationConfig applicationConfig;
+	
+	/**
+	 * 拦截BaseException类型的异常
+	 * @param e
+	 * @param request
+	 * @return
+	 */
+	@ExceptionHandler(value = {
+			com.edk4j.core.exception.BaseException.class
+	})
+	@ResponseBody
+	public Object baseExceptionHandler(BaseException e, HttpServletRequest request) {
+		//错误码
+		String errorCode = e.getErrorCode();
+		String errorMessage = null;
+		//错误信息
+		if(errorCode == null || "".equals(errorCode)){
+			errorCode = BaseErrorCode.SYSTEM_ERROR;
+			errorMessage = "交易异常";
+		}
+		else{
+			/*
+			 * TODO 自行实现算法，根据错误码获取错误信息。自行实现时，可以参考在edk的默认异常处理器中算法：
+			 * （1）调用本类中Autowired的errorInfoService对象，从数据库中的“错误定义表(pub_error_define)”中，根据错误码查询错误信息
+			 * （2）如果数据库中查询不到，则调用ConfigPropertiesReader.getPropertyValue方法，则在message{_Locale}.properties配置文件中查找错误码对应的错误信息
+			 * （3）如果配置文件中找不到，则调用e.getMessage()方法，从exception对象自身中获取异常信息
+			 */
+			
+			errorMessage = "请编写自定义实现算法获取异常信息！";
+		}
+		//在日志中打印异常
+		Trace.error(getClass(),Trace.Component_System_Component, errorCode, e);
+		
+		/*
+		 * 如果在Mvc中设置了页面跳转，并且在MvcController中使用了这句：request.setAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID, Boolean.TRUE);
+		 * 那么这里返回ModelAndView对象，跳转到在edk4jConfig.properties中定义的错误页面（配置项为application.defaultErrorPage=错误页面）
+		 * 
+		 * 【注意，可以用自定义的规则（例如：可以做一个错误码和错误页面映射表，根据错误码返回错误页面），判定是否要返回ModelAndView，并且返回页面都自定义实现】
+		 */
+		if(request.getAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID)!=null 
+			&& (boolean)request.getAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID)) {
+			if(StringUtil.isBlank(applicationConfig.getDefaultErrorPage())) {
+				Trace.warn(BaseExceptionHandler.class, Trace.Component_System_Component, "找不到默认错误页面，请在edk4jConfig.properties中补充配置项：application.defaultErrorPage");
+				return getResultStringFromError(errorCode, errorMessage);
+			}
+			else {
+				ModelAndView modelAndView = new ModelAndView();
+			    modelAndView.setViewName(applicationConfig.getDefaultErrorPage());
+			    modelAndView.addObject("resultCode", errorCode);
+			    modelAndView.addObject("resultMessage", errorMessage);
+			    return modelAndView;
+			}
+		}
+		else {
+			//返回报文字符串
+			return getResultStringFromError(errorCode, errorMessage);
+		}
+	}
+	
+	/**
+	 * 拦截其他类型的异常
+	 * @param e
+	 * @param request
+	 * @return
+	 */
+	@ExceptionHandler(value = Exception.class)
+	@ResponseBody
+	public Object otherExceptionHandler(Exception e, HttpServletRequest request) {
+		String errorCode = BaseErrorCode.USER_DEFINED_ERROR;
+		//如果errorCode中没有被定义,则取异常中自带的错误信息
+		String eMsg = e.getMessage();
+		if(e.getMessage()==null) {
+			eMsg = e.getClass().getName();
+		}
+		String errorMessage = ConfigPropertiesReader.getPropertyValue(errorCode, "交易异常", new String[]{eMsg}, LocaleContextHolder.getLocale());
+		Trace.error(getClass(),Trace.Component_System_Component,e.getMessage(), e);
+		
+		if(request.getAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID)!=null 
+			&& (boolean)request.getAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID)) {
+			if(StringUtil.isBlank(applicationConfig.getDefaultErrorPage())) {
+				Trace.warn(BaseExceptionHandler.class, Trace.Component_System_Component, "找不到默认错误页面，请在edk4jConfig.properties中补充配置项：application.defaultErrorPage");
+				return getResultStringFromError(errorCode, errorMessage);
+			}
+			else {
+				ModelAndView modelAndView = new ModelAndView();
+			    modelAndView.setViewName(applicationConfig.getDefaultErrorPage());
+			    modelAndView.addObject("resultCode", errorCode);
+			    modelAndView.addObject("resultMessage", errorMessage);
+			    return modelAndView;
+			}
+		}
+		else {
+			return getResultStringFromError(errorCode, errorMessage);
+		}
+	}
+
+	/**
+	 * 获取异常详细信息
+	 * @param e
+	 * @return
+	 */
+	public static String getErrorStack(Exception e) {
+		ByteArrayOutputStream bo = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(bo);
+		e.printStackTrace(ps);
+		String errorStack = new String(bo.toByteArray(), Charset.defaultCharset());
+		return errorStack;
+	}
+	
+	/**
+	 * 从错误信息生成json字符串
+	 * @param errorCode
+	 * @param errorMessage
+	 * @return
+	 */
+	private String getResultStringFromError(String errorCode, String errorMessage) {
+		StringBuffer sb=new StringBuffer();
+		sb.append("{\n");
+		sb.append("\t\"resultCode\" : \"");
+		sb.append(errorCode);
+		sb.append("\",\n\t\"resultMessage\" : \"");
+		sb.append(errorMessage);
+		sb.append("\"\n}");
+		return sb.toString();
+	}
+}
+</pre>
+	</div>
+	
+	<div class="tabTitleDiv">更丰富做法</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<label style="font-weight:bold;">以下为可选建议，使异常处理能力更加丰富，遵循spring的异常处理机制，互联网参考资料非常丰富。</label><br>
+		<label style="font-weight:bold;">可以开发ErrorController实现类来实现更丰富多彩的异常处理功能：</label><br>
+		（1）开发个性化ErrorController，实现接口org.springframework.boot.autoconfigure.web.ErrorController；<br>
+		（2）例如，可以模仿org.springframework.boot.autoconfigure.web.BasicErrorController<br>
+		<label style="font-weight:bold;">可以开发ErrorPageRegistrar实现类，为404，500等Http错误设置个性化响应页面：</label><br>
+		（1）实现接口org.springframework.boot.web.servlet.ErrorPageRegistrar<br>
+		（2）使用@Configuration，使该类在系统启动时运行<br>
+		（3）实现public void registerErrorPages(ErrorPageRegistry registry)方法，在其中调用registry.addErrorPages()，为各个http错误码设置响应页面<br>
+	</div>
+</body>
+</html>

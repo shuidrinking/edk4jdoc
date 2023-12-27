@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.13、edk4j内置实体类对象或其集合操作
+	</div>
+	<div class="subTitleDiv addArrow">
+		1、实体类对象和map互转工具
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.util.BeanMapUtil
+	</div>
+	<div class="subContentDiv">
+		方法如下：
+	</div>
+	<div class="subContentDiv">
+		<table>
+			<tbody>
+				<tr>
+					<td style="width:10rem;">
+						public static &lt;T&gt; Map&lt;String, Object&gt; beanToMap(T object)
+					</td>
+					<td style="color:#3f5fbf">
+						将实体对象转换为map
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static &lt;T&gt; T mapToBean(Map&lt;String, Object&gt; map, T object)
+					</td>
+					<td style="color:#3f5fbf">
+						将map转换为实体类对象，依次遍历map中的key，将value设置到object里与key相同的属性中
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static &lt;T&gt; List&lt;Map&lt;String, Object&gt;&gt; objectsToMaps(List&lt;T&gt; objList)
+					</td>
+					<td style="color:#3f5fbf">
+						将List&lt;T&gt;转换为List&lt;Map&lt;String, Object&gt;&gt;
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static &lt;T&gt; List&lt;T&gt; mapsToObjects(List&lt;Map&lt;String, Object&gt;&gt; maps, Class&lt;T&gt; clazz)
+					</td>
+					<td style="color:#3f5fbf">
+						将List&lt;Map&lt;String,Object&gt;&gt;转换为List&lt;T&gt;
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="subTitleDiv addArrow">
+		2、实体类对象属性copy工具
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.util.PropertiesCopyUtil
+	</div>
+	<div class="subContentDiv">
+		用于复制实体类对象的属性，方法清单：
+	</div>
+	<div class="subContentDiv">
+		<table>
+			<tbody>
+				<tr>
+					<td style="width:8rem;">
+						public static &lt;T&gt; T copyProperties(Object sourceObject,Class&lt;T&gt; destClazz)
+					</td>
+					<td style="color:#3f5fbf">
+						创建一个新的destClazz类型的对象，然后将sourceObject对象里的属性值，复制到新对象中去，只复制同名属性！
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static void copyProperties(Object sourceObject,Object targetObject)
+					</td>
+					<td style="color:#3f5fbf">
+						将sourceObject对象里的属性值，复制到targetObject的同名属性中去，只复制同名属性！
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="subTitleDiv addArrow">
+		3、实体类对象集合copy工具
+	</div>
+	<div class="subContentDiv">
+		类：com.edk4j.core.util.CollectionUtil
+	</div>
+	<div class="subContentDiv">
+		一般用在spring+mybatis开发套路中，从数据库查询得到的是数据库映射对象，返回给前台的是返回类型的对象，此时就可以用这个工具类创造返回对象。<br>
+		目前提供了一个方法：用于将一个列表里的对象的属性值，逐个复制到另一列表的对象中。
+	</div>
+	<div class="subContentDiv">
+		方法清单：
+	</div>
+	<div class="subContentDiv">
+		<table>
+			<tbody>
+				<tr>
+					<td style="width:10rem;">
+						public static &lt;T&gt; List&lt;T&gt; transformList(List&lt;?&gt; sourceList, final Class&lt;T&gt; destClazz)
+					</td>
+					<td style="color:#3f5fbf">
+						创建一个新的集合，集合中实体类的类型为destClazz，新集合的大小等于sourceList的大小，然后遍历sourceList集合，将实体类的同名属性值复制到新集合中序列号相同的实体类中
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

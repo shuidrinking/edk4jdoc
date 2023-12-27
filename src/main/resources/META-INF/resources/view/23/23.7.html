@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		23.7、如何定制化异常信息记录格式
+	</div>
+	<div class="tabTitleDiv">默认异常信息格式</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p>目前，如果请求API中抛出了异常，则在链路最外层的展示链中，会记录异常的详细堆栈信息，如下：</p>
+		<img src="../../image/business/23/23.7-1.png" />
+	</div>
+	<div class="tabTitleDiv">定制化异常信息格式</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p>如果不想使用默认的异常堆栈信息形式，可以在catch块中向数据项标签中设置自定义的error标签值</p>
+		<pre class="prettyprint" id="codeShow1" style="font-weight:bold;">
+try{
+	...
+}
+catch(SomeException e){
+	//如果发生异常时，向跟踪标签中加入异常信息，下面的errorStackTrace你可以自己定义
+	String errorStackTrace = BaseExceptionHandler.getErrorStack(e);
+	spanProcessor.addTagToCurrentTrack(EdkTraceConstant.ERROR_TAG_NAME, errorStackTrace);//EdkTraceConstant.ERROR_TAG_NAME="error"，异常标签最好都用"error"标记，便于查询
+}
+		</pre>
+	</div>
+	
+</body>
+</html>

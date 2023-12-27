@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		6.6、代码排版规范
+	</div>
+	<div class="contentDiv">
+		<div class="subContentDiv">
+			代码排的乱七八糟，对后面的阅读和维护造成很大的不便，是在间接加大项目运维成本。
+		</div>
+		<div class="subTitleDiv addArrow">
+			1、不要使用eclipse默认的换行
+		</div>
+		<div class="subContentDiv">
+			你的屏幕真的小得可怜到只能容纳一行放80个字符？现在都是大屏幕，设置200都轻松，合理的换行，让后面维护的人阅读愉快点。
+		</div>
+		<div class="subTitleDiv addArrow">
+			2、不要在静态文件里每隔一行就加空行
+		</div>
+		<div class="subContentDiv">
+			但凡在html，js文件里自动排版时，自动排版每行代码后加一个空行的程序员不好形容了。
+		</div>
+		<div class="subContentDiv">
+			最好别用没设置过模板的eclipse等工具对html,js等文件进行自动排版，使用前先设置模板。
+		</div>
+		<div class="subTitleDiv addArrow">
+			3、Repository类
+		</div>
+		<div class="subContentDiv">
+			不需要注解，必须是interface 而且必须 extends BaseRepository&lt;T,PK&gt;（com.edk4j.core.annotation.BaseRepository&lt;T, PK&gt;）
+		</div>
+	</div>
+</body>
+</html>

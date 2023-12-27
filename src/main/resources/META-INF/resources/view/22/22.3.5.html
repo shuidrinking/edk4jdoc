@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		22.3.5、待办任务以及我参与的流程
+	</div>
+	<div class="tabTitleDiv">1、“待办任务”功能位置</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		“待办任务”菜单是所有人登录后都能看到的，页面展示了所有“我”有权处理的流程。
+		<img src="../../image/business/22/22.3.5-2.png" style="width:100%;margin:0 auto;display:table-cell;"/>
+	</div>
+	<div class="tabTitleDiv">“待办任务”调用代码</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<div>（1）直接调用workflowInstanceMvc.edk4jMvc文件中的mvc“/workflowInstance/queryGTasks”，关联到wokflowInstanceBpm.edk4jBpm文件中的“wokflowInstance.queryGTasksBL”。</div>
+		<div>（2）不需要传参数，业务逻辑中能从sessionContext里直接拿到当前登录用户的用户号</div>
+	</div>
+	<div class="tabTitleDiv">2、“我参与的流程”功能位置</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		“我的历史工单”菜单是所有人登录后都能看到的，页面展示了所有“我”处理过的流程。
+		<img src="../../image/business/22/22.3.5-1.png" style="width:100%;margin:0 auto;display:table-cell;"/>
+	</div>
+	<div class="tabTitleDiv">“我参与的流程”调用代码</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<div>（1）直接调用workflowInstanceMvc.edk4jMvc文件中的mvc“/workflowManage/queryUserDealedProcessInstanceList”，关联到wokflowInstanceBpm.edk4jBpm文件中的“wokflowInstance.queryUserDealedProcessInstanceListBL”。</div>
+		<div>（2）不需要传参数，业务逻辑中能从sessionContext里直接拿到当前登录用户的用户号</div>
+	</div>
+</body>
+</html>

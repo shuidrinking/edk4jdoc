@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			//CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		5.2.2、edk4jMvc配置文件
+	</div>
+	<div class="subTitleDiv addArrow">
+		（1）所有交易的对外url配置建议使用restfull风格，不要带后缀（当然了，特殊需求或者接口，可以带上以好分辨，带后缀本身没任何问题，只要你喜欢，你可以带任何后缀，这个没任何规则限制）。
+	</div>
+	<div class="subTitleDiv addArrow">
+		（2）edk4j可视化开发ide会自动生成.edk4jMvc文件内容。
+	</div>
+	<div class="subTitleDiv addArrow">
+		（3）.edk4jMvc配置文件内容是按照xml规范编写的，如果没有ide，比如在服务器上直接修改，就需要了解文件内容模板，解释如下：
+	</div>
+	<div class="subContentDiv addBorder">
+<pre class="prettyprint lang-xml" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;!DOCTYPE MvcGroup SYSTEM "../../dtd/edk4jMvc.dtd"&gt;
+&lt;MvcGroup label="mvc分组名称，一组mvc可以归类放到同一个.edk4jMvc文件中，也就是说一个MvcGroup标签中可以包含多个Mvc标签"&gt;
+	&lt;Mvc
+			label="必配属性 ，该请求的功能描述"
+			requestUrl="必配属性，建议restfull风格，请求URL，例如 /module/serviceUrl "
+			method="设定http请求的method，取值范围为 POST或GET，可以不设置该属性，不设置时接受所有方式提交"
+			mvcControllerClassName="MVC控制器，默认为com.edk4j.sdk.web.controller.DefaultMvcController，这个类是可配置的，请在你的应用中提供接口com.edk4j.core.mvcprocess.MvcController的实现类，并配置到edk4jConfig.properties的application.defaultMvcControllerClassName字段中"
+			businessLogicId="必配属性 ，值为 BusinessLogicGroup的Id.BusinessLogicId"
+			businessCode="必配属性 ，值为交易码"
+			checkBusinessCodeAccess="是否在客户请求时，检查是否有进行该交易的权限，取值范围 true|false，默认为true "
+			checkSession="是否检查session，取值范围 true|false，默认为true"
+			addTimeStampToResult="是否向返回结果中添加时间戳，取值范围 true|false，默认为false"
+			checkTimeStamp="是否在请求处理前检查时间戳，取值范围 true|false，默认为false"
+			updateCurrentBusinessCode="是否更新sessionContext中的字段currentBusinessCode，取值范围 true|false，默认为true "
+			updateSessionContext="逻辑执行完后更新sessionContext，取值范围 true|false，默认为true "
+			logBusinessDataObjectInResponse="是否在出参中打印businessDataObject到日志中，取值范围 true|false，默认为true "
+			wrapRequestData="设置是否对请求数据进行解密等包装处理，取值为true或false，默认为false"
+			requestDataWrapperClass="当上面的wrapRequestData属性为false时，这个属性就没用。否则，如果设置了这个属性，则会使用你设置的包装器类，如果没有设置这个属性，则会使用edk4jConfig.properties中配置的application.defaultRequestDataWrapperClassName这个配置项，如果连配置项也没设置时，那请求数据就不能被处理了"
+			responseFormatType="答复报文格式，取值范围 1|2|3，意义分别为json|xml|自定义"
+			responseView="答复Url，例如跳转到页面result.html "
+	/&gt;
+	
+	......其他mvc节点......
+	
+&lt;/MvcGroup&gt;
+</pre>
+	</div>
+</body>
+</html>

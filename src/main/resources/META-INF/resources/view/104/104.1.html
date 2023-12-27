@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		104.1、maven库地址
+	</div>
+	<div class="tabTitleDiv">必须添加edk4j镜像库</div>
+	<p class="tabTitleLine"></p>
+	<table class="across">
+		<colgroup>
+			<col style="width:5rem;"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>地址</th>
+				<th>在 settings.xml 中的添加edk4j镜像库</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style="text-align:center;font-weight:bold;">
+					edk4j镜像库<br>
+					<label style="font-weight:normal;color:#ff0000;font-size:0.14rem;'">（若不添加，则无法下载到edk4j平台的依赖包）</label>
+				</td>
+				<td>
+<pre id="codeShow3"  class="prettyprint lang-xml">
+&lt;mirror&gt;
+      &lt;id&gt;edk4j-maven-lib&lt;/id&gt;
+      &lt;name&gt;edk4j镜像库&lt;/name&gt;
+      &lt;url&gt;http://www.edk4j.com/repository/maven-public/&lt;/url&gt;
+      &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;        
+&lt;/mirror&gt;
+</pre>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="subTitleDiv addArrow">
+		settings.xml配置文件样例
+	</div>
+	<div class="subContentDiv addBorder">
+<pre id="codeShow3" class="prettyprint lang-xml" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd"&gt;
+	&lt;localRepository&gt;你本地的Maven库路径，例如D:\nexusLib\&lt;/localRepository&gt;
+	&lt;pluginGroups&gt;
+	&lt;/pluginGroups&gt;
+
+	&lt;proxies&gt;
+	&lt;/proxies&gt;
+
+	&lt;servers&gt;
+	&lt;/servers&gt;
+	&lt;mirrors&gt;
+		&lt;!-- 这里可以是贵公司的私库，或者阿里库等私库 --&gt;
+		&lt;mirror&gt;
+			&lt;id&gt;alimaven&lt;/id&gt;
+			&lt;name&gt;阿里库&lt;/name&gt;
+			&lt;url&gt;https://maven.aliyun.com/repository/public&lt;/url&gt;
+			&lt;mirrorOf&gt;*&lt;/mirrorOf&gt;        
+		&lt;/mirror&gt;
+		&lt;!-- 
+			若贵公司私库里已经对edk4j库做了代理，则下面的mirror不需要添加，
+			否则，您必须添加edk4j库，否则无法下载edk4j平台系列依赖 
+		--&gt;
+		&lt;mirror&gt;
+			&lt;id&gt;edk4jMavenLib&lt;/id&gt;
+			&lt;name&gt;edk4j库&lt;/name&gt;
+			&lt;url&gt;http://www.edk4j.com/repository/maven-public/&lt;/url&gt;
+			&lt;mirrorOf&gt;*&lt;/mirrorOf&gt;        
+		&lt;/mirror&gt;
+		&lt;!-- 
+			可能出现的问题：
+				（1）在对项目做maven update操作时，会提示：无法从私库下载某依赖
+				（2）在run as中进行maven clean或install等操作时，error中会提示parent的relativePath错误
+			解决办法：
+				（1）先确定网络正常，能顺利连接到edk4j库
+				（2）在本地私库文件夹中搜索：*.lastUpdated 以及 _remote.repositories，将搜索到的文件全部清理，重新对项目进行maven update即可 
+		--&gt;
+	&lt;/mirrors&gt;
+	&lt;profiles&gt;
+	&lt;/profiles&gt;
+&lt;/settings&gt;
+</pre>
+	</div>
+	
+	<div class="tabTitleDiv" style="margin-top:0.5rem;">其他互联网私库</div>
+	<p class="tabTitleLine"></p>
+	<div class="subTitleDiv">
+		使用阿里私库或腾讯私库，可以很快地下载依赖包，不直接使用国外的maven官方镜像库
+	</div>
+	<table class="across">
+		<colgroup>
+			<col style="width:5rem;"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>地址</th>
+				<th>在 settings.xml 中的配置</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style="text-align:center">阿里云私库</td>
+				<td>
+<pre id="codeShow1"  class="prettyprint lang-xml">
+&lt;mirror&gt;
+      &lt;id&gt;alimaven&lt;/id&gt;
+      &lt;name&gt;aliyun maven lib&lt;/name&gt;
+      &lt;url&gt;https://maven.aliyun.com/repository/public&lt;/url&gt;
+      &lt;!--老版本的地址已经废弃&lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;--&gt;
+      &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;        
+&lt;/mirror&gt;
+</pre>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align:center">腾讯云私库</td>
+				<td>
+<pre id="codeShow2"  class="prettyprint lang-xml">
+&lt;mirror&gt;
+	&lt;id&gt;tencent&lt;/id&gt;
+	&lt;name&gt;tencent maven mirror&lt;/name&gt;
+	&lt;url&gt;https://mirrors.tencent.com/nexus/repository/maven-public/&lt;/url&gt;
+	&lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+&lt;/mirror&gt;
+</pre>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

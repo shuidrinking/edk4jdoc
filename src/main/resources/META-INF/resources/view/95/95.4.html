@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		95.4、在配置文件中设置从环境变量获取参数
+	</div>
+	<div class="tabTitleDiv">1、配置手法</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<pre class="prettyprint properties" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+	#在application.properties、application.yml、bootstrap.yml等配置文件中均可这样配置
+	#语法范式：some-item=${ENV_KEY:default-value}
+	#例如：
+	server.port = ${SERVER_PORT:9999}
+	spring.datasource.druid.url=${DATABASE_URL : jdbc:mysql://192.168.0.188:3306/edk4j_star_product?serverTimezone=GMT%2B8&useSSL=true&useUnicode=true&characterEncoding=UTF-8}
+</pre>
+</div>
+	<div class="tabTitleDiv">2、在启动命令中设置配置值</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<pre class="prettyprint properties" style="font-weight:bold;color:#3f7f5f;">
+	#在启动命令中使用-D设置环境变量
+	#语法范式：-Dsome-key=some-value
+	#例如：
+	java -jar ..... -DSERVER_PORT=9999
+</pre>
+	</div>
+	
+	<div class="tabTitleDiv">3、在k8s中设置环境变量</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<pre class="prettyprint properties" style="font-weight:bold;color:#3f7f5f;">
+	#按照k8s的规范在相应的页面中设置即可
+</pre>
+	</div>
+</body>
+</html>

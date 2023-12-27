@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		23.6、如何过滤某些请求不要被全局链路跟踪统计
+	</div>
+	<div class="tabTitleDiv">过滤目的</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p>默认情况下，edk4j引入链路跟踪后，会记录所有到达应用的请求，而事实上我们可能不需要跟踪某些类型的请求。</p>
+	</div>
+	<div class="tabTitleDiv">过滤方式</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p style="color: red;"><b>目前提供了匹配请求前缀和后缀两种方式</b></p>
+		<p style="color: blue;"><b>方式一：屏蔽指定URL前缀的请求</b></p>
+		<p>在application.properties中配置如下：</p>
+		<p>spring.zipkin.<b>forbid-prefix</b> = /api1,/api2</p>
+		<p>即/api1，/api2开头的请求不会被链路跟踪统计，比如：http://localhost:8080/<b>api1</b>、http://localhost:8080/<b>api1</b>/test都将不会被链路统计。</p>
+		<p style="color: blue;"><b>方式二：屏蔽指定URL后缀的请求</b></p>
+		<p>在application.properties中配置如下：</p>
+		<p>spring.zipkin.<b>forbid-suffix</b> = html,js</p>
+		<p>即html，js结尾的请求不会被链路跟踪统计，比如：http://localhost:8080/<b>demo.html</b>将不会被链路统计。</p>
+	</div>
+	<div class="tabTitleDiv">如何实现自定义过滤规则</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p>如果不想使用以上内置的过滤方式，可以编写一个自定义规则的类，样例如下：</p>
+		<pre class="prettyprint" id="codeShow1" style="font-weight:bold;">
+import org.springframework.stereotype.Component;
+import brave.http.HttpRequest;
+import brave.sampler.SamplerFunction;
+//Bean名称必须为serverSampler
+@Component("serverSampler")
+public class CustomSampler implements SamplerFunction &lt;HttpRequest&gt;{
+	@Override
+	public Boolean trySample(HttpRequest request) {
+		//实现自定义的规则，方法return true表示纳入链路跟踪，false表示不纳入。
+		return true;
+	}
+}
+		</pre>
+	</div>
+	
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.2、edk4j内置日期及时间处理工具
+	</div>
+	<div class="subTitleDiv">
+		类：com.edk4j.core.util.DateUtil
+	</div>
+	<div class="subContentDiv" style="margin-left:0.05rem;">
+		该类中提供的方法相当丰富，能满足开发中的绝大部分日期需求。
+	</div>
+	<div class="subTitleDiv">
+		方法清单：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:10rem;">
+					public static String getCurrentTime()
+				</td>
+				<td style="color:#3f5fbf">
+					获取当前时间,格式为HH:mm:ss
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getCurrentTimeWithoutSign()
+				</td>
+				<td style="color:#3f5fbf">
+					获取当前时间,格式为HHmmss
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getCurrentDate()
+				</td>
+				<td style="color:#3f5fbf">
+					获取当前日期,格式为yyyy-MM-dd
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getCurrentDateWithoutSign()
+				</td>
+				<td style="color:#3f5fbf">
+					获取当前日期,格式为yyyyMMdd
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getCurrentDateTime()
+				</td>
+				<td style="color:#3f5fbf">
+					获取当前日期及时间,格式化yyyy-MM-dd HH:mm:ss
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getCurrentDateTimeWithoutSign()
+				</td>
+				<td style="color:#3f5fbf">
+					获取当前日期及时间,格式化yyyyMMddHHmmss
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getCurrentDateTime(String format)
+				</td>
+				<td style="color:#3f5fbf">
+					按指定格式获取当前时间
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static int daysBetween(Date startDate, Date endDate)
+				</td>
+				<td style="color:#3f5fbf">
+					计算两个日期相差的天数
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static long minutsBetween(Date startTime, Date endTime)
+				</td>
+				<td style="color:#3f5fbf">
+					计算两个时间相差的分钟数
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getTheFirstDateOfThisMonth(String format)
+				</td>
+				<td style="color:#3f5fbf">
+					返回本月的第一天日期，格式如果为空时返回yyyyMMdd格式的
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getTheLastDateOfThisMonth(String format)
+				</td>
+				<td style="color:#3f5fbf">
+					返回本月的最后一天日期，格式如果为空时,默认为yyyyMMdd格式的
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static int getTheLastDateNumOfMonth(Date date)
+				</td>
+				<td style="color:#3f5fbf">
+					返回参数所在月的最后一天号数（1-31）
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static Date getTheLastDateOfMonth(Date date)
+				</td>
+				<td style="color:#3f5fbf">
+					返回参数所在月的最后一天日期
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static int getTheLastDateNumAfterMonths(Date date, int monthsAfterThisMonth)
+				</td>
+				<td style="color:#3f5fbf">
+					获取距离参照日期date 有monthsAfterThisMonth（可为负数）个月的那月最后一天日期的号数（1-31）
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static Date getTheLastDateAfterMonth(Date date, int monthsAfterThisMonth)
+				</td>
+				<td style="color:#3f5fbf">
+					获取距离参照日期date 有monthsAfterThisMonth（可为负数）个月的那月最后一天日期
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getDateAfterDays(int days,String format)
+				</td>
+				<td style="color:#3f5fbf">
+					获取距离当前日期指定天数（可为负）的日期
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getDateAfterMonths(int months, String format)
+				</td>
+				<td style="color:#3f5fbf">
+					获取距离当前日期指定月数（可为负数）的日期
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getDateAfterYears(int years, String format)
+				</td>
+				<td style="color:#3f5fbf">
+					获取距离当前日期指定年数（可为负数）的日期
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static Date parseToDate(String date, String format)
+				</td>
+				<td style="color:#3f5fbf">
+					将字符串格式的日期，根据格式，转化为Date对象
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String formatDateTime(Date date, String format)
+				</td>
+				<td style="color:#3f5fbf">
+					根据参数格式显示格式化日期时间
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String convertTimeFormat(String datetime, String oldFormat, String newFormat)
+				</td>
+				<td style="color:#3f5fbf">
+					按新格式，把旧格式的日期重新格式
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getDifferentTime(int hour, int minute, int second, String timeFormat)
+				</td>
+				<td style="color:#3f5fbf">
+					取得指定时间间隔后的系统时间
+					<br>示例：
+					<br>getDifferentTime( 1, 2, 3,&quot;yyyyMMddHHmmss&quot;)使用yyyyMMddHHmmss格式输出1小时2分3秒后的系统时间
+					<br>getDifferentTime( -24, 0, 0,&quot;yyyyMMdd&quot;)使用yyyyMMdd格式输出1天前的系统日期
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String getDifferentDate(int days, String timeFormat)
+				</td>
+				<td style="color:#3f5fbf">
+					取得若干天(正数为当前日期之后，负数为当前日期之前)的系统日期
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String[] getCurrentHHmmssArray()
+				</td>
+				<td style="color:#3f5fbf">
+					获取当前时间的时分秒数组，返回的结果内容为{HH,mm,ss}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

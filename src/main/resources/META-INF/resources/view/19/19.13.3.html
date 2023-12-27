@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="../../css/dom.css" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">19.13.4、任务运行状态变化历史记录（task_run_status_history）</div>
+	<table class="across">
+		<colgroup>
+			<col style="width:3rem;"/>
+			<col style="width:2rem;"/>
+			<col style="width:2rem;"/>
+			<col style="width:1rem;"/>
+			<col style="width:1rem;"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>字段名</th>
+				<th>中文名</th>
+				<th>数据类型</th>
+				<th>是否主键</th>
+				<th>不能为空</th>
+				<th>字段注释</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Serial_No</td>
+				<td>流水号</td>
+				<td>VARCHAR2(20)</td>
+				<td>TRUE</td>
+				<td>TRUE</td>
+				<td>流水号序列</td>
+			</tr>
+			<tr>
+				<td>Task_Group</td>
+				<td>任务分组</td>
+				<td>VARCHAR2(100)</td>
+				<td>FALSE</td>
+				<td>TRUE</td>
+				<td>任务分组</td>
+			</tr>
+			<tr>
+				<td>Task_Id</td>
+				<td>任务ID</td>
+				<td>VARCHAR2(100)</td>
+				<td>FALSE</td>
+				<td>TRUE</td>
+				<td>任务ID</td>
+			</tr>
+			<tr>
+				<td>Task_From_Status</td>
+				<td>变化前状态</td>
+				<td>VARCHAR2(10)</td>
+				<td>FALSE</td>
+				<td>FALSE</td>
+				<td>变化前状态</td>
+			</tr>
+			<tr>
+				<td>Task_End_Status</td>
+				<td>变化后状态</td>
+				<td>VARCHAR2(10)</td>
+				<td>FALSE</td>
+				<td>TRUE</td>
+				<td>变化后状态</td>
+			</tr>
+			<tr>
+				<td>Task_Start_Change_Description</td>
+				<td>状态变化原因</td>
+				<td>VARCHAR2(100)</td>
+				<td>FALSE</td>
+				<td>TRUE</td>
+				<td>状态变化原因：<br /> 1-正常执行<br /> 2-任务执行时间过长<br />
+					3-业务问题需要处理<br /> 4-其他
+				</td>
+			</tr>
+			<tr>
+				<td>Task_Execute_Server_Ip</td>
+				<td>所在服务器IP</td>
+				<td>VARCHAR2(30)</td>
+				<td>FALSE</td>
+				<td>TRUE</td>
+				<td>所在服务器IP</td>
+			</tr>
+			<tr>
+				<td>Task_Status_Change_Time</td>
+				<td>发生时间</td>
+				<td>VARCHAR2(20)</td>
+				<td>FALSE</td>
+				<td>TRUE</td>
+				<td>yyyy-MM-dd HH:mm:ss</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

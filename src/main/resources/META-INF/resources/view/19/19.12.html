@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		19.12、附录5：对任务进行动态管理
+	</div>
+	<div class="subTitleDiv addTextIndent">
+		很多银行等企业的运维机构，要求对任务能实时监控，实时修改和实时控制，在edk4j-task-engine中提供了一整套openApi来完成这些工作，与这些edk4j-task-engine对应的，我们提供了一个任务管理系统（需要单独咨询）。
+	</div>
+	<div class="tabTitleDiv">1 、调用方式</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		一律为http的post调用，请求参数用post方式提交<br/><br/>
+		
+		调用的URL范式为：<label style="font-weight:bold;">${任务运行服务器域名}/{应用名（根目录）}/taskEngineOpenApi/接口名</label><br/>
+		例如：http://192.168.0.123/taskServer/taskEngineOpenApi/taskEngineStartCluster.task<br/><br/>
+		
+		<label style="background-color:#ffff00;">为区对待业务交易的请求url起见，我们edk4j-task-engine中的对外接口都使用.task后缀访问</label>
+	</div>
+	<div class="tabTitleDiv">2、报文规范</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		不需要传输实体taskDefine的接口调用时，不需要格式化的请求报文，只要将普通的字段用post方式发送过来。<br/>
+		需要传输实体taskDefine的接口调用时，需要json格式化的请求报文，具体报文见后面“接口清单”。<br/><br/>
+
+		返回报文都使用json格式：<br/>
+		{"resultCode":"0", "resultMessage":"ok","businessDataJson":{业务数据的json}}<br/>
+		正确时resultCode为0，resultMessage为ok
+		
+	</div>
+	<div class="tabTitleDiv">3、接口清单</div>
+	<div class="tabTitleLine"></div>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+					1
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				taskEngineStartCluster.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				重启本服务器任务调度
+				<span style="color:red">注意：系统启动时会自动启动调度，只有调用停止接口后再调用改接口，才会生效</span>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				2
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				taskEngineStopCluster.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				停止本服务器任务调度
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				post方式提交<span style="color:#2a00ff">waitForRunningTaskFinished</span>字段
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				3
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				taskEnginePutTaskDefine.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				新增或修改任务定义
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				将任务定义的json字符串用<span style="color:#2a00ff">taskEngineOpenApiRequestJson</span>字段post提交
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				4
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				taskEngineRemoveTaskDefine.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				删除任务定义
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				post方式提交<span style="color:#2a00ff">taskGroup</span><span style="color:#2a00ff">、</span><span style="color:#2a00ff">taskId</span><span style="color:#2a00ff">、</span><span style="color:#2a00ff">taskVersion</span>字段
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				5
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				getServerScheduleableTaskDefineList.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				获取指定IP的服务器可调度的任务列表
+				</td>
+			</tr>
+			<tr>
+				<td>
+				请求报文
+				</td>
+				<td>
+				post方式提交字段<span style="color:#2a00ff">taskClusterIp</span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{taskDefine对象数组}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				6
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				getAllValidTaskDefineList.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				获得所有非暂停非作废的任务列表
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{taskDefine对象数组}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				7
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				getTaskForbidInServerList.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				查询指定Ip的服务器上禁止运行的任务
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				post方式提交字段<span style="color:#2a00ff">taskClusterIp</span>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{TaskForbidInServer列表}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				8
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				addTaskForbidRunInServer.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				添加禁止运行的任务定义
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				post方式提交<span style="color:#2a00ff">taskGroup</span><span style="color:#2a00ff">、</span><span style="color:#2a00ff">taskId</span><span style="color:#2a00ff">、</span><span style="color:#2a00ff">taskClusterIp</span>字段
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				9
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				removeTaskForbidRunInServer.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				取消禁止任务运行
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				post方式提交<span style="color:#2a00ff">taskGroup</span><span style="color:#2a00ff">、</span><span style="color:#2a00ff">taskId</span><span style="color:#2a00ff">、</span><span style="color:#2a00ff">taskClusterIp</span>字段
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				10
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				getRunningTaskListInThisServer.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				查询本服务器上正在运行的任务列表
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{taskDefine列表}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				11
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				getAllRunningTaskList.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				查询所有服务器上正在运行的任务列表
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{taskDefine列表}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				12
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				taskEnginePauseTask.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				暂停集群中一个任务的调度
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				post方式提交<span style="color:#2a00ff">taskGroup</span><span style="color:#2a00ff">、</span><span style="color:#2a00ff">taskId</span>字段
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				13
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				taskEngineResumeTask.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				恢复集群一个暂停任务的调度
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				post方式提交<span style="color:#2a00ff">taskGroup</span><span style="color:#2a00ff">、</span><span style="color:#2a00ff">taskId</span>字段
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				14
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				interruptRunningTaskOnce.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				单次打断一个任务的调度
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				post方式提交<span style="color:#2a00ff">taskGroup</span><span style="color:#2a00ff">、</span><span style="color:#2a00ff">taskId</span>字段
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				15
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				interruptRunningTaskContinued.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				持续打断一个任务的调度
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				post方式提交<span style="color:#2a00ff">taskGroup</span><span style="color:#2a00ff">、</span><span style="color:#2a00ff">taskId</span>字段
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				16
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				stopInterruptRunningTaskContinued.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				取消对一个任务的持续打断
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				post方式提交<span style="color:#2a00ff">taskGroup</span><span style="color:#2a00ff">、</span><span style="color:#2a00ff">taskId</span>字段
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				17
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				taskEngineScheduleOneTask.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				调度一个任务
+				<span style="color:red">注意：该接口只作为预留接口，不需要被调用，上面接口中所有涉及到需要调度的地方，都会自动调用。</span><span style="color:red">quartz</span><span style="color:red">中只要任务状态可被调度，便会被调度。以后有可能用其他的调度框架，该接口作为预留。</span>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				post方式提交<span style="color:#2a00ff">taskGroup</span><span style="color:#2a00ff">、</span><span style="color:#2a00ff">taskId</span>字段
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{{&#39;nextFireTimeFormat&#39;:&#39;下次启动时间格式化&#39;,&#39;nextFireMillions&#39;:&#39;下次启动时间毫秒数&#39;}}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				18
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				taskEngineIsShutdown.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				任务调度服务器是否已停止
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{&#39;isShutDown&#39;:&#39;true或false&#39;}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td rowspan="3" style="width:0.5rem;">
+				19
+				</td>
+				<td rowspan="3" style="width:4rem;">
+				getClustersCheckInStates.task
+				</td>
+				<td style="width:1rem;">
+				作用
+				</td>
+				<td>
+				查询集群节点签到情况
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				请求报文
+				</td>
+				<td>
+				无&nbsp;&nbsp;&nbsp;&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<td style="width:1rem;">
+				返回报文
+				</td>
+				<td>
+				{&quot;resultCode&quot;:&quot;0&quot;, &quot;resultMessage&quot;:&quot;ok&quot;,&quot;businessDataJson&quot;:{ServerCheckInState对象数组}}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

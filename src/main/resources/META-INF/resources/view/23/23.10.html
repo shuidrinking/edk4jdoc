@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		23.10、附录：使用链路跟踪服务器
+	</div>
+	<div class="tabTitleDiv">说明</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		链路跟踪服务器，就是前面章节中提供的zipkin-server-2.21.0.jar，用“java -jar”命令启动。
+	</div>
+	<div class="tabTitleDiv">启动链路跟踪服务端的命令参数说明</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p style="color: blue;">启动命令如下：</p>
+		<p>java -jar zipkin-server-2.21.0.jar <b>--STORAGE_TYPE</b>=elasticsearch <b>--ES_HOSTS</b>=http://ES服务器IP:9200 <b>--ES_INDEX_SHARDS</b>=2 <b>--ES_INDEX_REPLICAS</b>=1</p>
+		<p><b>命令参数说明：</b></p>
+		<p><b>STORAGE_TYPE：</b>指定持久化方式。</p>
+		<p><b>ES_HOSTS：</b>指定Elasticsearch服务器地址，多个地址之间用逗号分隔。</p>
+		<p><b>ES_INDEX_SHARDS：</b>指定链路跟踪服务在ES中创建的索引分片数，默认为5，按需设置。</p>
+		<p><b>ES_INDEX_REPLICAS：</b>指定链路跟踪服务在ES中创建的索引副本数，默认为1，按需设置，不建议为0，防止数据丢失。</p>
+		<p>启动后访问URL：<b>http://xxx.xxx.xxx.xxx:9411/zipkin/</b>，出现如下UI界面：</p>	
+		<img src="../../image/business/23/23.9-1.png" />
+	</div>
+	<div class="tabTitleDiv">周期性地调用关系链分析器</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p style="color: blue;">周期性执行前面章节中提供的zipkin-dependencies-2.4.2.jar：</p>
+		<p><b>STORAGE_TYPE</b>=elasticsearch <b>ES_HOSTS</b>=http://ES服务器IP:9200 java -jar /opt/zipkin/zipkin-dependencies-2.4.2.jar</p>
+		<p>启动后会自动进行搜集并分析各应用之间的依赖调用关系。</p>
+		<p><b style="color: red;font-weight: bold;">注意：</b>使用命令执行zipkin-dependencies包后，它仅仅会做一次依赖关系的梳理动作，而不会持续进行。</p>
+		<p style="color: blue;font-weight: bold;">如果希望持续进行依赖关系的收集梳理，怎么办呢？可以考虑两种方式实现：</p>
+		<p><b style="color: blue;">方式1：</b>编写linux定时脚本，定期让zipkin-dependencies包执行一次，比如借助<b>crontab</b>命令。</p>
+		<p><b style="color: blue;">方式2：</b>项目中起异步定时任务线程，定期调用zipkin-dependencies包执行一次。</p>
+		<p>该分析器执行成功后，可以在链路跟踪服务UI界面（http://xxx.xxx.xxx.xxx:9411/zipkin/）可以统计并梳理出各个应用之间的调用依赖关系，例如：“应用1”调用了“应用2”：</p>	
+		<img src="../../image/business/23/23.8-1.png" />
+	</div>
+</body>
+</html>

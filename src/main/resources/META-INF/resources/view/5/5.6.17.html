@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.17、edk4j内置Spring bean操作工具
+	</div>
+	<div class="subTitleDiv">
+		类：com.edk4j.core.util.ApplicationContextUtil
+	</div>
+	<div class="subTitleDiv">
+		在edk的软编码开发模式中，很少会用到这个工具类。方法清单：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:13rem;">
+					public static Object getBeanByName(String beanName)
+				</td>
+				<td style="color:#3f5fbf">
+					根据beanName从spring的IOC容器中获取bean
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static &lt;T&gt; T getBeanByClass(Class&lt;T&gt; type)
+				</td>
+				<td style="color:#3f5fbf">
+					根据Class，从spring的IOC容器中获取bean
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static Object createBeanBySpringAndNotRegistToIOC(String beanName, Class&lt;?&gt; clazz, BeanProperty[] properties)
+				</td>
+				<td style="color:#3f5fbf">
+					根据Class和beanName创建一个bean，并且为bean设置指定的属性。创建的bean不会保存在spring的ioc容器里
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		98.2.3、设置并发参数
+	</div>
+	<div class="contentDiv">
+		<a style="font-weight:bold;">▶&nbsp;&nbsp;修改${TOMCAT_HOME}/conf/server.xml里的http的&lt;Connector&gt;，设置并发相关的属性</a><br/>
+		<a href="https://tomcat.apache.org/tomcat-8.5-doc/config/http.html" target="_blank">tomcat8.5官方配置文档</a><label style="margin-left:0.1rem;color:#ff0000;">网上资料杂乱错，不如直接看官方文档</label>
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"/>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>属性</th>
+					<th>说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>maxConnections="10000"</td>
+					<td>最大连接数，NIO模式下默认值为10000，APR模式下默认值是8192</td>
+				</tr>
+				<tr>
+					<td>acceptCount="500"</td>
+					<td>默认值是100，这个值要慎重对待，当无线程可用时，最大排队数，超过这个值则不会被处理，直接拒绝服</td>
+				</tr>
+				<tr>
+					<td>maxThreads="200"</td>
+					<td>默认值为200，如果配置了线程池，则在&lt;connector&gt;里设置的这个属性会失效</td>
+				</tr>
+				<tr>
+					<td>processorCache="50"</td>
+					<td>默认值是200，如果不做限制的话可以设置为-1，这样cache的上限将是最大连接数maxConnections的大小。<br>Acceptor角色负责将socket上下文封装为一个任务SocketProcessor然后提交给线程池处理。在BIO和APR模式下，每次有新请求时，会创建一个新的SocketProcessor实例(在之前的tomcat对keep-alive的实现逻辑里也介绍过可以简单的通过SocketProcessor与SocketWrapper实例数对比socket的复用情况)；而在NIO里，为了追求性能，对SocketProcessor也做了cache，用完后将对象状态清空然后放入cache，下次有新的请求过来先从cache里获取对象，获取不到再创建一个新的</td>
+				</tr>
+				<tr>
+					<td>minSpareThreads="200"</td>
+					<td>
+						tomcat在启动时创建的线程数，如果是做压力测试，把这个属性与maxThreads设置一样就好了<br>
+						官方文档里找不到maxSpareThreads这个属性
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<a style="font-weight:bold;">▶&nbsp;&nbsp;超高并发时使用ARP</a><br/>
+		（1）修改${TOMCAT_HOME}/conf/server.xml里的http的&lt;Connector&gt;，设置protocol属性的值为org.apache.coyote.http11.Http11AprProtocol<br/>
+		<div style="margin-left:0.32rem;border:1px solid #d4d4d4;padding:0.1rem;">
+			&lt;Connector<br/>
+			port="8080" URIEncoding="UTF-8" protocol="HTTP/1.1"<br/>
+			onnectionTimeout="20000"<br/>
+			protocol="org.apache.coyote.http11.Http11AprProtocol"<br/>
+			redirectPort="8443" /&gt;<br/>
+		</div>
+		（2）修改${TOMCAT_HOME}/conf/server.xml，添加Listener<br/>
+		<div style="margin-left:0.32rem;border:1px solid #d4d4d4;padding:0.1rem;">
+			&lt;Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" /&gt;
+		</div>
+		（3）安装ARP，参考https://yq.aliyun.com/articles/551390<br/>
+		<label style="padding-left:0.32rem;font-weigth:bold;font-size:0.18rem;color:#ff0000;">服务器要使用ARP时，必须自行安装，TOMCAT里仅仅自带了tomcat-native用来调用ARP</label>
+		<div style="margin-left:0.32rem;border:1px solid #d4d4d4;padding:0.1rem;">
+		对于ARP，以下是网上资料：<br/>
+		APR(Apache Portable Runtime)是一个高可移植库，它是Apache HTTP Server 2.x的核心。APR有很多用途，包括访问高级 IO功能(例如sendfile,epoll和OpenSSL)，OS级别功能(随机数生成，系统状态等等)，本地进程管理(共享内存，NT管道和UNIX sockets)。这些功能可以使Tomcat作为一个通常的前台WEB服务器，能更好地和其它本地web技术集成，总体上让Java更有效率作为一个高性能web服务器平台而不是简单作为后台容器。
+		<br/><br/>简单理解，就是从操作系统级别解决异步IO问题，大幅度的提高服务器的处理和响应性能， 也是Tomcat运行高并发应用的首选模式
+		<br/><br/>APR的目的如其名称一样，主要为上层的应用程序提供一个可以跨越多操作系统平台使用的底层支持接口库。在早期的Apache版本中，应用程序本身必须能够处理各种具体操作系统平台的细节，并针对不同的平台调用不同的处理函数。随着Apache的进一步开发，Apache组织决定将这些通用的函数独立出来并发展成为一个新的项目。这样，APR的开发就从Apache中独立出来，Apache仅仅是使用APR而已
+		所以，你的服务器要使用ARP时，必须自行安装，TOMCAT里自带了tomcat-native的安装文件（在tomcat的bin目录下），tomcat-native用来调用ARP
+		</div>
+	</div>
+</body>
+</html>

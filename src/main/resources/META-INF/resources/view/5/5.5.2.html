@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			//CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		5.5.2、异常常量类ExceptionConstant
+	</div>
+	<div class="subTitleDiv addArrow">
+		异常常量类：com.edk4j.core.constant.ExceptionConstant<br/>
+	</div>
+	<div class="subTitleDiv addArrow">
+		抛出异常的时候，不要每次都new一个，你可以在你的action里提前new一个异常对象作为类变量用来抛出。
+	</div>
+	<div class="subTitleDiv addArrow">
+		也可以从异常常量类里酌情选择合适的异常常量抛出去。
+	</div>
+	<div class="subTitleDiv addArrow">
+		ExceptionConstant类中的异常常量清单：
+	</div>
+	<div class="subContentDiv addBorder">
+		<pre class="prettyprint lang-java" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+	TranFailException TRAN_FAIL_EXCEPTION=new TranFailException("交易失败");
+	TranFailException VERIFYCODE_EXCEPTION = new TranFailException(BaseErrorCode.VERIFYCODE_ERROR,"验证码错误");
+	DuplicateSubmitException DUMPLICATE_SUBMIT_EXCEPTION = new DuplicateSubmitException("不能重复提交");
+	SessionTimeOutException SESSION_TIMEOUT_EXCEPTION = new SessionTimeOutException("登录已超时");
+	SystemComponentException SYSTEM_COMPONENT_EXCEPTION = new SystemComponentException("系统错误");
+	TranLogException TRAN_LOG_EXCEPTION = new TranLogException("记录运行日志异常");
+	PorpertiesCopyException PROPERTIES_COPY_EXCEPTION = new PorpertiesCopyException("属性值复制异常");
+	CacheException CACHE_EXCEPTION = new CacheException("缓存异常");
+	CacheException CACHE_SERVER_EXCEPTION = new CacheException(BaseErrorCode.USER_DEFINED_ERROR, new String[]{"本地缓存配置或缓存服务器不可用"});
+	CacheException NO_SESSION_CACHED_EXCEPTION = new CacheException(BaseErrorCode.NO_SESSION_CACHED_ERROR, "无法获取会话数据");
+	FakeDataException FAKE_DATA_EXCEPTION = new FakeDataException("伪造交易数据");
+	IllegalVisitException ILLEGAL_VISIT_EXCEPTION = new IllegalVisitException("非法访问");
+	RequestException INVALID_REQUEST_EXCEPTION = new RequestException("无效请求");
+	FileUploadFailException FILE_UPLOAD_EXCEPTION=new FileUploadFailException("文件上传失败");
+	FileUploadFailException NOT_PERMIT_TOUPLOADFILE_EXCEPTION=new FileUploadFailException(BaseErrorCode.USER_DEFINED_ERROR,new String[] {"没有文件上传权限"});
+	FileUploadFailException UPLOADFILE_TOOBIG_EXCEPTION=new FileUploadFailException(BaseErrorCode.USER_DEFINED_ERROR,new String[] {"上传文件大小超过限制"});
+	FileUploadFailException UPLOADFILE_TYPE_EXCEPTION=new FileUploadFailException(BaseErrorCode.USER_DEFINED_ERROR,new String[] {"上传文件类型错误"});
+	TranFailException ERROR_FILE_TYPE_EXCEPTION = new TranFailException(BaseErrorCode.USER_DEFINED_ERROR,new String[] {"文件格式错误"});
+	TranFailException FILE_PARSE_EXCEPTION = new TranFailException(BaseErrorCode.USER_DEFINED_ERROR,new String[] {"文件解析失败"});
+	FileDownLoadFailException FILE_DOWNLOAD_EXCEPTION = new FileDownLoadFailException("文件下载失败");
+		</pre>
+	</div>
+</body>
+</html>

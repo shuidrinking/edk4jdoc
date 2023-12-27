@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		4.4、三步开发Hello World案例
+	</div>
+	<div class="subTitleDiv" style="text-indent:0.32rem;">
+		按照前面章节的讲解，创建一个新的edk4j项目，就可以开发这个入门案例。只需做完3个开发组件，就可以完成。
+	</div>
+	<div class="subTitleDiv" style="text-indent:0.32rem;">
+		部分文件需要参考样例项目中的内容，请先自行下载解压<a href="javascript:window.open('../102/102.1.html', null, getWindowOpenFeature(200,200));" style="margin:0 0.1rem;">edk4j-demos</a>
+	</div>
+	<div class="subTitleDiv addArrow">
+		第1步、编写Mvc配置文件
+	</div>
+	<div class="subContentDiv">
+		参考文件：${edk4j样例项目根目录}/src/main/resources/edk4jConfig/mvcConfig/helloEdk/helloDemos.edk4jMvc
+		<br/>
+		<label style="background-color:#ffff00;">请自行在<a href="javascript:window.open('../102/102.1.html', null, getWindowOpenFeature(200, 200));">edk4j技术点样例项目</a>中阅读该文件</label>
+	</div>
+	<div class="subTitleDiv addArrow">
+		第2步：编写Action类
+	</div>
+	<div class="subContentDiv addBorder">
+		<pre class="prettyprint language-java" id="codeShow1" style="width: 100%; font-weight: bold; font-size: 0.14rem; line-height: 0.26rem; font-family: Verdana, 微软雅黑, 宋体;">
+package com.edk4j.edk4jdemos.action;
+
+import com.edk4j.core.businessprocessmanage.BusinessAction;
+import com.edk4j.core.datastructure.Context;
+import com.edk4j.core.exception.TranFailException;
+/*
+ * 自行在edk4j样例项目中阅读
+ * 文件位置：{edk4j样例项目根目录}/src/main/java/com/edk4j/edk4jdemos/action/HelloEdk.java
+ */
+public class HelloEdk extends BusinessAction{
+	@Override
+	public String execute(Context context) throws TranFailException {
+		try {
+			//取得前端输入的字段
+			String userName = (String) context.getDataValue("userName");
+			//生成欢迎语
+			String welcomeWorld = userName+"，欢迎您使用edk4j平台进行开发";
+			//将欢迎语设置到context中
+			context.setDataValue("welcomeWorld", welcomeWorld);
+		}
+		catch(TranFailException e) {
+			throw e;
+		}
+		catch(Exception e) {
+			throw new TranFailException("xxxxx交易异常", e);
+		}
+		return OK;
+	}
+}
+		</pre>
+	</div>
+	<div class="subTitleDiv addArrow">
+		第3步：编写Bpm配置文件
+	</div>
+	<div class="subContentDiv">
+		参考文件：${edk4j样例项目根目录}/src/main/resources/edk4jConfig/bpmConfig/helloEdk/helloDemos.edk4jBpm<br/>
+		<label style="background-color:#ffff00;">请自行在<a href="javascript:window.open('../102/102.1.html', null, getWindowOpenFeature(200, 200));">edk4j技术点样例项目</a>中阅读该文件</label>
+	</div>
+</body>
+</html>

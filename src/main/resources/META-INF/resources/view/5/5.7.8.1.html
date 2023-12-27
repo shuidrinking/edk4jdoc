@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		“调用发起流程的bpm”Action说明
+	</div>
+	<div class="subTitleDiv addArrow">
+		组件：<img src='../../image/icons/action/a026.png' style='margin-right:0.1rem;'>调用发起流程的bpm
+	</div>
+	<div class="subTitleDiv addArrow">
+		备注或算法描述：等同于“工具组件”中的“调用其他bpm”，区别是：本action仅仅是对参数设置了默认值
+	</div>
+	<div class="subTitleDiv addArrow">
+		实现类：com.edk4j.workflow.action.CallCreateWorkflowInstanceBpmAction
+	</div>
+	<div class="subTitleDiv addArrow">
+		属性清单：
+	</div>
+	<table class="across">
+		<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:3rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+		<thead>
+			<tr>
+				<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style='text-align:center;'>1</td><td>id</td><td>null</td><td></td><td>callCreateWorkflowInstanceBpmStep</td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>2</td><td>bizId</td><td>要调用的bpm的id</td><td></td><td>workflowInstance.createInstanceBL</td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>3</td><td>targetContextDomainIdListBeforeCall</td><td>待设置的目标context的数据域id列表</td><td>执行之前，设置需要将本context中的值设置到目标context中的字段；该属性的值与thisContextDomainIdListBeforeCall属性的值一 一对应；请从其他context复制字段名；</td><td>businessCode||wfBusinessDataList</td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>4</td><td>thisContextDomainIdListBeforeCall</td><td>待提取的本context中对应的数据域id列表</td><td>执行之前，需要将本context中的值设置到目标context中对应的字段；该属性的值与targetContextDomainIdListBeforeCall属性的值一 一对应；</td><td>businessCode||wfBusinessDataList</td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>5</td><td>targetContextDomainIdListAfterCall</td><td>执行后提取目标context的数据域id列表</td><td>执行之后，需要将目标context中的哪些数据提取出来；该属性的值与thisContextDomainIdListAfterCall属性的值一 一对应；请从其他context复制字段名；</td><td>appNo||taskId</td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+
+			<tr>
+				<td style='text-align:center;'>6</td><td>thisContextDomainIdListAfterCall</td><td>执行后提取到本context的数据域id列表</td><td>执行之后，需要将本context中的值设置为目标context中的值；该属性的值与targetContextDomainIdListAfterCall属性的值一 一对应；</td><td>appNo||taskId</td><td style='text-align:center;'>true</td><td></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

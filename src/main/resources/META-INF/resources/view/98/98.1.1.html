@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		98.1.1、优化内核参数
+	</div>
+	<div class="subTitleDiv">以下所有操作请使用root用户</div>
+	<div class="contentDiv">
+		<a style="font-weight:bold;">（1）设置端口监听队列长度，默认值是128</a><br/>
+		查看当前值：<br/>
+		<label class="linuxCommand"># sysctl -a |grep "net.core.somaxconn"</label><br/>
+		修改配置文件：<br/>
+		<label class="linuxCommand"># vi /etc/sysctl.conf</label><br/>
+		在文件尾部添加 net.core.somaxconn=2048<br/>
+		使其生效：<br/>
+		<label class="linuxCommand"># sysctl -p</label> <br/>
+		查看是否生效：<br/>
+		<label class="linuxCommand"># sysctl -a |grep "net.core.somaxconn"</label>
+	</div>
+	<div class="contentDiv">
+		<a style="font-weight:bold;">（2）修改打开文件最大数</a><br/>
+		查看当前值 :<br/>
+		<label class="linuxCommand"># ulimit -a</label><br/>
+		其中的open files项对应的值(-n)1024就是当前的打开文件默认限制数<br/>
+		修改文件：<br/>
+		<label class="linuxCommand"># vi /etc/security/limits.conf</label><br/>
+		加入下面4行内容：<br/>
+		root soft nofile 65536<br/>
+		root hard nofile 65535<br/>
+		* soft nofile 65535<br/>
+		* hard nofile 65535<br/>
+		保存文件，需要重新登录终端才能查看生效后的值<br>
+		<label style="background-color:#ffff00;">该值不能超过 65535 ，否则会报错： sysctl: setting key "net.core.somaxconn": Invalid argument</label>
+	</div>
+	<div class="contentDiv">
+		<a style="font-weight:bold;">（3）优化其他内核参数</a><br/>
+		<label class="linuxCommand">vi /etc/sysctl.conf</label><br/>
+		可以将所有内容清空直接替换为如下内容，设置完后执行 # sysctl -p 使之生效：<br/><br/>
+		
+		<label class="propertyComment">##timewait 的数量，默认是180000。</label><br/>
+		net.ipv4.tcp_max_tw_buckets = 6000<br/><br/>
+		
+		<label class="propertyComment">##定义网络连接可用作其源（本地）端口的最小和最大端口的限制，同时适用于TCP和UDP连接</label><br/>
+		net.ipv4.ip_local_port_range = 1024 65535<br/><br/>
+		
+		<label class="propertyComment">##设置1「启用」，用于快速减少在TIME-WAIT状态TCP连接数</label><br/>
+		net.ipv4.tcp_tw_recycle = 1<br/><br/>
+		
+		<label class="propertyComment">##开启重用。允许将TIME-WAIT sockets 重新用于新的TCP 连接。</label><br/>
+		net.ipv4.tcp_tw_reuse = 1<br/><br/>
+		
+		<label class="propertyComment">##开启SYN Cookies，当出现SYN 等待队列溢出时，启用cookies 来处理。</label><br/>
+		net.ipv4.tcp_syncookies = 1<br/><br/>
+	
+		<label class="propertyComment">##web 应用中listen 函数的backlog 默认会给我们内核参数的net.core.somaxconn 限制到128，而nginx 定义的NGX_LISTEN_BACKLOG 默认为511，所以有必要调整这个值。</label><br/>
+		net.core.somaxconn = 65535<br/><br/>
+		
+		<label class="propertyComment">##每个网络接口接收数据包的速率比内核处理这些包的速率快时，允许送到队列的数据包的最大数目，对重负载服务器而言，该值需要调高一点</label><br/>
+		net.core.netdev_max_backlog = 10240<br/><br/>
+		
+		<label class="propertyComment">##系统中最多有多少个TCP 套接字不被关联到任何一个用户文件句柄上。如果超过这个数字，孤儿连接将即刻被复位并打印出警告信息。</label><br/>
+		<label class="propertyComment">##这个限制仅仅是为了防止简单的DoS 攻击，不能过分依靠它或者人为地减小这个值，更应该增加这个值(如果增加了内存之后)。</label><br/>
+		<label class="propertyComment">##每个孤儿socket可占用多达64KB内存，如果设置为65535，达到它的一半时内存32K*64KB=2048MB=2GB</label><br/>
+		<label class="propertyComment">##注意：当cat /proc/net/sockstat看到的orphans数量达到net.ipv4.tcp_max_orphans的约一半时，就会报：Out of socket memory</label><br/>
+		net.ipv4.tcp_max_orphans = 65535<br/><br/>
+	
+		<label class="propertyComment">## 默认1024，对重负载服务器,可调整到2048，以容纳更多等待连接的网络连接</label><br/>
+		net.ipv4.tcp_max_syn_backlog = 2048<br/><br/>
+	
+		<label class="propertyComment">##时间戳可以避免序列号的卷绕。一个1Gbps 的链路肯定会遇到以前用过的序列号。时间戳能够让内核接受这种“异常”的数据包。这里需要将其关掉。</label><br/>
+		<label class="propertyComment">##默认开启，TCP时间戳（会在TCP包头增加12个字节），以一种比重发超时更精确的方法（参考RFC 1323）来启用对RTT 的计算，为实现更好的性能应该启用这个选项。</label><br/>
+		net.ipv4.tcp_timestamps = 1<br/><br/>
+	
+		<label class="propertyComment">##默认5，对于远端的连接请求SYN，内核会发送SYN ＋ ACK数据报，以确认收到上一个 SYN连接请求包。这是所谓的三次握手( threeway handshake)机制的第二个步骤。</label><br/>
+		<label class="propertyComment">##这里决定内核在放弃连接之前发送SYN+ACK 包的数量。不应该大于255，默认值是5，对应于180秒左右时间，可修改为2</label><br/>
+		net.ipv4.tcp_synack_retries = 2<br/><br/>
+	
+		<label class="propertyComment">##对于一个新建连接，内核要发送多少个 SYN 连接请求才决定放弃。</label><br/>
+		<label class="propertyComment">##不应该大于255，默认值是5，对应于180秒左右时间，对于大负载而物理通信良好的网络而言,这个值偏高,可修改为2.这个值仅仅是针对对外的连接,对进来的连接, 是由tcp_retries1决定的</label><br/>
+		net.ipv4.tcp_syn_retries = 1<br/><br/>
+	
+		<label class="propertyComment">##如果套接字由本端要求关闭，这个参数决定了它保持在FIN-WAIT-2 状态的时间。</label><br/>
+		<label class="propertyComment">##对端可以出错并永远不关闭连接，甚至意外当机。缺省值是60 秒。</label><br/>
+		<label class="propertyComment">##2.2 内核的通常值是180 秒，3你可以按这个设置，但要记住的是，即使你的机器是一个轻载的WEB 服务器，也有因为大量的死套接字而内存溢出的风险，FIN- WAIT-2 的危险性比FIN-WAIT-1 要小，因为它最多只能吃掉1.5K 内存，但是它们的生存期长些。</label><br/>
+		net.ipv4.tcp_fin_timeout = 30<br/><br/>
+	
+		<label class="propertyComment">##当keepalive 起用的时候，TCP 发送keepalive 消息的频度。缺省是2 小时。 使配置立即生效可使用如下命令：</label><br/>
+		net.ipv4.tcp_keepalive_time = 7200<br/><br/>
+		
+		<label class="propertyComment">##修改内存分配策略，当服务器是redis专用，或者其他应用专用时，可以考虑修改下面参数</label><br/>
+		<label class="propertyComment">##可选值：0、1、2。</label><br/>
+		<label class="propertyComment">##0， 表示内核将检查是否有足够的可用内存供应用进程使用；如果有足够的可用内存，内存申请允许；否则，内存申请失败，并把错误返回给应用进程。</label><br/>
+		<label class="propertyComment">##1， 表示内核允许分配所有的物理内存，而不管当前的内存状态如何。</label><br/>
+		<label class="propertyComment">##2， 表示内核允许分配超过所有物理内存和交换空间总和的内存</label><br/>
+		vm.overcommit_memory = 1<br/><br/>
+		
+	</div>
+</body>
+</html>

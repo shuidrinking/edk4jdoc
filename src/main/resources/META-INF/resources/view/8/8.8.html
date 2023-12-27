@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		8.8、hibernate或mybatis的dao中设置数据源
+	</div>
+	<div class="subTitleDiv addTextIndent">
+		在使用Hibernate或mybatis时，对多数据源的处理方式：有几个数据源，就写几套文件，包括实体映射类，repository类等，车轮成套的造，改动也麻烦，那种做法非常low。
+		在我们edk平台中，实现起来非常容易。只需要在具体的dao类里这样写就可以了：
+	</div>
+	<div class="contentDiv">
+		<pre class="prettyprint language-java" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';" id="codeShow1">
+import ...
+//引入edk中设置当前数据源名称的工具类
+import com.edk4j.core.util.DynamicDataSourceHolder;
+
+public class SomeDao或SomeRepository{
+	/**
+	 * 本类要操作的数据源名称
+	 */
+	private String dataSourceName;
+	public void setDataSourceName(String dataSourceName) {
+		this.dataSourceName = dataSourceName;
+	}
+	public String getDataSourceName() {
+		return dataSourceName;
+	}
+	
+	/*
+	 * 某具体dao方法
+	 */
+	public ... someMethod(...){
+		//先取出当前数据源名称，缓存起来
+		String oldDsName = DynamicDataSourceHolder.getDataSouceName();
+		try{
+			//将当前数据源名称设置为本类中要求的数据源名称
+			DynamicDataSourceHolder.setDataSourceName(dataSourceName);
+			
+			...dao操作的相关动作...
+		}
+		catch(SomeException e) {
+			...
+		}
+		finally {
+			//恢复当前数据源名称到本方法执行前的值
+			DynamicDataSourceHolder.setDataSourceName(oldDsName);
+		}
+	}
+}
+		</pre>
+	</div>
+</body>
+</html>

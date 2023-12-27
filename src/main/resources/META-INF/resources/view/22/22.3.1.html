@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		22.3.1、如何发起流程
+	</div>
+	<div class="tabTitleDiv">在哪里什么时候发起</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		先举个栗子：在业务数据编辑页面，提交后发起流程。下面我们举个栗子：<br/>
+		进入菜单<label style="background:#ffff00;">“系统用户管理 >> 登录账号管理”</label>，点击“添加用户”按钮，进入用户信息编辑页面<br/>
+		我们填写完用户信息，点击<label style="background:#ffff00;">“保存”</label>按钮后，会在页面中出现“流程操作”的输入框，此时流程已经被发起！<br>
+		你可以输入申请意见后，点击“提交审批”，把流程流转到下一个节点。
+		<img src="../../image/business/22/22.3.1-1.png" style="margin:0 auto;display:table-cell;"/>
+	</div>
+	<div class="tabTitleDiv">编程套路</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<div style="color:#ff0000;font-weight:bold;">1、第一种场景：在具体功能的交易逻辑中发起流程</div>
+		<div>（1）套路比较简单：前端提交业务数据，和普通的“无流程”交易一样。在处理流程中使用action“调用发起流程的bpm”去调用workflowInstance.createInstanceBL，从而发起流程。</div>
+		<div>（2）也就是说，我们开发人员在开发中，只调用一个发起流程的bpm，传参数给这个bpm便可，不需要去调用流程操作的一些具体功能action。</div>
+		<div>（3）需要注意的是“调用发起流程的bpm”这个action属性的设置，需要传给那个bpm的参数是“交易码、业务数据列表”，执行完那个bpm后需要获得的参数是“工单编号、当前节点的任务id”。</div>
+		<div>（4）在“管理系统模板”中，基本上所有的基本功能都是需要走工作流的，可以从前台点击菜单开始，点进功能里，跟踪代码。以“添加用户”功能为例，参照userManageBpm.edk4jBpm中的业务逻辑"createUserBL"，其中组织好前端提交的数据后，使用action，从而发起流程</div>
+		<div style="color:#ff0000;font-weight:bold;">1、第二种场景：直接调用发起流程的逻辑</div>
+		<div>（1）前端提交业务数据，和普通的“无流程”交易一样。提交给具体交易的mvc。</div>
+		<div>（2）具体交易的mvc关联到发起流程的bpm</div>
+		<div>（3）要求：前端提交的数据，需要按业务流程数据列表的格式组织为一个数组。以“修改用户信息”功能为例，参照userManageMvc.edk4jMvc中的url“/userManage/updateUserInfo”，关联到了workflowInstance.createInstanceBL，而提交的数据是前端js中组织的key为wfBusinessDataList数组</div>
+	</div>
+</body>
+</html>

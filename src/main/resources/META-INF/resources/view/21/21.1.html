@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		21.1、使用springBoot方式启动项目
+	</div>
+	<div class="tabTitleDiv">修改项目的pom文件</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv stepsContainner">
+		<pre class="prettyprint lang-xml" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+<!-- 重新申明spring内嵌tomcat，去掉<scope> -->
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-tomcat</artifactId>
+</dependency>
+		</pre>
+	</div>
+	
+	<div class="tabTitleDiv">设置application.properties参数</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv stepsContainner">
+		<pre class="prettyprint lang-properties" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+#下面这些配置项，也可以配置到具体的application-{profile}.properties中
+#1.应用名称
+spring.application.name = ${yourApplicationName}
+#2.项目根目录，注意开头的斜杠
+server.servlet.context-path = /${yourProjectName}
+#3.springBoot内嵌服务器端口号，默认8080
+server.port = 8080
+		</pre>
+	</div>
+	
+	<div class="tabTitleDiv">设置application-{profile}.properties中的数据库配置</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv stepsContainner">
+		<pre class="prettyprint lang-properties" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+#把这句注释掉
+spring.datasource.jndi-name = java:comp/env/jdbc/xxxxx_ds
+#使用下面的配置
+spring.datasource.driverClassName = oracle或者mysql或者db2driver
+spring.datasource.url = 
+spring.datasource.username = 
+spring.datasource.password = 
+#或者使用druid连接池配置
+#或者使用c3p0连接池配置（使用c3p0时需要自行引入c3p0依赖，并且提供dataSource的bean）
+		</pre>
+	</div>
+	<div class="tabTitleDiv">修改ApplicationBoot.java，运行该类启动项目</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv stepsContainner">
+		<pre class="prettyprint lang-java" id="codeShow2" style="font-weight:bold;color:#3f7f5f;">
+package com;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+/**
+ * WEB应用启动类， 其父类继承SpringBootServletInitializer
+ * 运行本来中的main方法，即可启动项目
+ * 该类和ApplicationBootConfig类配套使用
+ * 
+ * @see org.springframework.boot.context.web.SpringBootServletInitializer;
+ * @author liuxiaosong(shuidrinking@126.com) 2017-2-27
+ */
+@SpringBootApplication
+public class ApplicationBoot{
+	public static void main(String args[]){
+		SpringApplication.run(ApplicationBootConfig.class, args);
+	}
+}
+		</pre>
+	</div>
+</body>
+</html>

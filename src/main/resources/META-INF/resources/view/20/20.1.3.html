@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		20.1.3、配置application-{profile}.properties
+	</div>
+	<div class="contentDiv" style="background-color:#ffff00;">
+		如果要禁止使用MQ，则需要把下面的这些配置注释掉。
+	</div>
+	<div class="contentDiv">
+		<p><span style="color:#3f7f5f">#activemq</span><span style="color:#3f7f5f">配置</span></p>
+		<p><span style="color:#3f7f5f">#when use cluster, you can set like this :</span></p>
+		<p><span style="color:#3f7f5f">#</span><span style="color:#3f7f5f">如果有多台</span><span style="color:#3f7f5f">ActiveMQ</span><span style="color:#3f7f5f">服务器集群时，可以这样设置</span><span style="color:#3f7f5f"> spring.activemq.broker-url =failover:(tcp://192.168.1.51:61616, tcp://192.168.1.52:61616)</span></p>
+		<p><span style="color:black">spring.activemq.broker-url=</span><span style="color:#2a00ff">failover:(tcp://192.168.1.52:61616)</span></p>
+		<p><span style="color:#3f7f5f">#</span><span style="color:#3f7f5f">如果</span><span style="color:#3f7f5f">ActiveMQ</span><span style="color:#3f7f5f">服务器使用了授权模式才能使用，必须设置用户名和密码</span></p>
+		<p><span style="color:#3f7f5f">#spring.activemq.user=userName</span></p>
+		<p><span style="color:#3f7f5f">#spring.activemq.password=password</span></p>
+		<p><span style="color:#3f7f5f">#</span><span style="color:#3f7f5f">应用服务器和</span><span style="color:#3f7f5f">activeMQ</span><span style="color:#3f7f5f">服务器不在同一个机器上，将下面的</span><span style="color:#3f7f5f">in-memory</span><span style="color:#3f7f5f">属性设置为</span><span style="color:#3f7f5f">false</span></p>
+		<p><span style="color:black">spring.activemq.in-memory=</span><span style="color:#2a00ff">false</span></p>
+		<p><span style="color:#3f7f5f">#</span><span style="color:#3f7f5f">启动连接池并设置最大连接数</span></p>
+		<p><span style="color:black">spring.activemq.pool.enabled=</span><span style="color:#2a00ff">true</span></p>
+		<p><span style="color:black">spring.activemq.pool.max-connections=</span><span style="color:#2a00ff">50</span></p>
+		<p><span style="color:#3f7f5f">#</span><span style="color:#3f7f5f">连接异常时允许重新连接</span></p>
+		<p><span style="color:black">spring.activemq.pool.reconnect-on-exception=</span><span style="color:#2a00ff">true</span></p>
+		<p><span style="color:#3f7f5f">#</span><span style="color:#3f7f5f">在空闲连接清除线程之间运行的时间，当为负数时，没有空闲连接驱逐线程运行。单位</span><span style="color:#3f7f5f">ms</span></p>
+		<p><span style="color:black">spring.activemq.pool.time-between-expiration-check=</span><span style="color:#2a00ff">-1</span></p>
+		<p><span style="color:#3f7f5f">#</span><span style="color:#3f7f5f">系统启动时自动启动</span><span style="color:#3f7f5f">jms</span><span style="color:#3f7f5f">监听器</span></p>
+		<p><span style="color:black">spring.jms.listener.auto-startup=</span><span style="color:#2a00ff">true</span></p>
+	</div>
+	<div class="contentDiv">
+		对于spring.activemq.*的系列配置参阅网上资料，酌情添加其他配置。
+	</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		99.3、Hibernate的ORM数据库映射实体类
+	</div>
+	<div class="contentDiv">
+		<a style="font-weight:bold;">99.3.1、实体映射类必须实现序列化接口(implements Serializable)</a>
+	</div>
+	<div class="contentDiv">
+		<a style="font-weight:bold;">99.3.2、实体映射类设置</a><br/>
+		（1）必须加入@Entity注解<br/>
+		@Entity<br/><br/>
+		（2）加入@Table注解，指定映射表名，如果表存在则hibernate不会自动建表。<br/>
+		如果不加入@Table注解，hibernate会根据实体类的类名按起默认的命名规则自动建表，这是业务系统里不允许的<br/>
+		@Table(name="XXXXX")<br/><br/>
+		（3）@IdClass复合主键注解<br/>
+		如果数据库是复合主键时必须有主键对象,这个类也是普通的pojo类，里面把复合主键的字段放进去就好了。<br/>
+		@IdClass(XXXXXPK.class)
+	</div>
+	<div class="contentDiv">
+		<a style="font-weight:bold;">99.3.3、实体映射类字段设置</a><br/>
+		（1）必须要有@Column字段<br/>
+		字段前面加这个注解，标注了类字段和数据库表字段映射关系<br/>
+		@Column(name="",length=数字,nullable=true或false)<br/>
+		如果不加这个注解，会有两种可能：<br/>
+		当application.properties文件中没有设置字段命名干涉器spring.jpa.hibernate.naming-strategy这个属性时，自动建立的字段会和类中字段名一致<br/>
+		此时如果不指定字段的长度，string类型的会默认设置为255<br/>
+		如果不指定是否可为空，则默认不允许为空<br/><br/>
+		（2）当指定了spring.jpa.hibernate.naming-strategy时，字段名会按照指定类中的算法进行处理<br/>
+		总体来说spring.jpa.hibernate.naming-strategy是个给数据库设计上套的做法，虽然有“统一”的好处，但是弊大于利，屏蔽之<br/><br/>
+		我们的程序首先是要求“可读性强，可维护性强”，严禁没有@Column注解的字段定义<br/><br/>
+		（3）字段名要见名知意，但是禁止使用数据库的关键字、修饰符中的单词，否则会造成DAO无法运行！
+	</div>
+	<div class="contentDiv">
+		<a style="font-weight:bold;">99.3.4、禁止hibernate干涉表名和字段名</a><br/>
+		在application.properties里配置spring.jpa.hibernate.naming-strategy属性，并设置该属性的值为一个类，那么表和字段名都会受这个类的干涉<br/>
+		（1）如果实体类中设置了注解@Table(name="XXXXX")，那么该类的干涉无效，表名会严格按照注解<br/>
+		（2）如果实体类中没有设置注解@Table(name="XXXXX")，那么该类会干涉表命名，命名规则就看类中如何实现<br/>
+		（3）如果字段中有设置@Column(name=""...),那么字段名会严格按照注解处理<br/>
+		（4）如果没有设置@Column(name=""...)，那么，除了字段命名会按照类中算法来处理外，在类字段和数据库字段不一致时，数据库表中还会自动新增那些少的字段<br/>
+		这是安全隐患。<br/>
+		所以我们屏蔽掉对数据库表和字段的命名干涉，配置文件中不会出现有效的spring.jpa.hibernate.naming-strategy<br/>
+	</div>
+	<div class="contentDiv">
+		<a style="font-weight:bold;">99.3.5、不用外键</a><br/>
+		如果实体类中指定了关联，在字段上有类似@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.REMOVE, mappedBy="role")<br/>
+		这样的注解，那么hibernate会自动为表建立外键<br/>
+		如果不需要hibernate这样做，需要在application.properties里指定自定义的方言类，以屏蔽外键<br/>
+		例如：com.edk4j.core.config.OracleDialectWithoutFK<br/>
+		spring.jpa.properties.hibernate.dialect=com.edk4j.core.config.MysqlDialectWithoutFK<br/>
+		如果使用了org.hibernate.dialect.Oracle10gDialect类，一定会建立外键。<br/>
+	</div>
+	<div class="contentDiv">
+		<a style="font-weight:bold;">99.3.6、Repository类定义时必须申明主键</a><br/>
+		<label style="color:#ff0000;font-weight:bold;">如果你用到hibernate时，repository类必须申明主键</label><br/>
+		public interface XXXXRepository extends BaseRepository&lt;XXXXParam,ID&gt;<br/>
+		ID是个主键类，如果是String类型的就写String，复合主键时，写复合主键类名<br/>
+	</div>
+</body>
+</html>

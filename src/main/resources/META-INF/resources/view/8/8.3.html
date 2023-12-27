@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		8.3、Druid数据源
+	</div>
+	<div class="contentDiv">
+		<div class="tabTitleDiv">集成druid依赖</div>
+		<p class="tabTitleLine"></p>
+		<div class="contentDiv">
+<pre class="prettyprint lang-xml" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;dependency&gt;
+	&lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+	&lt;artifactId&gt;druid-spring-boot-starter&lt;/artifactId&gt;
+	&lt;version&gt;1.1.9&lt;/version&gt;
+&lt;/dependency&gt;
+</pre>
+		</div>
+		<div class="tabTitleDiv">在application-${profile}.properties中配置druid数据源</div>
+		<p class="tabTitleLine"></p>
+		<div class="contentDiv" style="line-height:0.18rem;">
+<pre class="prettyprint lang-properties" id="codeShow2" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+spring.datasource.name=datasource
+spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
+spring.datasource.druid.driver-class-name=com.mysql.jdbc.Driver
+spring.datasource.druid.url= jdbc:mysql://xxx.xxx.xxx.xx:3306/数据库名称?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
+spring.datasource.druid.username=用户名
+spring.datasource.druid.password=密码
+spring.datasource.druid.initial-size=10
+spring.datasource.druid.min-idle=50
+spring.datasource.druid.max-active=200
+spring.datasource.druid.max-wait=60000
+spring.datasource.druid.time-between-eviction-runs-millis=60000
+spring.datasource.druid.min-evictable-idle-time-millis=300000
+spring.datasource.druid.validation-query=SELECT 1
+spring.datasource.druid.test-while-idle=true
+spring.datasource.druid.test-on-borrow=false
+spring.datasource.druid.test-on-return=false
+spring.datasource.druid.pool-prepared-statements=false
+spring.datasource.druid.max-pool-prepared-statement-per-connection-size=20
+spring.datasource.druid.filters=wall,stat
+#使用德鲁伊数据源后，可同时启用druid监控，配置项如下
+
+#druid配置映射类 : com.alibaba.druid.spring.boot.autoconfigure.properties.DruidStatProperties
+#配置生效后的访问地址 : http://host:port/${context-path}/druid/login.html
+#config to create bean of com.alibaba.druid.support.http.StatViewServlet
+#default value is false
+spring.datasource.druid.stat-view-servlet.enabled=${DRUID_MONITOR_ENABLED:true}
+spring.datasource.druid.stat-view-servlet.url-pattern=/druid/*
+spring.datasource.druid.stat-view-servlet.reset-enable=true
+spring.datasource.druid.stat-view-servlet.login-username=${DRUID_MONITOR_USERNAME:star-admin}
+spring.datasource.druid.stat-view-servlet.login-password=${DRUID_MONITOR_PASSWORD:LCE#123456@star}
+#default allow 127.0.0.1
+spring.datasource.druid.stat-view-servlet.allow=${DRUID_MONITOR_ALLOW:0.0.0.0}
+#spring.datasource.druid.stat-view-servlet.deny=
+
+#config to create bean of com.alibaba.druid.support.http.WebStatFilter
+spring.datasource.druid.web-stat-filter.enabled=${DRUID_WEBSTATFILTER_ENABLED:true}
+spring.datasource.druid.web-stat-filter.url-pattern=/*
+spring.datasource.druid.web-stat-filter.exclusions=*.html,*.js,*.gif,*.jpg,*.png,*.css,*.ico,*.svg,*.webp,*.json,*.ttf,*.otf,*.xml,*.docx,*.xlsx,*.pptx,*.map,*.woff,*.woff2,/druid/*
+spring.datasource.druid.web-stat-filter.session-stat-enable=true
+spring.datasource.druid.web-stat-filter.session-stat-max-count=1000
+#spring.datasource.druid.web-stat-filter.principal-session-name=
+#spring.datasource.druid.web-stat-filter.principal-cookie-name=
+#trace sql list of one request url
+spring.datasource.druid.web-stat-filter.profile-enable=true
+</pre>
+		</div>
+		<div class="tabTitleDiv">【废弃此古代做法】建立下面的性能监控类</div>
+		<p class="tabTitleLine"></p>
+		<div class="contentDiv" style="line-height:0.18rem;">
+<pre class="prettyprint lang-java" id="codeShow3" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+//此做法已废弃，此处保留仅供参考
+package com.xxxx....config;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import com.alibaba.druid.support.http.StatViewServlet;
+import com.alibaba.druid.support.http.WebStatFilter;
+
+@Configuration
+public class DuridConfig {
+	/**
+	 * 注册druid管理servlet
+	 * @return
+	 */
+	@Bean
+	public ServletRegistrationBean DruidStatViewServle() {
+		// org.springframework.boot.context.embedded.ServletRegistrationBean提供类的进行注册.
+		ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
+		// 添加初始化参数：initParams
+		// 白名单：
+		servletRegistrationBean.addInitParameter("allow", "192.168.1.106");
+		// IP黑名单 (存在共同时，deny优先于allow) : 如果满足deny的话提示:Sorry, you are not
+		// permitted to view this page.
+		// servletRegistrationBean.addInitParameter("deny", "192.168.1.73");
+		// 登录查看信息的账号密码.
+		servletRegistrationBean.addInitParameter("loginUsername", "admin");
+		servletRegistrationBean.addInitParameter("loginPassword", "123456");
+		// 是否能够重置数据.
+		servletRegistrationBean.addInitParameter("resetEnable", "false");
+		return servletRegistrationBean;
+	}
+
+	/**
+	 * 注册druid过滤器，用于检测所有请求的资源使用情况
+	 * @return
+	 */
+	@Bean
+	public FilterRegistrationBean druidStatFilter() {
+		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
+		// 添加过滤规则.
+		filterRegistrationBean.addUrlPatterns("/*");
+		// 添加不需要忽略的格式信息.
+		filterRegistrationBean.addInitParameter("exclusions", "*.html,*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+		return filterRegistrationBean;
+	}
+}
+</pre>
+		</div>
+		<div class="tabTitleDiv">启动项目，访问监控页面</div>
+		<p class="tabTitleLine"></p>
+		<div class="contentDiv">
+			<a href="javascript:void(0)">项目启动后，访问：http://localhost:你的端口/druid/login.html，输入在上面java类中配置的用户名密码，即可登录到监控页</a>
+			<img style="width:100%;" src="../../image/business/8/8.3-1.png">
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		11.1.1、不分profile
+	</div>
+	<div class="subTitleDiv">
+		<p style="text-indent:0.32rem;">
+			edk4j中目前使用的是slf4j集成log4j2做为运行日志记录框架。
+		</p>
+		<p style="text-indent:0.32rem;">
+			不分profile，意识是不管哪个运行环境，都使用一个运行日志配置文件。在src/main/resources文件夹下建立3个文件（直接从edk4j-demos中考）：<br/>
+		</p>
+		<div style="padding-left:0.64rem;">
+			（1）log4j2.component.properties<br/>
+			（2）log4j2.StatusLogger.properties<br/>
+			（3）log4j2.xml
+		</div>
+		<p style="text-indent:0.32rem;">
+			把log4j2.xml中的内容编辑正确，项目运行时就可以在你设置的目录中查看运行日志。
+		</p>
+	</div>
+</body>
+</html>

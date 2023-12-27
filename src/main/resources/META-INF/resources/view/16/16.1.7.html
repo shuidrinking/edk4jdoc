@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		16.1.7、编写调用接口的Action
+	</div>
+	<div class="tabTitleDiv">各层组件调用链路图</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<p style="text-indent:0.32rem;">
+			<img src="../../image/business/16/16.1.6-1.png">
+		</p>
+		<p style="text-indent:0.32rem;">
+			这个链路中，<label style="background-color:#00ff00;">businessLogic和action</label>是由开发人员完成，<label style="background-color:#00ff00;">caller和apiService</label>由技术经理完成！
+		</p>
+	</div>
+	<div class="tabTitleDiv">开发人员的工作内容</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<div class="item">
+			1、熟悉接口对应的Caller类；
+		</div>
+		<div class="item">
+			2、熟悉接口的请求和答复报文；
+		</div>
+		<div class="item">
+			3、组织好请求报文需要的数据，在你具体的Action中去调用caller，然后能从答复报文结构里提取数据进行使用，就好了。
+		</div>
+		<div class="item">
+			4、业务逻辑中需要调用接口时，就调用你写的action，参照com.edk4j.edk4jdemos.business.demo.action.CallSH0001Action，这个action是在businessLogic里被调用的，这个是业务功能层面了，所以开发人员自己完成。
+		</div>
+	</div>
+</body>
+</html>

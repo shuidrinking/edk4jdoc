@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<style type="text/css">
+		ol{
+    		list-style-position: inside;
+    		list-style-type: none;
+    		counter-reset: sectioncounter 0;
+    		margin-left:0.35rem;
+		}
+		ol li{
+			min-height:0.4rem;
+			line-height:0.4rem;
+		}
+		ol li:before {
+			content:  counter(sectioncounter)"、";
+			counter-increment: sectioncounter;
+		}
+		.item{
+			font-weight:normal;
+		}
+	</style>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		23.5.2、自定义埋点方式及Action组件
+	</div>
+	<div class="tabTitleDiv">自定义埋点方式</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<p>目前edk4j中进行自定义埋点的方式：在目标Action步骤前后进行埋点包裹操作，如下：</p>
+		<img src="../../image/business/23/23.5.2-1.png" />
+	</div>
+	<div class="tabTitleDiv">自定义埋点配套组件Action</div>
+	<p class="tabTitleLine"></p>
+	<div class="contentDiv">
+		<div class="item addArrow">
+			edk4j中为自定义埋点操作准备了以下4个组件Action，详见5.7.10章节：
+		</div>
+		<div class="subTitleDiv">
+			<ol>
+				<li><a href="javascript:window.open('../5/5.7.10.1.html', null, getWindowOpenFeature(200,200));">开始跟踪</a></li>
+				<li><a href="javascript:window.open('../5/5.7.10.2.html', null, getWindowOpenFeature(200,200));">结束跟踪</a></li>
+				<li><a href="javascript:window.open('../5/5.7.10.3.html', null, getWindowOpenFeature(200,200));">结束且上报异常不抛出</a></li>
+				<li><a href="javascript:window.open('../5/5.7.10.4.html', null, getWindowOpenFeature(200,200));">结束且上报异常并抛出</a></li>
+			</ol>
+		</div>
+		<div class="item addArrow">
+			每个组件中都有的属性说明
+		</div>
+		<table class="across">
+			<colgroup><col style="width:0.5rem;"/><col style='width:3rem;'/><col style='width:4rem;'><col/><col style='width:3rem;'/><col style="width:1rem;"/><col style='width:2rem;'/></colgroup>
+			<thead>
+				<tr>
+					<th>序号</th><th>属性id</th><th>属性标签</th><th>属性说明</th><th>默认值</th><th>可否为空</th><th>可选值</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style='text-align:center;'>1</td><td>spanName</td><td>跟踪点（埋点）名称</td><td>建议用要跟踪的步骤id作为spanName</td><td>customSpan</td><td style='text-align:center;'>false</td><td></td>
+				</tr>
+	
+				<tr>
+					<td style='text-align:center;'>2</td><td>tagNameList</td><td>标签名称列表</td><td>建议把要推送上去的字段label写进去</td><td></td><td style='text-align:center;'>false</td><td></td>
+				</tr>
+	
+				<tr>
+					<td style='text-align:center;'>3</td><td>tagDomainDataIdList</td><td>context中保存标签值的字段id列表</td><td></td><td></td><td style='text-align:center;'>false</td><td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

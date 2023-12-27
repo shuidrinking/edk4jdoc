@@ -1,0 +1,6 @@
+/target/
+/.classpath
+/.factorypath
+/.project
+/.settings/
+/src/main/resources/META-INF/resources/edk4j-appends/

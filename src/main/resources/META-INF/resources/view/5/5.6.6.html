@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		5.6.6、edk4j内置文件处理工具
+	</div>
+	<div class="subTitleDiv">
+		类：com.edk4j.core.util.FileUtil
+	</div>
+	<div class="subTitleDiv">
+		方法清单：
+	</div>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width:8.5rem;">
+					public static boolean writeTextWithUTF8(String fileName, String content)
+				</td>
+				<td style="color:#3f5fbf">
+					以UTF-8编码的方式将文本写入文件。要求fileName为文件的绝对路径
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static boolean writeText(String fileName, String content, String encoding)
+				</td>
+				<td style="color:#3f5fbf">
+					以指定编码的方式将文本写入文件 fileName为文件绝对路径
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String readTextWithUTF8(String fileName)
+				</td>
+				<td style="color:#3f5fbf">
+					以utf8编码方式读出文本文件，并以字符串方式返回
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static String readText(String fileName, String encoding)
+				</td>
+				<td style="color:#3f5fbf">
+					以指定编码的方式读出文本文件，并以字符串方式返回
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static File[] scanDirectory(String absPath)
+				</td>
+				<td style="color:#3f5fbf">
+					扫描指定目录的文件并返回文件列表（不会递归扫描子文件夹）
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static Resource[] resolveConfigLocations(String... locations)
+				</td>
+				<td style="color:#3f5fbf">
+					提取指定路径表达式下的所有文件，例如：&rdquo;classpath&lowast;:&lowast;&lowast;/&lowast;.xml&quot;会加载构建路径下的所有xml文件
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static InputStream getInputStream(String filePathName)
+				</td>
+				<td style="color:#3f5fbf">
+					获取文件流
+				</td>
+			</tr>
+			<tr>
+				<td>
+					public static byte[] getContent(String filePathName)
+				</td>
+				<td style="color:#3f5fbf">
+					获取文件字节数据
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			//CodePrettyUtil.escapeInnerHTML('codeShow1', 'codeShow1');
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		7.3、SessionService接口
+	</div>
+	<div class="tabTitleDiv">1、session里的重要名词</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		（1）sessionContext，是登录的会话context，由于context存在上下级关系，sessionContext是交易context的上级。<br/>
+		（2）requestToken，类似微信中的accessToken，用于在客户端和后台传输时使用，在sessionContext保存的字段为sessionToken。<br/>
+		（3）sessionToken，是requestToken保存于sessionContext中的字段名，值等于上面的token<br/>
+		（4）encryptedSessionToken，是token的<label style="background-color:#ffff00;">加密值</label><br/>
+		（5）sessionContextKey，根据客户信息和登录信息，生成字符串，<label style="background-color:#ffff00;">加密后</label>生成的sessionContextKey，是sessionContext缓存时的key
+	</div>
+	<div class="tabTitleDiv">2、sessionContext的缓存机制</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		（1）创建sessionContext，同时生成requestToken和sessionContextKey，并将sessionContextKey设置为sessionContext的ID<br/>
+		（2）将requestToken加密得到encryptedSessionToken，作为key，并将sessionContextKey作为value，保存到缓存服务器：<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cacheService.put(encryptedSessionToken, sessionContextKey)<br/>
+		（3）将以sessionContextKey作为key，并将sessionContext的json字符串压缩后作为value，保存到缓存服务器：<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cacheService.put(sessionContextKey, sessionContext)<br/>
+		（4）前台传入requestToken，要经过三步才能获得sessionContxt：加密requestToken  -> 用加密值从缓存服务器获得sessionContextKey  -> 用sessionContextKey从缓存服务器获得sessionContext
+	</div>
+	<div class="tabTitleDiv">3、session里的重要配置</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		回顾一下前面章节"edk4jConfig.properties”和“通过SessionConfig类获取参数”，了解到获取session配置的参数的方法，这些参数的使用下面将会介绍。<br/>
+		（1）token长度<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sessionConfig.sessionTokenLength=32<br/>
+		（2）encryptedSessionToken和sessionContextKey加密生成时需要的盐值<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sessionConfig.saltInSessionKeys=saLtAbC123<br/>
+		（3）sessionContextKey生成时，加密前添加的前缀，这也是一层盐值<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sessionConfig.sessionContextKeyPrefix=session<br/>
+		（4）是否单点登录，该配置用在下面接口的getSessionContextKey方法中<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sessionConfig.enableSSO=true
+	</div>
+	
+	<div class="tabTitleDiv">4、需要实现的接口</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<label style="font-weight:bold;">接口</label>：com.edk4j.core.service.SessionService<br/>
+		<label style="font-weight:bold;">edkDemo中的参考实现类</label>：com.edk4j.edk4jdemos.service.impl.SessionServiceImpl<br/>
+		<label style="font-weight:bold;">实现类中必须使用注解和beanName</label>：@Service("sessionService")，如果beanName没有这样设置，那么将会调用com.edk4j.core.service.impl.DefaultSessionService，这个默认实现类应该不够满足你的应用需求。<br/>
+		<div class="item addArrow">方法清单：</div>
+		<table class="across">
+			<colgroup><col style="width:50%;"/><col/></colgroup>
+			<thead>
+				<tr><th>方法</th><th>用途</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>getSessionToken()</td><td>获取sessionTonek（requestToken）</td></tr>
+				<tr><td>encryptedSessionToken(String)</td><td>加密sessionToken</td></tr>
+				<tr><td>getSessionContextKey()</td><td>获取sessionContextKey</td></tr>
+				<tr><td>getSSOControlSessionContextKey(User)</td><td>获取单点登录的SSO控制sessionContextKey</td></tr>
+				<tr><td>createSessionContext(String, String, String)</td><td>创建sessionContext</td></tr>
+				<tr><td>updateSessionContextWhenLogin(Context, User)</td><td>客户登录时更新sessionContext</td></tr>
+				<tr><td>updateParallelCachedFields(Context)</td><td>清空sessionContext中与之平行缓存的字段</td></tr>
+				<tr><td>updateParallelCachedFieldsExpire(String)</td><td>刷新平行字段缓存的超时时间</td></tr>
+				<tr><td>evictParallelCachedFields(String)</td><td>从缓存中清理平行字段</td></tr>
+				<tr><td>getSessionContextBySessionContextKey(String)</td><td>通过sessionContextKey获取sessionContext</td></tr>
+				<tr><td>getSessionContextBySessionToken(String)</td><td>通过sessionToken获取sessionContext</td></tr>
+				<tr><td>updateSessionContext(Context)</td><td>每次交易结束时更新sessionContext</td></tr>
+				<tr><td>updateAllCachedDataExpire(String, String, String)</td><td>更新除平行字段外所有缓存内容的超时时间</td></tr>
+				<tr><td>checkLoginByRequestToken(String, String, String)</td><td>根据sessionToken检查客户是否登录</td></tr>
+				<tr><td>checkLoginBySessionContext(Context, String, String)</td><td>根据sessionContext检查客户是否登录</td></tr>
+				<tr><td>rollbackSessionToUnLogin(Context)</td><td>客户退出登录时，清理sessionContext中的登录数据</td></tr>
+				<tr><td>destorySessionWhenClientExit(String)</td><td>当客户端关闭时，销毁sessionContext</td></tr>
+			</tbody>
+		</table>
+		<div class="item addArrow">该接口的方法详细说明：</div>
+		<div class="contentDiv">
+			<pre class="prettyprint lang-java" id="codeShow1" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+/**
+ * 获取指定长度的随机码作为sessionToken
+ * @return
+ */
+public String getSessionToken();
+/**
+ * 对sessionToken做二次加密
+ * @param sessionToken
+ * @return 返回结果为MD5加密（sessionToken+盐值）
+ */
+public String encryptedSessionToken(String sessionToken);
+/**
+ * 获得sessionContextKey
+ * @return 返回结果为:缓存前缀-MD5加密(随机码)
+ */
+public String getSessionContextKey();
+/**
+ * 获得用户的SSO sessionContextKey
+ * @param user
+ * @return 返回结果为:缓存前缀-MD5加密(sessionContextKey前缀+渠道+核心客户号+操作员编码+10位随机数+盐值)
+ */
+public String getSSOControlSessionContextKey(User user);
+/**
+ * 客户开始访问，便创建sessionContext
+ * @param channelCode
+ * @param clientIp
+ * @param httpSessionId
+ * @return 返回创建的sessionContext，未加密的sessionToken通过context.getDataValue(ContextFieldsDefine.SESSION_TOKEN_FIELD)获得
+ */
+public Context createSessionContext(String channelCode, String clientIp, String httpSessionId);
+/**
+ * 客户登录时，更新sessionContext
+ * @param sessionContext
+ * @param user
+ */
+public void updateSessionContextWhenLogin(Context sessionContext, User user);
+/**
+ * 从sessionContext中清空“在cacheConfig中配置的、与sessionContext缓存并行缓存的”字段<br>
+ * <b>注意：该方法只用于创建和登录更新时使用，并且外部没有能用到的情况，对于这些并行字段的缓存维护，在应用中自行处理</b>
+ * key为 sessionContextKey(这个字段已经带缓存前缀了)+"-"+getParallelCachedField，缓存后将sessionContext中的值都设置为null<br>
+ * 至少包括 sessionDynamicData，系统启动时在cacheConfig.setParallelCachedFieldsInSessionContext方法里设置这些字段
+ * @param sessionContext
+ */
+public void updateParallelCachedFields(Context sessionContext);
+/**
+ * 更新与sessionContext平行缓存的字段的超时时间<br>
+ * <b>注意：这些字段由应用自行维护生命周期<br>该方法在updateSessionCacheExpireBeforeLogin或者updateSessionCacheExpireAfterLogin方法中调用，用于伴随SessionContext的超时时间一起更新</b>
+ * @param sessionContextKey
+ */
+public void updateParallelCachedFieldsExpire(String sessionContextKey);
+/**
+ * 从缓存中驱逐（删除）在cacheConfig中配置的、与sessionContext缓存并行缓存的字段<br>
+ * <b>注意：该方法用于关闭浏览器、创建sessionContext缓存异常的情况下</b>
+ * key为 sessionContextKey(这个字段已经带缓存前缀了)+"-"+getParallelCachedField，缓存后将sessionContext中的值都设置为null<br>
+ * 至少包括sessionDynamicData，系统启动时在cacheConfig.setParallelCachedFieldsInSessionContext方法里设置这些字段
+ * @param sessionContextKey
+ */
+public void evictParallelCachedFields(String sessionContextKey);
+/**
+ * 取得sessionContext，这里仅仅是获取，不会做任何验证动作，需要验证登录等情况时需要额外调用本类的其他方法<br>
+ * <b>注意：此处获取到的sessionContext中的那些平行缓存字段都是空值</b>
+ * @param sessionToken
+ * @return
+ */
+public Context getSessionContextBySessionContextKey(String sessionContextKey);
+/**
+ * 根据sessionTokey获得客户的sessionContext，这里仅仅是获取，不会做任何验证动作，需要验证登录等情况时需要额外调用本类的其他方法<br>
+ * <b>注意：此处获取到的sessionContext中的那些平行缓存字段都是空值</b>
+ * @param sessionToken 未经过二次加密的值，该值用于跟页面交互使用
+ * @return
+ */
+public Context getSessionContextBySessionToken(String sessionToken);
+/**
+ * 更新sessionContext缓存,用于业务逻辑中更新变更的数据到sessionContext中<br>
+ * <b>注意：1.该方法需要在controller的postHandle方法中调用，作用是在交易完成后，需要更新sessionContext进行更新</b><br>
+ * <b>注意：2.那些跟sessionContext平行存储的字段，需要项目中单独处理，这里会将sessionContext中的那些字段值清空</b><br>
+ * @param sessionContext
+ */
+public void updateSessionContext(Context sessionContext);
+/**
+ * 更新所有缓存的超时时间<br>
+ * <b>注意：更新超时时间的动作，在查询时也要更新</b>
+ * 更新的key有：encryptedSessionToken、sessionContextKey、ssoSessionContextKey、平行字段<br>
+ * @param encryptedSessionToken 经过二次加密的sessionToken
+ * @param sessionContextKey
+ * @param ssoSessionContextKey
+ */
+public void updateAllCachedDataExpire(String encryptedSessionToken,String sessionContextKey,String ssoSessionContextKey);
+/**
+ * 使用sessionToken（前端叫requestToken）检查客户是否登录
+ * @param sessionToken
+ * @param httpSessionId
+ * @param clientIp
+ * @return
+ */
+public boolean checkLoginByRequestToken(String sessionToken,String httpSessionId, String clientIp);
+/**
+ * 使用SessionContext（前端叫requestToken）检查客户是否登录
+ * @param sessionContext
+ * @param httpSessionId
+ * @param clientIp
+ * @return
+ */
+public boolean checkLoginBySessionContext(Context sessionContext,String httpSessionId, String clientIp);
+/**
+ * 使session回退到登陆前：设置sessionContext的登录用户信息为空、设置登录标志为否、设置ssoSessionContextKey为空<br>
+ * <b>注意：该方法不更新缓存服务器，也不清理缓存中的ssoSessionContextKey，因为有可能在其他地方登录</b><br>
+ * <b>该方法用于：检查不通过或者退出登录时，清理sessionContext中的用户登录数据，并设置为未登录状态
+ */
+public void rollbackSessionToUnLogin(Context sessionContext);
+/**
+ *  浏览器关闭时，毁灭session，删除该session【除了ssoSessionContext缓存外】的所有缓存<br>
+ *  <b>注意：该方法必须是客户端要主动触发onClose事件的动作，该方法如果不被调用，则缓存内容会根据生命周期自动消亡</b>
+ * @param sessionToken 未经过二次加密的sessionToken
+ */
+public void destorySessionWhenClientExit(String sessionToken);
+			</pre>
+		</div>
+	</div>
+	<div class="contentDiv">
+	<a>7.3.5、接口中的方法在哪里被调用</a><br/>
+	基本上都是在 MvcController的（1）创建sessionContext的方法
+	</div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body >
+	<div id="title" class="titleDiv">
+		12.1、有边界的数据集合Context
+	</div>
+	<div class="subTitleDiv">
+		在前面第5.2.8章“edk4j中的数据结构”一章节中，讲到了Context这个数据结构，这里专门再详细介绍一下。<br/>
+		对于Context中的一系列方法的使用，详见<a href="javascript:window.open('../102/102.1.html', null, getWindowOpenFeature(200, 200));">edk4j技术点样例项目</a>中的测试类com.edk4j.edk4jdemos.business.noFrontModule.DataStructCRUD<br>
+		Context是edk4j平台中的数据结构，它的业务意义是：有边界的数据集合，贯穿于交易过程的数据域。该类型的对象，在edk4j平台中按照边界划分为两：<br>
+		<div style="padding-left:0.64rem;text-indent:0;">
+			（1）会话数据域Context，此时“边界”是指客户从打开客户端首次访问，到关闭客户端结束。其中的数据贯穿于整个会话中所有的交易。<br>
+			（2）交易数据域Context，此时“边界”是指一次具体交易从前端发起到获得返回结果。其中的数据贯穿于单次交易的生命周期内。
+		</div>
+	</div>
+	<div class="subTitleDiv addArrow">
+		1、sessionContext
+	</div>
+	<div class="subContentDiv">
+		sessionContext在edk4j平台中特指会话数据域。<br>
+		当客户首次访问时，便建立sessionContext，这个context的生命周期会从访问开始，到客户端（浏览器）结束。在整个会话期间，只有这一个sessionContext，用于保持会话数据。<br/>
+		建立sessionContext时，会默认的在其中添加下列字段：
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"/>
+				<col/>
+			</colgroup>
+			<tbody>
+				<tr><td>sessionToken</td><td>这个字段在客户交易时使用，传输时用requestToken命名</td></tr>
+				<tr><td>encryptedSessionToken</td><td>这个字段的值，是sessionToken的加密值，用于缓存在缓存服务器上的id</td></tr>
+				<tr><td>sessionContextid</td><td>这个字段是sessionContext缓存在缓存服务器上的id</td></tr>
+				<tr><td>currentBusinessCode</td><td>这个字段是当前交易码，每次交易请求到达时，edk4j平台会自动更新这个字段的值</td></tr>
+				<tr><td>平行字段</td><td>edk4jConfig.properties里配置的字段</td></tr>
+			</tbody>
+		</table>
+		除了上面的字段外，还会按照sessionContext.xml中的配置，添加其中的字段。
+	</div>
+	<div class="subTitleDiv addArrow">
+		2、交易context
+	</div>
+	<div class="subContentDiv">
+		就是每次交易都会创建一个交易Context对象，其中保存的就是具体businessLogic里要用到的字段，除了bpm数据域里定义的字段外，默认还会添加下面字段：
+		<table class="across">
+			<colgroup>
+				<col style="width:3rem;"/>
+				<col/>
+			</colgroup>
+			<tbody>
+				<tr><td>requestToken</td><td>通信码，就是sessionToken，前台请求时必须带进来</td></tr>
+				<tr><td>resultCode</td><td>结果码，返回给请求端的结果编码，默认为“0”</td></tr>
+				<tr><td>resultMessage</td><td>结果信息，返回给请求端的结果信息，默认为“ok”</td></tr>
+				<tr><td>businessCode</td><td>交易码，一般不用前台提交，而是定义在.edk4jMvc文件中</td></tr>
+				<tr><td>clientIp</td><td>这个字段在渠道-统一平台模式下，在统一平台中非常有用，详见edk4j-demos中的DefaultMvcController中的做法</td></tr>
+				<tr><td>httpSessionId</td><td>这个字段在渠道-统一平台模式下，在统一平台中非常有用，详见edk4j-demos中的DefaultMvcController中的做法</td></tr>
+			</tbody>
+		</table>
+		接收到前台请求后，edk4j内核会自动把requestToken的值设置到context中去，无论你的bpm里是否在输入字段中指定了这个字段名。<br>
+		同理，resultCode和resultMessage也会被自动添加到返回结果中，无论你在返回结果中是否指定了这2个字段。
+	</div>
+	<div class="subTitleDiv addArrow">
+		3、Context具备上下级树形关系的能力
+	</div>
+	<div class="subContentDiv">
+		通过context.setParentContext方法，建立上下级关系，例如context1.setParentContext(context2)，就会把context2设置为context1的上级context。<br/>
+		一旦建立了上下级关系，则对某字段的操作，是逐级上寻，寻到后操作。例如：context2是context1的上级，调用context1.get("feild1")时，先在context1里找field1字段，如果没找到，就会到context2里去找。<br>
+		<label style="color:#ff0000;">在edk4j平台中，交易context的parent是sessionContext，平台会自动维护他们的上下关系。</label>
+	</div>
+	<div class="subTitleDiv addArrow">
+		4、Context类的常用方法
+	</div>
+	<div class="subContentDiv">
+		<table class="across">
+			<colgroup>
+				<col style="width:2rem;"/>
+				<col style="width:4rem;"/>
+				<col/>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>操作目标</th>
+					<th>方法名</th>
+					<th>说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td rowspan="19" style="text-align:center;border-right: 1px solid #ff0000">操作自身属性</td></tr>
+				<tr><td>context.getName()</td><td>设置context的id</td></tr>
+				<tr><td>context.setName(name)</td><td>获取context的id</td></tr>
+				<tr><td>context.size()</td><td>获取context的容量</td></tr>
+				<tr><td>context.isEmpty()</td><td>context是否为空</td></tr>
+				<tr><td>context.idSet()</td><td>获取context的中所有元素的idSet</td></tr>
+				<tr><td>context.setParent(parentContext)</td><td>设置上级context</td></tr>
+				<tr><td>context.setParentContext(parentContext)</td><td>设置上级context，与setParent方法相同</td></tr>
+				<tr><td>context.unChain()</td><td>解除与上级的上下级关系</td></tr>
+				<tr><td>context.addChildContext(childContext)</td><td>添加下级context</td></tr>
+				<tr><td>context.getChildCount()</td><td>获取下级context的数量</td></tr>
+				<tr><td>context.getChilds()</td><td>获取所有下级context列表</td></tr>
+				<tr><td>context.getContextNamed(contextId)</td><td>获取id为contextId的下级子context，支持多级遍历获取</td></tr>
+				<tr><td>context.clone()</td><td>克隆context</td></tr>
+				<tr><td>context.clear()</td><td>清空</td></tr>
+				<tr><td>context.containsid(id)</td><td>内容中是否包含指定id元素</td></tr>
+				<tr><td>context.containsValue(value)</td><td>内容中是否包含value对象的元素</td></tr>
+				<tr><td>context.toString()</td><td>以xml格式返回context内容</td></tr>
+				<tr><td>context.toJSon()</td><td>以json格式返回context的内容</td></tr>
+				
+				<tr><td rowspan="6" style="text-align:center;border-right: 1px solid #00ff00">处理DomainData</td></tr>
+				<tr><td>context.addDomainData(domainData);</td><td>添加数据域对象（Listx或DataCell）</td></tr>
+				<tr><td>context.removeDomainData(id)</td><td>删除指定id的数据域对象</td></tr>
+				<tr><td>context.getDomainData(id)</td><td>获取指定id的数据域对象</td></tr>
+				<tr><td>context.remove(id)</td><td>删除指定id的数据域对象</td></tr>
+				<tr><td>context.getDomainData()</td><td>获取保存的所有数据域对象</td></tr>
+
+				<tr><td rowspan="7" style="text-align:center;border-right: 1px solid #0000FF">处理DataCell</td></tr>
+				<tr><td>context.addDataCell(dataCell)</td><td>添加DataCell</td></tr>
+				<tr><td>context.addDataCell(id, value)</td><td>添加DataCell</td></tr>
+				<tr><td>context.put(id, value)</td><td>如果DataCell存在则更新其值，如果不存在则添加</td></tr>
+				<tr><td>context.setDataCellValue(id, value)</td><td>设置DataCell的值</td></tr>
+				<tr><td>context.getDataCellValue(id)</td><td>获取DataCell的值</td></tr>
+				<tr><td>context.get(id)</td><td>与getDataCellValue方法一致</td></tr>
+
+				<tr><td rowspan="4" style="text-align:center;border-right: 1px solid #ff0000">处理Listx</td></tr>
+				<tr><td>context.addListx(listx)</td><td>添加Listx，该Listx在context中的id，就是Listx自身的id</td></tr>
+				<tr><td>context.getListx(id)</td><td>获取Listx</td></tr>
+				<tr><td>context.get(id) </td><td>与getListx方法一致，只是获取后需要强制类型转换为Listx</td></tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

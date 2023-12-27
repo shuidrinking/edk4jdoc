@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript">
+		function init(){
+			//PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		24.3、配置action事务
+	</div>
+	<div class="tabTitleDiv">数据库操作组件事务配置性</div>
+	<p class="tabTitleLine"></p>
+	<table class="across">
+		<colgroup>
+			<col style="width:2rem"/>
+			<col style="width:4rem;"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>组件名称</th>
+				<th>事务属性名称</th>
+				<th>可选值及说明</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>获取序列号</td><td>无</td>
+				<td>默认使用独立事务，不支持配置</td>
+			</tr>
+			<tr>
+				<td>增删改执行器</td><td>(newTransactionFlag)使用独立事务</td>
+				<td>unuse：无事务<br>true：创建独立事务<br>false：沿用当前事务<br></td>
+			</tr>
+			<tr>
+				<td>批量增删改执行器</td><td>(newTransactionFlag)使用独立事务</td>
+				<td>true：创建独立事务<br>false：沿用当前事务<br></td>
+			</tr>
+			<tr>
+				<td>查询单笔数据明细</td><td>(newTransactionFlag)使用独立事务</td>
+				<td>true：创建独立事务<br>false：沿用当前事务<br></td>
+			</tr>
+			<tr>
+				<td>查询数据列表</td><td>无</td>
+				<td>执行不涉及事务，不支持配置</td>
+			</tr>
+			<tr>
+				<td>分页查询数据列表</td><td>无</td>
+				<td>执行不涉及事务，不支持配置</td>
+			</tr>
+			<tr>
+				<td>Mysql大数据分页查询</td><td>无</td>
+				<td>执行不涉及事务，不支持配置</td>
+			</tr>
+			<tr>
+				<td>执行存储过程</td><td>(newTransactionFlag)使用独立事务</td>
+				<td>unuse：无事务<br>true：创建独立事务<br>false：沿用当前事务<br></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

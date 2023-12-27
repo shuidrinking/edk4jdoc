@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init()">
+	<div id="title" class="titleDiv">
+		20.2.7、编写生产者Service
+	</div>
+	<div class="subTitleDiv">
+		如果发送消息需要在service里完成，你可以参考下面的Service。
+	</div>
+	<div class="contentDiv">
+		<pre class="prettyprint lang-java" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
+package com.edk4j.edk4jdemos.business.kafka.service;
+import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFutureCallback;
+import com.edk4j.core.log.Trace;
+/**
+ * 样例kafka消费生产者的service
+ * @author liuxiaosong(shuidrinking@126.com)
+ * @version 2019年10月25日
+ * @since jdk1.7
+ */
+@Service
+public class DemoProducerService {
+       /**注入发送工具组件**/
+       @Resource
+       private KafkaTemplate&lt;String, String&gt; kafkaTemplate;
+       
+       /**在edk4jConfig.properties中配置的具体业务的topicName的配置项**/
+       @Value("${businessA.kafka.topicName}")
+       private String topicName1;
+      
+       @Value("${businessB.kafka.topicName}")
+       private String topicName2;
+      
+       @Value("${businessC.kafka.topicName}")
+       private String topicName3;
+
+       /**发送总次数**/
+       private int sendCount=1;
+
+       /**是否指定partition**/
+       private boolean setPartition = false;
+
+       /**发送结束后的回调bean**/
+       private ListenableFutureCallback&lt;SendResult&lt;String, String&gt;&gt; callBackBean = new ListenableFutureCallback&lt;SendResult&lt;String, String&gt;&gt;() {
+              @Override
+              public void onSuccess(SendResult&lt;String, String&gt; result) {
+                     String metaData = result.getRecordMetadata().toString();
+                     String producerRecord = result.getProducerRecord().toString();
+                     Trace.info(DemoProducerService.class, Trace.Component_BizService, "\n发送成功\nRecordMetadata:\n{}\nProducerRecord:\n{}", new String[] {metaData, producerRecord});
+              }
+              @Override
+              public void onFailure(Throwable ex) {
+                     Trace.error(DemoProducerService.class, Trace.Component_BizService, "发送失败", ex);
+              }
+       };
+
+       /**
+        * 次方法只是演示，每3秒发送一次
+        */
+       @Scheduled(fixedDelay=3000)
+       public void sendMessage() {
+              Integer partition = Integer.valueOf(sendCount%5);
+              String currentTopicName = null;
+              //根据发送总次数，轮询向3个topic发送消息
+              if(sendCount%3 == 1) {
+                     currentTopicName = topicName1;
+              }
+              else if(sendCount%3 == 2) {
+                     currentTopicName = topicName2;
+              }
+              else {
+                     currentTopicName = topicName3;
+              }
+              String key = (new StringBuilder("key")).append(sendCount).toString();
+              String message =  (new StringBuilder("hellow kafka")).append(sendCount).toString();
+              if(setPartition) {
+                     kafkaTemplate.send(currentTopicName, partition, key, message).addCallback(callBackBean);
+              }
+              else {
+                     //不指定分区时，kafka会自动做均衡分配
+                     kafkaTemplate.send(currentTopicName, key, message).addCallback(callBackBean);
+              }
+              sendCount++;
+       }
+}
+</pre>
+	</div>
+</body>
+</html>

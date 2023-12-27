@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<style type="text/css">
+		ol{
+    		list-style-position: inside;
+    		list-style-type: none;
+    		counter-reset: sectioncounter 0
+		}
+		ol li:before {
+			content: "（" counter(sectioncounter)"）";
+			counter-increment: sectioncounter;
+			margin-left:0.32rem;
+		}
+	</style>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		9.2、请求数据的提交格式
+	</div>
+	<div class="tabTitleDiv">提交格式1：form格式提交</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<label style="font-weight:bold;">提交DataCell：</label><br>
+		<pre class="prettyprint lang-html" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+	&lt;input type="text" name="fieldId"/&gt;
+	&lt;input type="file" name="fieldId"/&gt;
+</pre>
+			<label style="font-weight:bold;">提交列表Listx：</label><br>
+			<pre class="prettyprint lang-html" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+	&lt;input name="listxId.field1Id"/&gt;<br>
+	&lt;input name="listxId.field2Id"/&gt;<br>
+	......<br>
+	&lt;input name="listxId.fieldNId"/&gt;
+</pre>
+	</div>
+	
+	<div class="tabTitleDiv">提交格式2：url中以键值对格式提交</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		（1）“键”与“值”用=连接；<br>
+		（2）“键值对”之间用&amp;连接。<br>
+		<label style="font-weight:bold;">例如接口调用时在OutputStream中请求：</label>
+		https://someUrl?key1=value1&amp;key2=value2&amp;key3=value3...
+	</div>
+	
+	<div class="tabTitleDiv">提交格式3：json格式提交</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+	<pre class="prettyprint lang-json" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+{
+	"someFieldId" : "fieldValue",
+	"someListxId" :[
+		{"field1":"value1"..."fieldN" : "valueN"},
+		...
+		{"field1":"value1"..."fieldN" : "valueN"}
+	]
+}
+</pre>
+	</div>
+	<div class="tabTitleDiv">提交格式4：xml格式提交</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		<label style="font-weight:bold;">格式一、以规范的edk中context标签发送，范式如下：</label><br>
+		<pre class="prettyprint lang-xml" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;xml&gt;
+	&lt;dataCell id="someDcId" value="someValue"/&gt;
+	&lt;listx id="someListxId"&gt;
+		&lt;mapx&gt;
+			&lt;dataCell id="f1" value="value1-1"/&gt;
+			&lt;dataCell id="f2" value="value1-2"/&gt;
+			...
+			&lt;listx id="subListx"&gt;......&lt;/listx&gt;
+		&lt;/mapx&gt;
+	&lt;/listx&gt;
+&lt;/xml&gt;
+</pre>
+		<br><br>
+		<label style="font-weight:bold;">格式二、以自定义的方式发送，标签名作为context中数据域元素的id，范式如下：</label><br>
+		<pre class="prettyprint lang-xml" style="width:100%;font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
+&lt;xml&gt;
+	&lt;someDcId&gt;&lt;![CDATA[someValue]]&gt;&lt;/someDcId&gt;
+	&lt;someListxId&gt;
+		&lt;mapx&gt;
+			&lt;f1&gt;&lt;![CDATA[value1-1]]&gt;&lt;/f1&gt;
+			&lt;f2&gt;&lt;![CDATA[value1-2]]&gt;&lt;/f2&gt;
+			...
+		&lt;/mapx&gt;
+	&lt;/someListxId&gt;
+&lt;/xml&gt;
+</pre>
+	</div>
+</body>
+</html>

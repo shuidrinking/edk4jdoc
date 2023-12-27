@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+</head>
+<body>
+	<div id="title" class="titleDiv">
+		94.2、spring-boot2.7开始废弃spring.factories
+	</div>
+	<div class="tabTitleDiv">1、spring-boot2.7弃用，spring-boot3删除</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		spring-boot2.7中已经申明废除，但是仍然可以使用，从spring-boot3开始彻底删除。<br>
+		<a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.7.0-M2-Release-Notes" target="_blank">官方说明：</a><br>
+		<div class="subContentDiv">
+			<label style="font-weight:bold;">Deprecations in Spring Boot 2.7</label><br>
+			<div>
+				1、Loading auto-configurations from spring.factories is deprecated. See above for more details.
+			</div>
+			<div>
+				2、The Micrometer team moved the binders to a separate micrometer module named micrometer-binders and deprecated the old binders. 
+				To prevent split packages, the imports have changed, too. If you are using the old binders, please adjust your imports from io.micrometer.core.instrument.binder to io.micrometer.binder. 
+				Spring Boot 2.7 still supports auto-configuration for the binders in the old module, but this support will be removed in Spring Boot 3.0.
+			</div>
+		</div>
+	</div>
+	<div class="tabTitleDiv">2、替代方法</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		新建文件：src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports<br>
+		将原spring.factories文件中的触发自动注册的组件写到这个文件中<br>
+		每行一个类的full qualified name，无需逗号分隔
+	</div>
+</body>
+</html>
