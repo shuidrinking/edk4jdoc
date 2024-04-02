@@ -16,31 +16,56 @@
 		查看前面章节， application-{profile}.properties和edk4jConfig.properties中，关于缓存配置的说明
 	</div>
 	<div class="subTitleDiv addArrow">
-		普通缓存和二级缓存如何设置
+		缓存服务器使用，普通缓存和二级缓存说明
 	</div>
 	<div class="subContentDiv">
-		<div>
-			在edk4jConfig.properties配置文件中，cache.providerName 这条配置的取值可以有个三个：
-		</div>
+		<label style="font-weight:bold">缓存服务器选择：</label>redis、ehcache等<br>
+		ehcache缓存到本地，redis缓存到服务器，普通缓存就是在系统中只使用一种缓存
+	</div>
+	<div class="subContentDiv">
+		<label style="font-weight:bold">二级缓存构成即原理：</label><br>
+		同时使用本地缓存+远程缓存，通过mq作为集群的缓存内容同步手段<br>
+		edk4j中提供了ehcache + redis + mq的解决方案，mq服务器可以选择redis或activemq或kafka
+	</div>
+	
+	<div class="subTitleDiv addArrow">
+		如何设置要使用的缓存服务器
+	</div>
+	<div class="subContentDiv">
 		<div class="subContentDiv">
+			在application-{profile}.properties配置文件中，设置cache.providerName的值 ：<br>
+			#要使用的缓存服务器名称设置，多个值之间用逗号分割<br>
+			cache.providerName=redis, ehcache<br>
+			<label style="font-weight:bold">#具体取值说明：</label>
 			<div class="item">
-				（1）只用ehCache：这种情况下，缓存只是进程缓存，也就是说，缓存内容只在单台服务器中有效，不能在集群中共享（edk不支持ehcache集群）
+				（1）cache.providerName=ehcach，此时只用ehCache：这种情况下，缓存只是进程缓存，也就是说，缓存内容只在单台服务器中有效，不能在集群中共享（edk4j不支持ehcache集群）
 			</div>
 			<div class="item">
-				（2）只用redis：这种情况下，缓存内容被保存在redis服务器，因此应用服务器集群的场景下，缓存是通用的。
+				（2）cache.providerName=redis，此时只用redis：这种情况下，缓存内容被保存在redis服务器，因此应用服务器集群的场景下，缓存是通用的。
 			</div>
 			<div class="item">
-				（3）启用二级缓存，即同时启用redi和ehCache：
-			</div>
-			<div class="subContentDiv" style="padding-left:0.32rem;">
-				ehcache负责缓存到本地，redis同步缓存ehcache中的内容，当ehcache的缓存内容发生变化时，会通过MQ服务器通知所有集群服务器进行缓存更新。
-				<br>在获取缓存值时，先尝试从ehcache中获取，获取不到时再通过redis获取。
-				<br>二级缓存会加快程序运行速度，毕竟和redis缓存服务器做交互时，会消耗交互时间和数据处理时间。
+				（3）cache.providerName=redis, ehcach，此时，需要打开二级缓存开关，即同时启用redi和ehCache
 			</div>
 		</div>
 	</div>
 	<div class="subTitleDiv addArrow">
-		如果启用二级缓存时，必须进行MQ的配置，使用MQ的方法，请阅读后面章节“20、消息总线专题”
+		二级缓存使用套路
+	</div>
+	<div class="subContentDiv" style="padding-left:0.32rem;">
+		<label style="font-weight:bold">第一步：设置配置</label><br>
+		#application-{profile}.properties文件中配置二级缓存<br>
+		#打开二级缓存开关<br>
+		cache.l2CacheEnabled=true<br>
+		#设置二级缓存的mq服务器<br>
+		cache.l2CacheMqServer=redis<br>
+	</div>
+	<div class="subContentDiv" style="padding-left:0.32rem;">
+		<label style="font-weight:bold">第二步：实现缓存数据同步接口</label><br>
+		（1）com.edk4j.core.service.CacheSynchronizeReceiver<br>
+		（2）com.edk4j.core.service.CacheSynchronizeSender<br>
+		注意：com.edk4j.sdk.service.impl包内提供了对上面接口，当mq使用redis、activemq、kafka均有实现类
+		<br><br>
+		</div>
 	</div>
 </body>
 </html>

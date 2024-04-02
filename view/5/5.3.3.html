@@ -57,7 +57,18 @@ spring.activemq.pool.reconnect-on-exception=true
 spring.activemq.pool.time-between-expiration-check=-1
 #系统启动时自动启动jms监听器
 spring.jms.listener.auto-startup=true
- 
+
+
+#具体环境的个性化缓存设置，其他缓存配置项见edk4jConfig.properties
+#是否启动缓存组件
+cache.initCacheComponent = true
+#缓存服务器，多个服务器使用逗号隔开名称，例如：redis, ehCache
+cache.providerName = ehCache
+#是否启用二级缓存
+cache.l2CacheEnabled=false
+#二级缓存数据同步的mq服务器
+cache.l2CacheMqServer=redis
+
 #redis服务器配置
 #是否使用哨兵集群模式，默认值为 true，该模式下支持多台redis服务器
 redis.useSentinel = false

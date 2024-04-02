@@ -104,12 +104,8 @@ sessionConfig.saltInSessionKeys=saLtAbC123
 runLog.prefixFieldsInLogContent=sessionToken, sessionCustNo, sessionClientIp
 
 #cache settings
-#缓存服务器，多个服务器使用逗号隔开名称，例如：redis, ehCache
-cache.providerName = ehCache
 #如果使用ehCache3，该属性需要指定，否则该项无用
 cache.ehCacheLocationInClassPath = ehCache3Config.xml
-#是否启动缓存组件
-cache.initCacheComponent = true
 #系统平台数据缓存的所属单元（分组名称）
 cache.systemParamCacheGroupName = testCenterSystemParamCache
 #sessionContext缓存的数据所属单元（分组名称）
@@ -136,8 +132,6 @@ cache.cachedKeyPrefix = Demo
 cache.parallelCachedFieldsInSessionContext[0] = sessionDynamicData
 #当文本内容长度达到多少K时，在缓存服务器上存取时会采取压缩/解压处理
 cache.textCachedSizeLineThenCompress = 15
-#当使用二级缓存时，缓存同步器的数量，默认为1，如果你的系统不是集群部署的，这个参数就没意义，有没有设置都没关系；另外，如果你的系统交易量不大并发不高，则不设置也没关系
-cache.mqSynchronizeThreadPoolSize = 1
 
 #jms 配置
 #jms最大尝试连接次数，超过此值时停止尝试
@@ -152,10 +146,6 @@ cache.mqSynchronizeThreadPoolSize = 1
 #例如下面是edk4j-demos中的配置
 activemq.demoMq.queueName=edk4jDemoQueue
 activemq.demoMq.concurrency=5-10
-
-#如果有2级缓存时，下面这两个参数必须配置，key值别变了，value值要根据项目命名一下
-activemq.cacheService.topicName=com.yourcompany.yourproject.cacheServiceTopic
-activemq.cacheService.concurrency=1
 
 #工作流配置
 #配置工作流的默认数据源名称，当你使用了edk4j多数据源时，可开启这项配置

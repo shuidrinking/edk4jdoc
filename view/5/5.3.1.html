@@ -30,42 +30,51 @@
 &lt;!DOCTYPE xml&gt;
 &lt;Configuration status="error"&gt;
 	&lt;Properties&gt;
-		&lt;Property name="FILE_HOME"&gt;
-			设置报文日志文件的目录，例如：/home/app/logs/your_project_name
-		&lt;/Property&gt;
-		&lt;Property name="PROJECT_NAME"&gt;
-			设置日志文件名，例如：your_project_name
-		&lt;/Property&gt;
+		&lt;Property name="saveto_folder"&gt;/home/app/edk4j-app-logs/${projectName}&lt;/Property&gt;
+		&lt;Property name="project_name"&gt;${projectName}&lt;/Property&gt;
+		&lt;Property name="content_format"&gt;%d{yyyy-MM-dd HH:mm:ss,SSS} %-5level %thread %c{1.} - %msg%xEx%n&lt;/Property&gt;
 	&lt;/Properties&gt;
 	&lt;Appenders&gt;
 		&lt;Console name="Console" target="SYSTEM_OUT"&gt;
-			&lt;PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5level %thread %c{1.} - %msg%xEx%n" /&gt;
+			&lt;PatternLayout pattern="${content_format}" /&gt;
 		&lt;/Console&gt;
-		&lt;RollingFile name="RollingAccessFile" fileName="${FILE_HOME}/${PROJECT_NAME}.log"
+		&lt;RollingFile name="CommonRollingFile" fileName="${saveto_folder}/${project_name}.log"
 			immediateFlush="false" append="true"
-			filePattern="${FILE_HOME}/${PROJECT_NAME}.%d{yyyyMMdd}_%i.log.gz"&gt;
-			&lt;PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5level %thread %c{1.} - %msg%xEx%n"/&gt;
+			filePattern="${saveto_folder}/${project_name}.%d{yyyyMMdd}_%i.log.gz"&gt;
+			&lt;PatternLayout charset="UTF-8" pattern="${content_format}"/&gt;
 			&lt;Policies&gt;
 				&lt;TimeBasedTriggeringPolicy interval="1" modulate="true"/&gt;
 				&lt;SizeBasedTriggeringPolicy size="50 MB"/&gt;
 			&lt;/Policies&gt;
 			&lt;DefaultRolloverStrategy max="20"&gt;
-				&lt;Delete basePath="${FILE_HOME}/" maxDepth="2"&gt;
+				&lt;Delete basePath="${saveto_folder}/" maxDepth="2"&gt;
 					&lt;IfFileName glob="*.log.gz"/&gt;
 					&lt;!-- age表示允许被保留的文件最远上次修改时间，天数为d，小时数为H。年龄数字最好&gt;2，否则可能造成删除的时候还处于被占用状态--&gt;
 					&lt;IfLastModified age="30d"/&gt;
 				&lt;/Delete&gt;
 			&lt;/DefaultRolloverStrategy&gt;
 		&lt;/RollingFile&gt;
-		&lt;!-- &lt;Async name="Async" bufferSize="51200"&gt;
-			&lt;AppenderRef ref="RollingAccessFile"/&gt;
-		&lt;/Async&gt; --&gt;
+		&lt;!--
+			&lt;Async name="Async" bufferSize="51200"&gt;
+				&lt;AppenderRef ref="CommonRollingFile"/&gt;
+			&lt;/Async&gt;
+		--&gt;
 	&lt;/Appenders&gt;
 	&lt;Loggers&gt;
-		&lt;Logger name="com.edk4j" level="INFO" additivity="true"/&gt;
-		&lt;Logger name="其他包名" level="INFO/DEBUG/ERROR/TRACE/WARN" additivity="true"/&gt;
+		&lt;Logger name="com.edk4j.core" level="INFO" additivity="true"/&gt;
+		&lt;Logger name="org.springframework" level="INFO" additivity="true" /&gt;
+		&lt;Logger name="org.springframework.web.servlet" level="TRACE" additivity="true"/&gt;
+		
+		&lt;!-- 指定使用个性化的输出器 --&gt;
+		&lt;!-- 
+		&lt;Logger name="some.special.package" level="INFO" additivity="false"&gt;
+			&lt;AppenderRef ref="Console" level="info" /&gt;
+			&lt;AppenderRef ref="CustomAppender" level="trace" /&gt;
+		&lt;/Logger&gt;
+		--&gt;
+		
 		&lt;Root level="INFO" includeLocation="true" additivity="false"&gt;
-			&lt;appender-ref ref="RollingAccessFile" /&gt;
+			&lt;appender-ref ref="CommonRollingFile" /&gt;
 			&lt;appender-ref ref="Console" /&gt;
 		&lt;/Root&gt;
 	&lt;/Loggers&gt;
