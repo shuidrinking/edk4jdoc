@@ -25,6 +25,7 @@
 .treeControl ul li a{
 	text-decoration: none;
 	color:#004e9c;
+	cursor: pointer;
 }
 .treeControl ul li a:hover {
 	color: #ffffff;

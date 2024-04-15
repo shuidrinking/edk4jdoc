@@ -7,7 +7,7 @@ function init(){
 	}
 	//生成菜单树控件
 	var menu = new MenuTree();
-	menu.Container = "menuDiv";//指定容器
+	menu.Container = "menuContent";//指定容器
 	menu.addNode("0", null, "系统功能", "0");
 	//{"menuCode":"","showText":"","url":"","parentMenuCode":"","levelNo":"2"}
 	menuList=[
@@ -443,7 +443,7 @@ function reSize(){
  * 点击菜单后在iframe中加载目标页面
  * @returns
  */
-function gotoView(menuCode){
+function gotoView(menuCode, _element){
 	var url=null;
 	if(menuMap[menuCode]){
 		url=menuMap[menuCode].url;
@@ -451,6 +451,13 @@ function gotoView(menuCode){
 	else{
 		return;
 	}
+	
+	let _oldelement = document.querySelector(".activeMenu");
+	if(_oldelement){
+		_oldelement.classList.remove("activeMenu");
+	}
+	_element.className="activeMenu";
+	
 	//document.workAreaFrame这种写法，你必须把iframe放到form里
 	var iframe = $("workAreaFrame");
 	iframe.src=url;
@@ -462,14 +469,16 @@ function gotoView(menuCode){
 var menuExpand=true;
 function toggleMenu(){
 	if(menuExpand){
-		$("menuDiv").className="menuDivHidden treeControl";
-		$("menuToggleDiv").className="showMenuIcon"
+		$("leftDiv").className="menuDivHidden";
+		$("menuToggleDiv").className="showMenuIcon";
+		$("menuToggleDiv").innerHTML="<div class='arrow arrow-right'></div>";
 		$("workAreaDiv").className="workAreaDivMax";
 		menuExpand=false;
 	}
 	else{
-		$("menuDiv").className="menuDivShow treeControl";
+		$("leftDiv").className="menuDivShow";
 		$("menuToggleDiv").className="hideMenuIcon";
+		$("menuToggleDiv").innerHTML="<div class='arrow arrow-left'></div>";
 		$("workAreaDiv").className="workAreaDivMin";
 		menuExpand=true;
 	}

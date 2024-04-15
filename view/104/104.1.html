@@ -71,13 +71,13 @@
 		&lt;!-- 这里可以是贵公司的私库，或者阿里库等私库 --&gt;
 		&lt;mirror&gt;
 			&lt;id&gt;alimaven-public&lt;/id&gt;
-			&lt;name&gt;阿里库&lt;/name&gt;
+			&lt;name&gt;阿里库-public&lt;/name&gt;
 			&lt;url&gt;https://maven.aliyun.com/repository/public&lt;/url&gt;
 			&lt;mirrorOf&gt;public&lt;/mirrorOf&gt;        
 		&lt;/mirror&gt;
 		&lt;mirror&gt;
 			&lt;id&gt;alimaven-central&lt;/id&gt;
-			&lt;name&gt;阿里库&lt;/name&gt;
+			&lt;name&gt;阿里库-central&lt;/name&gt;
 			&lt;url&gt;https://maven.aliyun.com/repository/central&lt;/url&gt;
 			&lt;mirrorOf&gt;central&lt;/mirrorOf&gt;        
 		&lt;/mirror&gt;
@@ -124,19 +124,32 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td style="text-align:center">阿里云私库</td>
+				<td style="text-align:center">阿里云public私库</td>
 				<td>
 <pre id="codeShow1"  class="prettyprint lang-xml">
 &lt;mirror&gt;
-      &lt;id&gt;alimaven&lt;/id&gt;
-      &lt;name&gt;aliyun maven lib&lt;/name&gt;
-      &lt;url&gt;https://maven.aliyun.com/repository/public&lt;/url&gt;
-      &lt;!--老版本的地址已经废弃&lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;--&gt;
-      &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;        
+	&lt;id&gt;alimaven-public&lt;/id&gt;
+	&lt;name&gt;aliyun maven lib of public&lt;/name&gt;
+	&lt;url&gt;https://maven.aliyun.com/repository/public&lt;/url&gt;
+	&lt;!--老版本的地址已经废弃&lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;--&gt;
+	&lt;mirrorOf&gt;public&lt;/mirrorOf&gt;        
 &lt;/mirror&gt;
 </pre>
 				</td>
 			</tr>
+			<tr>
+							<td style="text-align:center">阿里云central私库</td>
+							<td>
+<pre id="codeShow1"  class="prettyprint lang-xml">
+&lt;mirror&gt;
+	&lt;id&gt;alimaven-central&lt;/id&gt;
+	&lt;name&gt;aliyun maven lib of central&lt;/name&gt;
+	&lt;url&gt;https://maven.aliyun.com/repository/central&lt;/url&gt;
+	&lt;mirrorOf&gt;central&lt;/mirrorOf&gt;        
+&lt;/mirror&gt;
+</pre>
+							</td>
+						</tr>
 			<tr>
 				<td style="text-align:center">腾讯云私库</td>
 				<td>

@@ -45,6 +45,7 @@ table tr td {
 ::-webkit-scrollbar {
 	/*定义有效宽度*/
 	width: 0.06rem;
+	height: 0.06rem;
 	/*加上后滚动条两端箭头会消失 height: 10px; */
 }
 /*滚动条里面小方块*/
@@ -315,8 +316,8 @@ pre {
 	text-align:left;
 	font-weight:bold;
 	border-bottom:1px solid #d1e2ff;
-	height:0.6rem;
-	line-height:0.6rem;
+	height:0.4rem;
+	line-height:0.4rem;
 	vertical-align:middle;
 	padding:0.05rem;
 	margin:0 0.05rem;

@@ -8,23 +8,28 @@
 	<link type="text/css"  rel="stylesheet" href="css/index.css"/>
 	<link type="text/css"  rel="stylesheet" href="css/sdMasker.css"/>
 	<link type="text/css"  rel="stylesheet" href="css/sdMenuTree.css"/>
+	<link type="text/css"  rel="stylesheet" href="css/arrow.css"/>
 	<script type="text/javascript" src="javascript/components/SDDialog_min.js"></script>
 	<script type="text/javascript" src="javascript/components/sdTree/SDMenuTree_min.js"></script>
 	<script type="text/javascript" src="javascript/core/domUtil.js"></script>
 	<script type="text/javascript" src="javascript/index.js"></script>
 </head>
 <body onload="init()">
-	<div id="headDiv">
-		<div id="logo"></div>
-		<div id="logoText1">edk4j</div>
-		<div id="logoText2">技术白皮书</div>
-	</div>
-	<div id="menuDiv" class="menuDivShow">
+	<div id="leftDiv" class="menuDivShow">
+		<div id="headDiv">
+			<div id="logo"></div>
+			<div id="logoText1">edk4j</div>
+			<div id="logoText2">技术白皮书</div>
+		</div>
+		<div id="menuContent" class="treeControl">
+		</div>
 	</div>
 	<div id="workAreaDiv" class="workAreaDivMin">
 		<iframe id="workAreaFrame" name="workAreaFrame">
 		</iframe>
 	</div>
-	<div id="menuToggleDiv" class="hideMenuIcon" onclick="toggleMenu();" ></div>
+	<div id="menuToggleDiv" class="hideMenuIcon" onclick="toggleMenu();" >
+		<div class='arrow arrow-left'></div>
+	</div>
 </body>
 </html>
