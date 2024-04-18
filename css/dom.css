@@ -351,6 +351,7 @@ pre {
 .contentDiv{
 	text-align:left;
 	border:1px solid #d1e2ff;
+	border-radius:0.06rem;
 	line-height:0.3rem;
 	width: calc(100% - 0.22rem);
     padding:0.05rem;
@@ -358,6 +359,7 @@ pre {
 }
 .addBorder{
 	border:1px solid #d1e2ff;
+	border-radius:0.06rem;
 }
 table{
 	width:calc(100% - 0.1rem);
