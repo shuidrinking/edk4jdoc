@@ -23,7 +23,9 @@
 		其次，需要按照上一节中的步骤，将项目修改为“使用springBoot方式启动项目”。<br>
 		最后，任选下面一种套路，修改打包设置。<br>
 		运行maven install打包成功后，直接用命令 java -jar yourArtifactId.jar便可运行启动。<br>
-		<label style="background-color:#ffff00;">【注意】</label>：如果项目的parent并非spring-boot-parent，那么执行mvn命令必须加入参数： spring-boot:repackage，例如：<label style="background-color:#e2e2e2;border-radius: 0.02rem;padding:0 0.1rem;">mvn clean package spring-boot:repackage</label><br>
+		<label style="background-color:#ffff00;">【注意】</label>：如果项目的parent并非spring-boot-parent，打包时不能把依赖的jar打进去，有两个解决办法：<br>
+		（1）执行mvn打包命令中加入参数： spring-boot:repackage，例如：<label style="background-color:#e2e2e2;border-radius: 0.02rem;padding:0 0.1rem;">mvn clean package spring-boot:repackage</label><br>
+		（2）使用spring-boot-maven-plugin，在plugin节点中加入execution->goals子节点值为repackage<br>
 		<label style="background-color:#ffff00;">对于微服务、纯接口型的项目，可以打包为jar运行，但是对于web项目，没必要这样做，可运行的jar本质上就是内嵌了一个tomcat，这要比独立tomcat部署的方式在运维便捷、性能、以及灵活度上差。</label>
 	</div>
 	<div class="tabTitleDiv">套路一</div>
@@ -40,6 +42,14 @@
 &lt;plugin&gt;
 	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
 	&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+	&lt;version&gt;一般等于spring-boot的版本号&lt;/version&gt;
+	&lt;executions&gt;
+		&lt;execution&gt;
+			&lt;goals&gt;
+				&lt;goal&gt;repackage&lt;/goal&gt;
+			&lt;/goals&gt;
+		&lt;/execution&gt;
+	&lt;/executions&gt;
 &lt;/plugin&gt;
 </pre>
 		</div>
