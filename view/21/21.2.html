@@ -65,6 +65,14 @@
 &lt;plugin&gt;
 	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
 	&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+	&lt;version&gt;一般等于spring-boot的版本号&lt;/version&gt;
+	&lt;executions&gt;
+		&lt;execution&gt;
+			&lt;goals&gt;
+				&lt;goal&gt;repackage&lt;/goal&gt;
+			&lt;/goals&gt;
+		&lt;/execution&gt;
+	&lt;/executions&gt;
 &lt;/plugin&gt;
 </pre>
 		</div>
@@ -72,7 +80,7 @@
 			（2）在&lt;build&gt;标签中，【添加】&lt;resources&gt;标签，分别对java、 配置文件、以及静态资源做打包指定处理
 		</div>
 		<div class="item">
-			以上两点修改样例如下：
+			（3）完整样例如下：
 		</div>
 		<div class="subContentDiv addBorder">
 			<pre class="prettyprint lang-xml" id="codeShow2" style="font-weight:bold;font-size:0.14rem;line-height:0.2rem;font-family: 'Verdana','微软雅黑','宋体';">
@@ -114,6 +122,14 @@
 		&lt;plugin&gt;
 			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
 			&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+			&lt;version&gt;一般等于spring-boot的版本号&lt;/version&gt;
+			&lt;executions&gt;
+				&lt;execution&gt;
+					&lt;goals&gt;
+						&lt;goal&gt;repackage&lt;/goal&gt;
+					&lt;/goals&gt;
+				&lt;/execution&gt;
+			&lt;/executions&gt;
 		&lt;/plugin&gt;
 		&ltplugin&gt;
 			&ltgroupId&gt;org.apache.maven.plugins&lt/groupId&gt;
