@@ -60,6 +60,7 @@ function init(){
 		{"menuCode":"m5-3-10","parentMenuCode":"m5-3","showText":"5.3.10、mybatis-config.xml","url":"view/5/5.3.10.html"},
 		{"menuCode":"m5-3-11","parentMenuCode":"m5-3","showText":"5.3.11、具体mapper.xml","url":"view/5/5.3.11.html"},
 		{"menuCode":"m5-3-12","parentMenuCode":"m5-3","showText":"5.3.12、虚拟报文","url":"view/5/5.3.12.html"},
+		{"menuCode":"m5-3-13","parentMenuCode":"m5-3","showText":"5.3.13、提升配置文件加载优先级","url":"view/5/5.3.13.html"},
 		{"menuCode":"m5-4","parentMenuCode":"m5","showText":"5.4、具体项目的个性化初始化怎么做","url":"view/5/5.4.html"},
 		{"menuCode":"m5-5","parentMenuCode":"m5","showText":"5.5、edk4j提供的组件类","url":"#"},
 		{"menuCode":"m5-5-2","parentMenuCode":"m5-5","showText":"5.5.2、异常常量类","url":"view/5/5.5.2.html"},

@@ -79,8 +79,18 @@ spring.transaction.default-timeout= 30
 spring.profiles.active = development
 #spring.config.location = classpath:springConfig/application-product.properties
 
+#实现配置文件自定义，不依赖spring的profile机制以及文件命名application-{xxx}.properties的约束，可以通过在 ApplicationBootConfig.java类中添加注解"@PropertySource" ，样例如下
+#@PropertySource(
+#	value = {
+#		"classpath:application.properties",
+#		"classpath:edk4jConfig/business.properties",
+#		"classpath:edk4jConfig/edk4jConfig.properties",
+#		"classpath:自定义的配置文件"
+#	}
+#)
+
 #i18n set
-spring.messages.basename=springConfig/i18n/messages, springConfig/i18n/error, edk4jConfig/business, edk4jConfig/edk4jConfig
+spring.messages.basename=springConfig/i18n/messages, springConfig/i18n/error
 spring.messages.encoding=UTF-8
 
 spring.jmx.default-domain=outwork
