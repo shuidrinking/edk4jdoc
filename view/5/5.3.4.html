@@ -36,6 +36,8 @@
 #application
 #edk4j的配置根目录，这个字段可以不配置，若不配置该项，它的默认值为 edk4jConfig/
 application.configRootPathInClassPath=edk4jConfig/
+#本服务器的id，在集群情况下用于区分单台服务器，如果未设置，则系统会自动生成
+application.serverId;
 #当使用系统审计功能时，必须在json提交的参数中添加auditPassword字段，它是审计密码，否则拒绝使用，若项目里不设置，那么它的默认值为audit123456Pass的md5加密值9d2076c6cbc77729ae413ab3fb247e0b
 application.auditPassword=9d2076c6cbc77729ae413ab3fb247e0b
 #对于Spring的静态资源管理，我们提供了静态资源后缀名配置，你可以把这些配置以外的项目个性化后缀名添加到配置项中: jpg,jpeg,gif,ico,png,bmp,css,js,html,htm,swf,txt,flv,mid,doc,ppt,pdf,xls,pptx,docx,xlsx,mp3,wma,rar,zip,7z,tar,gz。多个后缀名以逗号分割，如果你不配置application.springStaticResourceFileExtend这个选项，系统将默认使用上面这些后缀名
