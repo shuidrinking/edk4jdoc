@@ -1,6 +1,7 @@
 //一级菜单
 var menuList=null;
 var menuMap={}; 
+var menuPathKeyedMap={};
 function init(){
 	if(typeof(Worker) == "undefined"){
 		return;
@@ -363,6 +364,7 @@ function init(){
 		{"menuCode":"m95-3","parentMenuCode":"m95","showText":"95.3、设置项目的jdk版本、编码","url":"view/95/95.3.html"},
 		{"menuCode":"m95-4","parentMenuCode":"m95","showText":"95.4、在配置文件中设置从环境变量获取参数","url":"view/95/95.4.html"},
 		{"menuCode":"m95-5","parentMenuCode":"m95","showText":"95.5、slf+log4j2的依赖配置","url":"view/95/95.5.html"},
+		{"menuCode":"m95-6","parentMenuCode":"m95","showText":"95.6、无数据库的搭建套路","url":"view/95/95.6.html"},
 		{"menuCode":"m96","parentMenuCode":"0","showText":"96、附录：生成文档","url":"#"},
 		{"menuCode":"m96-1","parentMenuCode":"m96","showText":"96.1、使用edk4j自带文档生成器","url":"view/96/96.1.html"},
 		{"menuCode":"m96-2","parentMenuCode":"m96","showText":"96.2、使用smartdoc生成api文档","url":"view/96/96.2.html"},
@@ -419,12 +421,13 @@ function init(){
 		{"menuCode":"m102-1","parentMenuCode":"m102","showText":"102.1、edk4技术点样例项目","url":"view/102/102.1.html"},
 		{"menuCode":"m103","parentMenuCode":"0","showText":"103、附录：nginx配置技巧","url":"#"},
 		{"menuCode":"m103-1","parentMenuCode":"m103","showText":"103.1、nginx.conf样例","url":"view/103/103.1.html"},
-        {"menuCode":"m104","parentMenuCode":"0","showText":"104、附录：下载中心","url":"#"},
+		{"menuCode":"m104","parentMenuCode":"0","showText":"104、附录：下载中心","url":"#"},
 		{"menuCode":"m104-1","parentMenuCode":"m104","showText":"104.1、maven库地址","url":"view/104/104.1.html"},
 		{"menuCode":"m104-2","parentMenuCode":"m104","showText":"104.2、开发环境资源下载","url":"view/104/104.2.html"}
 	];
 	for(var p in menuList){
 		menuMap[menuList[p].menuCode]=menuList[p];
+		menuPathKeyedMap[menuList[p].url]=menuList[p];
 		menu.addNode(menuList[p].menuCode, menuList[p].parentMenuCode, menuList[p].showText, menuList[p].menuCode);
 	}
 	var iframe = $("workAreaFrame");

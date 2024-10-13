@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		95.6、基于edk4j的无数据库项目的搭建套路
+	</div>
+	<div class="tabTitleDiv">1、删除涉及数据库的依赖包</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		删除第三方数据库的依赖包，例如删除mysql驱动、druid
+	</div>
+	<div class="tabTitleDiv">2、删除涉及到数据库的java类</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		（1）删除com.edk4j.sdk包中有涉及到数据库操作的类，包括com.edk4j.sdk.business整个包<br>
+		（2）删除项目中自动生成的BizLoggerImpl.java
+	</div>
+	<div class="tabTitleDiv">3、禁用spring的数据源类自动初始化</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+<pre class="prettyprint properties" style="font-weight:bold;color:#3f7f5f;">
+#在application.properties文件中添加下面的配置项：
+spring.autoconfigure.exclude[0]=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+</pre>
+	</div>
+	
+	<div class="tabTitleDiv">4、删除application-{profile}.properties文件中涉及到数据库的配置</div>
+	<div class="tabTitleLine"></div>
+	<div class="contentDiv">
+		将jpa、druid等数据库相关的配置全部删除
+	</div>
+</body>
+</html>

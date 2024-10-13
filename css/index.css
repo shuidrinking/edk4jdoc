@@ -6,12 +6,12 @@ html body{
 	font-size:16px;
 }
 table {
-	border: 1px solid #dedede;
+	border: 0.01rem solid #dedede;
 	padding: 0.1rem;
 	margin-bottom: 0.1rem;
 }
 table tr td {
-	border-bottom: 1px dotted #dedede;
+	border-bottom: 0.01rem dotted #dedede;
 	padding: 0 0.1rem;
 	height: 0.25rem;
 	vertical-align: middle;
@@ -45,7 +45,7 @@ table tr td {
 	border: 0;
 	display:block;
 	line-height:0.4rem;
-	border-bottom:1px solid #5d7e8d;
+	border-bottom:0.01rem solid #5d7e8d;
 	background: linear-gradient(360deg, #90c8e9, #dce7fa 100%); /* 标准的语法 90度表示从左到右*/
 }
 #logo{
@@ -93,7 +93,7 @@ table tr td {
 	height:100%;
 	background-attachment:fixed;
 	background-position:left bottom;
-	border-right:1px solid #5d7e8d;
+	border-right:0.01rem solid #5d7e8d;
 	position:fixed;
 	left:0;
 	transition: left 0.2s linear 0s;
@@ -107,7 +107,7 @@ table tr td {
 	height:100%;
 	background-attachment:fixed;
 	background-position:left bottom;
-	border-right:1px solid #5d7e8d;
+	border-right:0.01rem solid #5d7e8d;
 	position:fixed;
 	left:-4.2rem;
 	transition: left 0.2s linear 0s;
@@ -121,7 +121,7 @@ table tr td {
 	transition: width 0.2s linear 0s;
 }
 .workAreaDivMax {
-	width: calc(100% - 1px);
+	width: calc(100% - 0.01rem);
 	height: calc(100vh - 0.11rem);
 	border:0;
 	display:block;
@@ -147,7 +147,7 @@ table tr td {
 	text-align: center;
 	height: 1rem;
 	line-height: 1.05rem;
-	border: 1px solid #878787;
+	border: 0.01rem solid #878787;
 	border-top-right-radius: 0.1rem;
 	border-bottom-right-radius: 0.1rem;
 	background-position: center center;
@@ -172,7 +172,7 @@ table tr td {
 	text-align: center;
 	height: 1rem;
 	line-height: 1.05rem;
-	border: 1px solid #878787;
+	border: 0.01rem solid #878787;
 	border-top-right-radius: 0.1rem;
 	border-bottom-right-radius: 0.1rem;
 	background-position: center center;
