@@ -213,6 +213,7 @@ function init(){
 		{"menuCode":"m8-6-5","parentMenuCode":"m8-6","showText":"8.6.5、第5步：配置jpa启动项注解","url":"view/8/8.6.5.html"},
 		{"menuCode":"m8-7","parentMenuCode":"m8","showText":"8.7、多数据源下的工作流","url":"view/8/8.7.html"},
 		{"menuCode":"m8-8","parentMenuCode":"m8","showText":"8.8、hibernate或mybatis的dao中设置数据源","url":"view/8/8.8.html"},
+		{"menuCode":"m8-9","parentMenuCode":"m8","showText":"8.9、无数据源项目的配置手段","url":"view/8/8.9.html"},
 		{"menuCode":"m9","parentMenuCode":"0","showText":"9、请求数据专题","url":"#"},
 		{"menuCode":"m9-1","parentMenuCode":"m9","showText":"9.1、提交的方式及方法","url":"view/9/9.1.html"},
 		{"menuCode":"m9-2","parentMenuCode":"m9","showText":"9.2、提交的格式","url":"view/9/9.2.html"},
