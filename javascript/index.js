@@ -91,6 +91,7 @@ function init(){
 		{"menuCode":"m5-6-19","parentMenuCode":"m5-6","showText":"5.6.19、货币工具","url":"view/5/5.6.19.html"},
 		{"menuCode":"m5-6-20","parentMenuCode":"m5-6","showText":"5.6.20、首字母比较器","url":"view/5/5.6.20.html"},
 		{"menuCode":"m5-6-21","parentMenuCode":"m5-6","showText":"5.6.21、AES加解密工具","url":"view/5/5.6.21.html"},
+		{"menuCode":"m5-6-22","parentMenuCode":"m5-6","showText":"5.6.22、异常处理工具","url":"view/5/5.6.22.html"},
 		{"menuCode":"m5-7","parentMenuCode":"m5","showText":"5.7、edk4j提供的Action","url":"#"},
 		{"menuCode":"m5-7-1","parentMenuCode":"m5-7","showText":"5.7.1、日志组件","url":"#"},
 		{"menuCode":"m5-7-1-1","parentMenuCode":"m5-7-1","showText":"5.7.1.1、申明交易日志","url":"view/5/5.7.1.1.html"},
