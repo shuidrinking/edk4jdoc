@@ -138,10 +138,10 @@ public class MyExceptionHandler{
 			}
 			else {
 				ModelAndView modelAndView = new ModelAndView();
-			    modelAndView.setViewName(applicationConfig.getDefaultErrorPage());
-			    modelAndView.addObject("resultCode", errorCode);
-			    modelAndView.addObject("resultMessage", errorMessage);
-			    return modelAndView;
+				modelAndView.setViewName(applicationConfig.getDefaultErrorPage());
+				modelAndView.addObject("resultCode", errorCode);
+				modelAndView.addObject("resultMessage", errorMessage);
+				return modelAndView;
 			}
 		}
 		else {
@@ -176,28 +176,15 @@ public class MyExceptionHandler{
 			}
 			else {
 				ModelAndView modelAndView = new ModelAndView();
-			    modelAndView.setViewName(applicationConfig.getDefaultErrorPage());
-			    modelAndView.addObject("resultCode", errorCode);
-			    modelAndView.addObject("resultMessage", errorMessage);
-			    return modelAndView;
+				modelAndView.setViewName(applicationConfig.getDefaultErrorPage());
+				modelAndView.addObject("resultCode", errorCode);
+				modelAndView.addObject("resultMessage", errorMessage);
+				return modelAndView;
 			}
 		}
 		else {
 			return getResultStringFromError(errorCode, errorMessage);
 		}
-	}
-
-	/**
-	 * 获取异常详细信息
-	 * @param e
-	 * @return
-	 */
-	public static String getErrorStack(Exception e) {
-		ByteArrayOutputStream bo = new ByteArrayOutputStream();
-		PrintStream ps = new PrintStream(bo);
-		e.printStackTrace(ps);
-		String errorStack = new String(bo.toByteArray(), Charset.defaultCharset());
-		return errorStack;
 	}
 	
 	/**
