@@ -12,10 +12,11 @@
 	<div class="tabTitleDiv">统一异常处理器的工作内容</div>
 	<div class="tabTitleLine"></div>
 	<div class="contentDiv">
+		平台内置的“统一异常处理器”：<label style="font-weight:bold;">com.edk4j.core.exception.BaseExceptionHandler</label><br>
+		edk4j项目中抛出异常后，默认是它来完成统一处理。<br>
 		（1）捕获异常，提取异常中的“错误码”和“错误信息”；<br>
 		（2）将异常内容格式化后返回给请求端，或者跳转到特定的错误页面。<br>
-		在<a href="../5/5.2.9.html">5.2.9章节</a>已经说明了edk4j平台中的异常定义规范。异常处理器提取异常信息时，需要按规范中的约束来正确提取。<br>
-		edk4j项目中抛出异常后，默认是由平台内置的“统一异常处理器”来完成统一处理。
+		在<a href="../5/5.2.9.html">5.2.9章节</a>已经说明了edk4j平台中的异常定义规范。异常处理器提取异常信息时，需要按规范中的约束来正确提取。
 	</div>
 	<div class="tabTitleDiv">获取“错误码”和“错误信息”的算法</div>
 	<div class="tabTitleLine"></div>
