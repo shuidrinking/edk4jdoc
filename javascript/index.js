@@ -82,7 +82,7 @@ function init(){
 		{"menuCode":"m5-6-10","parentMenuCode":"m5-6","showText":"5.6.10、随机码生成器","url":"view/5/5.6.10.html"},
 		{"menuCode":"m5-6-11","parentMenuCode":"m5-6","showText":"5.6.11、图像处理","url":"view/5/5.6.11.html"},
 		{"menuCode":"m5-6-12","parentMenuCode":"m5-6","showText":"5.6.12、压缩及解压","url":"view/5/5.6.12.html"},
-		{"menuCode":"m5-6-13","parentMenuCode":"m5-6","showText":"5.6.13、实体类对象或其集合操作","url":"view/5/5.6.13.html"},
+		{"menuCode":"m5-6-13","parentMenuCode":"m5-6","showText":"5.6.13、实体类对象或其集合值复制工具","url":"view/5/5.6.13.html"},
 		{"menuCode":"m5-6-14","parentMenuCode":"m5-6","showText":"5.6.14、本机网络工具","url":"view/5/5.6.14.html"},
 		{"menuCode":"m5-6-15","parentMenuCode":"m5-6","showText":"5.6.15、汉语拼音工具","url":"view/5/5.6.15.html"},
 		{"menuCode":"m5-6-16","parentMenuCode":"m5-6","showText":"5.6.16、数据库连接工具","url":"view/5/5.6.16.html"},

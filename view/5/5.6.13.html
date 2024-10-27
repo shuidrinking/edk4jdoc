@@ -7,13 +7,13 @@
 </head>
 <body >
 	<div id="title" class="titleDiv">
-		5.6.13、edk4j内置实体类对象或其集合操作
+		5.6.13、实体类对象或其集合值复制工具
 	</div>
 	<div class="subTitleDiv addArrow">
-		1、实体类对象和map互转工具
+		1、VO与Map之间对值进行复制的工具，复制依据：遍历map中的key或bean中的字段名，仅当map中的键与bean的字段名相等时复制
 	</div>
 	<div class="subContentDiv">
-		类：com.edk4j.core.util.BeanMapUtil
+		类：com.edk4j.core.util.ValueCopyBetweenBeanAndMapUtil
 	</div>
 	<div class="subContentDiv">
 		方法如下：
@@ -23,23 +23,23 @@
 			<tbody>
 				<tr>
 					<td style="width:10rem;">
-						public static &lt;T&gt; Map&lt;String, Object&gt; beanToMap(T object)
+						public static &lt;T&gt; Map&lt;String, Object&gt; beanToMapViaSpring(T object)
 					</td>
 					<td style="color:#3f5fbf">
-						将实体对象转换为map
+						将实体类对象的字段名-字段值以key-value存储到map中
 					</td>
 				</tr>
 				<tr>
 					<td>
-						public static &lt;T&gt; T mapToBean(Map&lt;String, Object&gt; map, T object)
+						public static &lt;T&gt; T mapToBeanViaJackson(Map&lt;String, Object&gt; map, T object)
 					</td>
 					<td style="color:#3f5fbf">
-						将map转换为实体类对象，依次遍历map中的key，将value设置到object里与key相同的属性中
+						将map中的key与vo的字段名一致的value设置为vo的字段值
 					</td>
 				</tr>
 				<tr>
 					<td>
-						public static &lt;T&gt; List&lt;Map&lt;String, Object&gt;&gt; objectsToMaps(List&lt;T&gt; objList)
+						public static &lt;T&gt; List&lt;Map&lt;String, Object&gt;&gt; listOfBeanConvertToListOfMap(List&lt;T&gt; objList)
 					</td>
 					<td style="color:#3f5fbf">
 						将List&lt;T&gt;转换为List&lt;Map&lt;String, Object&gt;&gt;
@@ -47,10 +47,26 @@
 				</tr>
 				<tr>
 					<td>
-						public static &lt;T&gt; List&lt;T&gt; mapsToObjects(List&lt;Map&lt;String, Object&gt;&gt; maps, Class&lt;T&gt; clazz)
+						public static &lt;T&gt; List&lt;T&gt; listOfMapConvertToListOfBean(List&lt;Map&lt;String, Object&gt;&gt; maps, Class&lt;T&gt; clazz)
 					</td>
 					<td style="color:#3f5fbf">
 						将List&lt;Map&lt;String,Object&gt;&gt;转换为List&lt;T&gt;
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static Map&lt;String, Object&gt; beanToMapViaJackson(Object vo)
+					</td>
+					<td style="color:#3f5fbf">
+						将实体类对象的字段名-字段值以key-value存储到map中
+					</td>
+				</tr>
+				<tr>
+					<td>
+						public static &lt;T&gt; T mapToBeanViaJackson(Map&lt;String, Object&gt; kvMap, Class&lt;T&gt; toValueType)
+					</td>
+					<td style="color:#3f5fbf">
+						将map中的key与vo的字段名一致的value设置为vo的字段值
 					</td>
 				</tr>
 			</tbody>
@@ -63,7 +79,7 @@
 		类：com.edk4j.core.util.PropertiesCopyUtil
 	</div>
 	<div class="subContentDiv">
-		用于复制实体类对象的属性，方法清单：
+		用于复制实体类对象的属性到另一个实体类对象，方法清单：
 	</div>
 	<div class="subContentDiv">
 		<table>
