@@ -393,7 +393,7 @@ function init(){
 		{"menuCode":"m99-3","parentMenuCode":"m99","showText":"99.3、Hibernate的ORM数据库映射实体类","url":"view/99/99.3.html"},
 		{"menuCode":"m99-4","parentMenuCode":"m99","showText":"99.4、Hibernate的dao怎么做","url":"view/99/99.4.html"},
 		{"menuCode":"m99-5","parentMenuCode":"m99","showText":"99.5、SpringMvc套路下输入输出实体类的规范","url":"view/99/99.5.html"},
-		{"menuCode":"m99-5","parentMenuCode":"m99","showText":"99.5、SpringMvc套路下输入输出实体类的规范","url":"view/99/99.5.html"},
+		{"menuCode":"m99-6","parentMenuCode":"m99","showText":"99.6、允许跨域的解决方案","url":"view/99/99.6.html"},
 		{"menuCode":"m100","parentMenuCode":"0","showText":"100、附录：可视化开发IDE","url":"#"},
 		{"menuCode":"m100-1","parentMenuCode":"m100","showText":"100.1、概述","url":"view/100/100.1.html"},
 		{"menuCode":"m100-2","parentMenuCode":"m100","showText":"100.2、下载插件","url":"view/100/100.2.html"},
