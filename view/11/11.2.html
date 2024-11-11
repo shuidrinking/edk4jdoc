@@ -29,7 +29,7 @@
 	</div>
 	<div class="subContentDiv">
 		<label style="color:#ff0000;">这个动作由技术经理完成</label><br/>
-		在edk4jConfig.properties中设置交易日志表的表名：<br/>
+		在edk4j.properties中设置交易日志表的表名：<br/>
 		<div style="border:1px solid #eeeeee;">
 			<label style="color:#3f7f7f">#如果你不设置这个参数，它的默认值是BIZ_LOG</label><br/>
 			application.bizLogTableName=交易日志表名(例如BIZ_LOG)
@@ -40,7 +40,7 @@
 	</div>
 	<div class="subContentDiv">
 		<label style="color:#ff0000;">这个动作由技术经理完成</label><br/>
-		在edk4j中，交易日志保存到数据库的动作是异步完成的，这个主要是为了提高系统的响应速度。因此，在edk4jConfig.properties中需要设置保存到数据库的记录器连接池大小，默认是5，你可以根据系统并发量大小等情况设置。
+		在edk4j中，交易日志保存到数据库的动作是异步完成的，这个主要是为了提高系统的响应速度。因此，在edk4j.properties中需要设置保存到数据库的记录器连接池大小，默认是5，你可以根据系统并发量大小等情况设置。
 		<div style="border:1px solid #eeeeee;">
 			<label style="color:#3f7f7f">#如果你不设置这个参数，它的默认大小是5</label><br/>
 			application.bizLogRecorderTreadPoolSize=5
@@ -68,7 +68,7 @@
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:teal">&lt;route</span> <span style="color:#7f007f">toAction</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;logDefineStep&quot;</span></em><span style="color:teal">/&gt;</span></p>
 			<p><span style="color:teal">&lt;/</span><span style="background-color:silver"><span style="color:#3f7f7f">start</span></span><span style="color:teal">&gt;</span></p>
 			<p><span style="color:teal">&lt;</span><span style="color:#3f7f7f">action</span> <span style="color:#7f007f">className</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;com.edk4j.core.action.BizLogDefineAction&quot;</span></em> <span style="color:#7f007f">id</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;logDefineStep&quot;</span></em><span style="color:teal">&gt;</span></p>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:teal">&lt;</span><span style="color:#3f7f7f">property</span> <span style="color:#7f007f">id</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;businessCode&quot;&nbsp;</span></em><span style="color:#7f007f">value</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;</span></em><em><span style="color:#2a00ff">交易码，这个属性一般不要添加进来，因为mvc配置时已经有指定交易码了！只有在这种场景下才设置：某个bl被好几个mvc公用。</span></em><em><span style="color:#2a00ff">&quot;</span></em> <span style="color:teal">/&gt;</span></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:teal">&lt;</span><span style="color:#3f7f7f">property</span> <span style="color:#7f007f">id</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;businessCode&quot;&nbsp;</span></em><span style="color:#7f007f">value</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;</span></em><em><span style="color:#2a00ff">交易码，这个属性一般不要添加进来，因为api配置时已经有指定交易码了！只有在这种场景下才设置：某个bl被好几个api公用。</span></em><em><span style="color:#2a00ff">&quot;</span></em> <span style="color:teal">/&gt;</span></p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:teal">&lt;</span><span style="color:#3f7f7f">property</span> <span style="color:#7f007f">id</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;loggerContentFormat&quot;&nbsp;</span></em><span style="color:#7f007f">value</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;</span></em><em><span style="color:#2a00ff">日志内容表达式，例如：内容内容内容内容，某业务值：</span></em><em><span style="color:#2a00ff">${field1}，${field2}....</span></em><em><span style="color:#2a00ff">把这个交易的关键信息记录都进去</span></em><em><span style="color:#2a00ff">&quot;</span></em> <span style="color:teal">/&gt;</span></p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:teal">&lt;route</span> <span style="color:#7f007f">toAction</span><span style="color:black">=</span><em><span style="color:#2a00ff">&quot;</span></em><em><span style="color:#2a00ff">下一个</span></em><em><span style="color:#2a00ff">Step&quot;</span></em><span style="color:teal">/&gt;</span></p>
 			<p><span style="color:teal">&lt;/</span><span style="color:#3f7f7f">action</span><span style="color:teal">&gt;</span></p>

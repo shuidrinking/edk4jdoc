@@ -43,7 +43,7 @@ public class DemoProducerService {
        @Resource
        private KafkaTemplate&lt;String, String&gt; kafkaTemplate;
        
-       /**在edk4jConfig.properties中配置的具体业务的topicName的配置项**/
+       /**在edk4j.properties中配置的具体业务的topicName的配置项**/
        @Value("${businessA.kafka.topicName}")
        private String topicName1;
       

@@ -22,16 +22,16 @@
 		先要明确一下：对ajax请求，跳转动作是无意义的。跳转适用于get方式的访问或者form提交，后台负责跳转到新页面的场景。
 	</div>
 	<div class="subTitleDiv addArrow">
-		首先，需要在mvc中设置responseView属性，将值设置为该mvc处理完成后要跳转到的视图页面。
+		首先，需要在api中设置responseView属性，将值设置为该api处理完成后要跳转到的视图页面。
 	</div>
 	<div class="subTitleDiv addArrow">
-		其次，在具体的MvcControlle.postHandle方法中实现跳转动作。参照“<a href="../7/7.1.html">7.1、MvcController接口</a>”章节中对MvcController的介绍。
+		其次，在具体的MvcControlle.postHandle方法中实现跳转动作。参照“<a href="../7/7.1.html">7.1、RequestPresenter接口</a>”章节中对RequestPresenter的介绍。
 	</div>
 	<div class="subContentDiv">
-		可参考实现类：com.edk4j.sdk.web.controller.DefaultMvcController，该类在<a href="javascript:window.open('../102/102.1.html', null, getWindowOpenFeature(200, 200));">edk4j-demos技术点样例项目</a>中可以找到。也可以使用EDK可视化IDE为项目添加支持后，自动生成。
+		可参考实现类：com.edk4j.sdk.web.presenter.DefaultRequestPresenter，该类在<a href="javascript:window.open('../102/102.1.html', null, getWindowOpenFeature(200, 200));">edk4j-demos技术点样例项目</a>中可以找到。也可以使用EDK可视化IDE为项目添加支持后，自动生成。
 	</div>
 	<div class="subTitleDiv addArrow">
-		MvcController开发技巧
+		RequestPresenter开发技巧
 	</div>
 	<div class="subContentDiv">
 		<div class="item">
@@ -51,22 +51,22 @@
  * 【注】需要本地maven库中的edk-core在2020-5-1后更新过，否则本方法不会被调用
  * @param request
  * @param response
- * @param mvc
+ * @param api
  * @param context
  * @return 视图String，json或者xml格式的字符串，或者ModelAndView等返回结果
  * @throws BaseException
  */
-public Object postHandle(HttpServletRequest servletRequest, HttpServletResponse servletResponse, Mvc mvc, Context context) {
-	if(StringUtil.isBlank(mvc.getResponesView())) {
-		return postHandle(servletResponse, mvc, context);
+public Object postHandle(HttpServletRequest servletRequest, HttpServletResponse servletResponse, Api api, Context context) {
+	if(StringUtil.isBlank(api.getResponesView())) {
+		return postHandle(servletResponse, api, context);
 	}
 	else {
-		updateSession(mvc, context);
+		updateSession(api, context);
 		/*
-		 * 当mvc的响应视图非空时，则forward到其设置的页面
+		 * 当api的响应视图非空时，则forward到其设置的页面
 		 */
-		if(mvc.getResponesView().charAt(0) != '/' ) {
-			mvc.setResponesView("/"+mvc.getResponesView());
+		if(api.getResponesView().charAt(0) != '/' ) {
+			api.setResponesView("/"+api.getResponesView());
 		}
 		
 		/*
@@ -76,25 +76,25 @@ public Object postHandle(HttpServletRequest servletRequest, HttpServletResponse 
 		 * 
 		 * forward方式跳转，适用于jsp等动态页面，可以把数据放到request里带过去
 		 */
-		RequestDispatcher dispatcher = servletRequest.getRequestDispatcher(mvc.getResponesView());
+		RequestDispatcher dispatcher = servletRequest.getRequestDispatcher(api.getResponesView());
 		try{
 			dispatcher.forward(servletRequest, servletResponse);
 		}
 		catch (ServletException e){
-			Trace.error(DefaultMvcController.class, Trace.Component_Controller, "", e);
+			Trace.error(getClass(), Trace.Component_Controller, "", e);
 		}
 		catch (IOException e){
-			Trace.error(DefaultMvcController.class, Trace.Component_Controller, "", e);
+			Trace.error(getClass(), Trace.Component_Controller, "", e);
 		}
 		
 		/*
 		如果要使用response.sendRedirect，则需要加上项目根目录，否则跳转相对路径，有可能出现找不到文件的错误
 		sendRedirect跳转，适用于html等静态网页的跳转，把参数可以放到url里组织成get方式（url?param1=1&amp;param2=2...）带过去
 		try{
-			servletResponse.sendRedirect(servletRequest.getContextPath()+mvc.getResponesView());
+			servletResponse.sendRedirect(servletRequest.getContextPath()+api.getResponesView());
 		}
 		catch (IOException e){
-			Trace.error(DefaultMvcController.class, Trace.Component_Controller, "", e);
+			Trace.error(getClass(), Trace.Component_Controller, "", e);
 		}
 		*/
 		return null;

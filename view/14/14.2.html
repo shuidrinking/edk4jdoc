@@ -125,15 +125,15 @@ public class MyExceptionHandler{
 		Trace.error(getClass(),Trace.Component_System_Component, errorCode, e);
 		
 		/*
-		 * 如果在Mvc中设置了页面跳转，并且在MvcController中使用了这句：request.setAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID, Boolean.TRUE);
-		 * 那么这里返回ModelAndView对象，跳转到在edk4jConfig.properties中定义的错误页面（配置项为application.defaultErrorPage=错误页面）
+		 * 如果在Api中设置了页面跳转，并且在RequestPresenter中使用了这句：request.setAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID, Boolean.TRUE);
+		 * 那么这里返回ModelAndView对象，跳转到在edk4j.properties中定义的错误页面（配置项为application.defaultErrorPage=错误页面）
 		 * 
 		 * 【注意，可以用自定义的规则（例如：可以做一个错误码和错误页面映射表，根据错误码返回错误页面），判定是否要返回ModelAndView，并且返回页面都自定义实现】
 		 */
 		if(request.getAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID)!=null 
 			&& (boolean)request.getAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID)) {
 			if(StringUtil.isBlank(applicationConfig.getDefaultErrorPage())) {
-				Trace.warn(BaseExceptionHandler.class, Trace.Component_System_Component, "找不到默认错误页面，请在edk4jConfig.properties中补充配置项：application.defaultErrorPage");
+				Trace.warn(BaseExceptionHandler.class, Trace.Component_System_Component, "找不到默认错误页面，请在edk4j.properties中补充配置项：application.defaultErrorPage");
 				return getResultStringFromError(errorCode, errorMessage);
 			}
 			else {
@@ -171,7 +171,7 @@ public class MyExceptionHandler{
 		if(request.getAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID)!=null 
 			&& (boolean)request.getAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID)) {
 			if(StringUtil.isBlank(applicationConfig.getDefaultErrorPage())) {
-				Trace.warn(BaseExceptionHandler.class, Trace.Component_System_Component, "找不到默认错误页面，请在edk4jConfig.properties中补充配置项：application.defaultErrorPage");
+				Trace.warn(BaseExceptionHandler.class, Trace.Component_System_Component, "找不到默认错误页面，请在edk4j.properties中补充配置项：application.defaultErrorPage");
 				return getResultStringFromError(errorCode, errorMessage);
 			}
 			else {

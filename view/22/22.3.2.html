@@ -25,9 +25,9 @@
 	<div class="contentDiv">
 		<div>（1）观察流程图，会发现：每个节点的“出口线路”可以有多条，而在前台能操作的按钮对应的也会有多个，每个按钮对应一条线路走向。</div>
 		<div>（2）开发套路非常简单：只需要调用完成当前节点的业务逻辑，把要走哪条线路的名称作为参数传过去即可，当然，参数中还需要携带审批意见等。</div>
-		<div>（3）前端组织好参数，调用workflowInstanceMvc.edk4jMvc文件中的mvc“/workflowInstance/completeTask”，关联到wokflowInstanceBpm.edk4jBpm文件中的“wokflowInstance.completeTaskBL”。</div>
+		<div>（3）前端组织好参数，调用workflowInstanceMvc.api文件中的api“/workflowInstance/completeTask”，关联到wokflowInstanceBpm.bpm文件中的“wokflowInstance.completeTaskBL”。</div>
 		<div>（4）在“管理系统模板”的js文件中，搜索"dealTask"，便可看到js调用流转的做法，这些方法内容都一样。</div>
-		<div>（5）无论是“审批”、“拒绝”等，只要流程流转，都调用的是同一个mvc</div>
+		<div>（5）无论是“审批”、“拒绝”等，只要流程流转，都调用的是同一个api</div>
 	</div>
 </body>
 </html>

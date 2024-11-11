@@ -17,10 +17,10 @@
 </head>
 <body onload="init();">
 	<div id="title" class="titleDiv">
-		5.3.4、edk4jConfig.properties
+		5.3.4、edk4j.properties
 	</div>
 	<div class="subTitleDiv addArrow">
-		文件位置：位于 ${项目路径}/src/main/resources/edk4jConfig/edk4jConfig.properties
+		文件位置：位于 ${项目路径}/src/main/resources/edk4j/edk4j.properties
 	</div>
 	<div class="subTitleDiv addArrow">
 		该文件负责配置的内容是：系统的一些属性参数、日志的属性参数、缓存类的属性参数等。
@@ -34,17 +34,17 @@
 	<div class="subContentDiv addBorder">
 		<pre class="prettyprint lang-properties" id="codeShow1" style="font-weight:bold;font-size:0.14rem;line-height:0.26rem;font-family: 'Verdana','微软雅黑','宋体';">
 #application
-#edk4j的配置根目录，这个字段可以不配置，若不配置该项，它的默认值为 edk4jConfig/
-application.configRootPathInClassPath=edk4jConfig/
+#edk4j的配置根目录，这个字段可以不配置，若不配置该项，它的默认值为 edk4j/
+application.configRootPathInClassPath=edk4j/
 #本服务器的id，在集群情况下用于区分单台服务器，如果未设置，则系统会自动生成
 application.serverId;
 #当使用系统审计功能时，必须在json提交的参数中添加auditPassword字段，它是审计密码，否则拒绝使用，若项目里不设置，那么它的默认值为audit123456Pass的md5加密值9d2076c6cbc77729ae413ab3fb247e0b
 application.auditPassword=9d2076c6cbc77729ae413ab3fb247e0b
 #对于Spring的静态资源管理，我们提供了静态资源后缀名配置，你可以把这些配置以外的项目个性化后缀名添加到配置项中: jpg,jpeg,gif,ico,png,bmp,css,js,html,htm,swf,txt,flv,mid,doc,ppt,pdf,xls,pptx,docx,xlsx,mp3,wma,rar,zip,7z,tar,gz。多个后缀名以逗号分割，如果你不配置application.springStaticResourceFileExtend这个选项，系统将默认使用上面这些后缀名
 application.springStaticResourceFileExtend=aaa,bbb,ccc
-#这个字段配置了MVC控制器中的默认控制器类，如果你的&lt;Mvc标签中className未设置，默认就会使用这个类
-application.defaultMvcControllerClassName=com.edk4j.sdk.web.controller.DefaultMvcController
-#默认的请求数据解包类配置，当某个mvc要求解包，但是它没有配置requestDataWrapperClass这个属性，那么edk4j平台会调用这个默认的类，对请求数据进行包装，常见的解包动作有“数据解密”等
+#这个字段配置了Mvp控制器中的默认控制器类，如果你的&lt;Api标签中className未设置，默认就会使用这个ide自动生成的类
+application.defaultRequestPresenterClassName=${you_project_root_package}.web.presenter.DefaultRequestPresenter
+#默认的请求数据解包类配置，当某个api要求解包，但是它没有配置requestDataWrapperClass这个属性，那么edk4j平台会调用这个默认的类，对请求数据进行包装，常见的解包动作有“数据解密”等
 application.defaultRequestDataWrapperClassName=com.edk4j.sdk.web.requestDataWrapper.DemoRequestDataWrapper
 #下面的配置项，是全局请求数据解包总开关，可选值：true/false，如果设置为true，那么所有请求数据都要被解包
 application.wrappedAllRequestData=
@@ -60,7 +60,7 @@ application.getClientIp=true
 application.checkHttpSessionIdEqualsWithSession=true
 #是否检查交易请求中的clientIp和会话中存储的clientIp一致
 application.checkClientIpEqualsWithSession=true
-#是否将mvc处理过的请求参数传递到Context中，这个字段用在渠道-统一平台的场景下
+#是否将处理过的请求参数传递到Context中，这个字段用在渠道-统一平台的场景下
 application.wrappedPrameBeforeControllerProcess=false
 #config constants ,see com.edk4j.core.constant.BaseConstant
 #默认编码方式

@@ -32,7 +32,7 @@
 			（2）&lt;ehcache:cache-template&gt;该节点中通过&lt;ehcache:expiry&gt;节点设置每个缓存分组的过期时间
 		</div>
 		<div class="item">
-			（3）每组缓存都通过&lt;ehcache:cache&gt;节点设置，并且通过指向上面第2项中设置的模板，引入过期时间，其属性uses-template="....Template" 的值必须是上面第2项中节点的name。特别要注意的是，这里的&lt;ehcache:cache&gt;节点的alias属性，必须和edk4jConfig.properties中的这5个项目值一致：
+			（3）每组缓存都通过&lt;ehcache:cache&gt;节点设置，并且通过指向上面第2项中设置的模板，引入过期时间，其属性uses-template="....Template" 的值必须是上面第2项中节点的name。特别要注意的是，这里的&lt;ehcache:cache&gt;节点的alias属性，必须和edk4j.properties中的这5个项目值一致：
 		
 		</div>
 	</div>

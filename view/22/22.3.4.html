@@ -17,7 +17,7 @@
 	<div class="tabTitleDiv">调用代码</div>
 	<p class="tabTitleLine"></p>
 	<div class="contentDiv">
-		<div>（1）前端组织好参数，直接调用workflowInstanceMvc.edk4jMvc文件中的mvc/workflowInstance/recordInstanceBusinessData”，关联到wokflowInstanceBpm.edk4jBpm文件中的“wokflowInstance.recordInstanceBusinessDataBL”。</div>
+		<div>（1）前端组织好参数，直接调用workflowInstanceMvc.api文件中的api/workflowInstance/recordInstanceBusinessData”，关联到wokflowInstanceBpm.bpm文件中的“wokflowInstance.recordInstanceBusinessDataBL”。</div>
 		<div>（2）前端提交的数据，需要按业务流程数据列表的格式组织为一个数组。数据是s中组织的key为wfBusinessDataList数组，在众多edit*.js中可以找到doSubmit()函数，有许多案例。</div>
 		<div>（3）注意：如果是这种场景：“当流程有很多步骤，每一步骤需要更行自己这1步的数据，但是不影响其他步骤的数据”，就需要额外传入参数updateType，而且参数值必须是"iou"</div>
 	</div>

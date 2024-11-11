@@ -35,7 +35,7 @@
 				<tr><td>encryptedSessionToken</td><td>这个字段的值，是sessionToken的加密值，用于缓存在缓存服务器上的id</td></tr>
 				<tr><td>sessionContextid</td><td>这个字段是sessionContext缓存在缓存服务器上的id</td></tr>
 				<tr><td>currentBusinessCode</td><td>这个字段是当前交易码，每次交易请求到达时，edk4j平台会自动更新这个字段的值</td></tr>
-				<tr><td>平行字段</td><td>edk4jConfig.properties里配置的字段</td></tr>
+				<tr><td>平行字段</td><td>edk4j.properties里配置的字段</td></tr>
 			</tbody>
 		</table>
 		除了上面的字段外，还会按照sessionContext.xml中的配置，添加其中的字段。
@@ -54,9 +54,9 @@
 				<tr><td>requestToken</td><td>通信码，就是sessionToken，前台请求时必须带进来</td></tr>
 				<tr><td>resultCode</td><td>结果码，返回给请求端的结果编码，默认为“0”</td></tr>
 				<tr><td>resultMessage</td><td>结果信息，返回给请求端的结果信息，默认为“ok”</td></tr>
-				<tr><td>businessCode</td><td>交易码，一般不用前台提交，而是定义在.edk4jMvc文件中</td></tr>
-				<tr><td>clientIp</td><td>这个字段在渠道-统一平台模式下，在统一平台中非常有用，详见edk4j-demos中的DefaultMvcController中的做法</td></tr>
-				<tr><td>httpSessionId</td><td>这个字段在渠道-统一平台模式下，在统一平台中非常有用，详见edk4j-demos中的DefaultMvcController中的做法</td></tr>
+				<tr><td>businessCode</td><td>交易码，一般不用前台提交，而是定义在.api文件中</td></tr>
+				<tr><td>clientIp</td><td>这个字段在渠道-统一平台模式下，在统一平台中非常有用，详见edk4j-demos中的DefaultRequestPresenter中的做法</td></tr>
+				<tr><td>httpSessionId</td><td>这个字段在渠道-统一平台模式下，在统一平台中非常有用，详见edk4j-demos中的DefaultRequestPresenter中的做法</td></tr>
 			</tbody>
 		</table>
 		接收到前台请求后，edk4j内核会自动把requestToken的值设置到context中去，无论你的bpm里是否在输入字段中指定了这个字段名。<br>

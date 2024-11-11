@@ -13,10 +13,10 @@
 		1、edk4j返回给前端的内容格式约定
 	</div>
 	<div class="subContentDiv">
-		（1） 返回结果的格式，是在MvcController的postHandle方法中设置的，这个根据具体需要进行处理，我们提倡使用json格式。
+		（1） 返回结果的格式，是在RequestPresenter的postHandle方法中设置的，这个根据具体需要进行处理，我们提倡使用json格式。
 	</div>
 	<div class="subContentDiv">
-		（2） 返回结果中有两个必有的字段，默认是 resultCode 和 resultMessage，当处理正确时resultCode="0"，resultMessage="ok"。当然，也不是非要这两个字段，edk4j中可以很灵活的处理：你可以在businessLogic的输出字段中定义，或者在MvcController.postHandle方法中设置
+		（2） 返回结果中有两个必有的字段，默认是 resultCode 和 resultMessage，当处理正确时resultCode="0"，resultMessage="ok"。当然，也不是非要这两个字段，edk4j中可以很灵活的处理：你可以在businessLogic的输出字段中定义，或者在RequestPresenter.postHandle方法中设置
 	</div> 
 	<div class="subTitleDiv addArrow">
 		2、edk4j中Action类返回结果的约定
@@ -40,19 +40,16 @@
 		对这个字段的值是否正确，这个判定动作也在businessLogic里自定义处理，调用存储过程的Action组件里不会处理的。
 	</div>
 	<div class="subTitleDiv addArrow">
-		5、mvc文件命名约定
+		5、api文件命名约定
 	</div>
 	<div class="subContentDiv">
-		文件名必须以 .edk4jMvc结尾
+		文件名必须以 .api结尾
 	</div>
 	<div class="subTitleDiv addArrow">
 		6、业务逻辑分组中具体的BusinessLogic命名约定
 	</div>
 	<div class="subContentDiv">
-		文件名必须以.edk4jBpm结尾
-	</div>
-	<div class="subContentDiv">
-		BusinessLogic标签中的id属性，必须以BL后缀结尾
+		文件名必须以.bpm结尾
 	</div>
 	<div class="subTitleDiv addArrow">
 		7、Action类命名约定
@@ -67,10 +64,10 @@
 		必须以Repository后缀结尾
 	</div>
 	<div class="subTitleDiv addArrow">
-		9、Controller类命名约定
+		9、RequestPresenter类命名约定
 	</div>
 	<div class="subContentDiv">
-		必须以Controller后缀结尾
+		必须以RequestPresenter后缀结尾
 	</div>
 	<div class="subTitleDiv addArrow">
 		10、Service类命名约定
@@ -94,10 +91,10 @@
 		Context的建立、销毁、与SessionContext的上下级关系确立，这些动作在开发层面无需关心，平台会自动完成。
 	</div>
 	<div class="subContentDiv">
-		对于SessionContext的建立，由MvcController负责完成。
+		对于SessionContext的建立，由RequestPresenter负责完成。
 	</div>
 	<div class="subContentDiv">
-		对于SessionContext向缓存服务器更新的动作，在MvcController.postHandle方法里完成。
+		对于SessionContext向缓存服务器更新的动作，在RequestPresenter.postHandle方法里完成。
 	</div>
 </body>
 </html>

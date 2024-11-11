@@ -13,13 +13,13 @@
 		<p>edk4j支持businessLogic的可插拔式动态更新，可以动态的添加或者更新businessLogic，而不需要重启系统。</p>
 		<p><strong>请求Url</strong>：<span style="color:#3f5fbf">http://url:port/youSystemName/system/audit/updateBiz</span></p>
 		<p><strong>需要用ajax</strong><strong>访问，请求参数样例</strong>：</p>
-		<p><span style="color:#3f5fbf">{&quot;auditPassword&quot;:&quot;审计密码加密值&quot;,&quot;bpmConfigFileName&quot;:&quot;someBpm.edk4jBpm&quot;,&quot;businessLogicId&quot;:&quot;checkCodeGroup.getImageCheckCodeBL&quot;}</span></p>
+		<p><span style="color:#3f5fbf">{&quot;auditPassword&quot;:&quot;审计密码加密值&quot;,&quot;bpmFileName&quot;:&quot;someBpm.bpm&quot;,&quot;businessLogicId&quot;:&quot;checkCodeGroup.getImageCheckCodeBL&quot;}</span></p>
 		<p>&nbsp;</p>
 		<p><strong>参数说明</strong>：</p>
 		<p><span style="color:#3f5fbf">auditPassword </span>必输</p>
-		<p><span style="color:#3f5fbf">bpmConfigFileName</span>非必输</p>
+		<p><span style="color:#3f5fbf">bpmFileName</span>非必输</p>
 		<p><span style="color:#3f5fbf">businessLogicId</span>非必输，值为 &quot;businessLogicGroupId&quot; + &quot;.&quot; + &quot;businessLogicId&quot;</p>
-		<p>当 <span style="color:#3f5fbf">bpmConfigFileName</span>为空而<span style="color:#3f5fbf">businessLogicId</span>不为空时，会只更新这一个biz；当<span style="color:#3f5fbf">businessLogicId</span>为空而<span style="color:#3f5fbf">bpmConfigFileName</span>不为空时，会更新配置文件中所有的businessLogic；当两者都不能空时，会更新这一个businessLogic。</p>
+		<p>当 <span style="color:#3f5fbf">bpmFileName</span>为空而<span style="color:#3f5fbf">businessLogicId</span>不为空时，会只更新这一个biz；当<span style="color:#3f5fbf">businessLogicId</span>为空而<span style="color:#3f5fbf">bpmFileName</span>不为空时，会更新配置文件中所有的businessLogic；当两者都不能空时，会更新这一个businessLogic。</p>
 		返回如下结果表示处理成功：
 		<div style="border:1px solid #eeeeee">
 			<p>{</p>

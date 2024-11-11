@@ -40,7 +40,7 @@
 	<div class="tabTitleDiv">3、session里的重要配置</div>
 	<div class="tabTitleLine"></div>
 	<div class="contentDiv">
-		回顾一下前面章节"edk4jConfig.properties”和“通过SessionConfig类获取参数”，了解到获取session配置的参数的方法，这些参数的使用下面将会介绍。<br/>
+		回顾一下前面章节"edk4j.properties”和“通过SessionConfig类获取参数”，了解到获取session配置的参数的方法，这些参数的使用下面将会介绍。<br/>
 		（1）token长度<br/>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sessionConfig.sessionTokenLength=32<br/>
 		（2）encryptedSessionToken和sessionContextKey加密生成时需要的盐值<br/>
@@ -207,7 +207,7 @@ public void destorySessionWhenClientExit(String sessionToken);
 	</div>
 	<div class="contentDiv">
 	<a>7.3.5、接口中的方法在哪里被调用</a><br/>
-	基本上都是在 MvcController的（1）创建sessionContext的方法
+	基本上都是在 RequestPresenter的（1）创建sessionContext的方法
 	</div>
 </body>
 </html>

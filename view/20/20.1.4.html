@@ -13,7 +13,7 @@
 		禁止使用MQ后，处理缓存时有两种情况：
 	</div>
 	<div class="subTitleDiv">
-		第一，如果在你的应用中，不实现CacheService接口，而是使用edk自带的缓存管理器，那么在edk4jConfig.properties配置文件中，cache.providerName 这条配置的值不能是redis,ehCache；
+		第一，如果在你的应用中，不实现CacheService接口，而是使用edk自带的缓存管理器，那么在edk4j.properties配置文件中，cache.providerName 这条配置的值不能是redis,ehCache；
 	</div>
 	<div class="subTitleDiv">
 		第二，如果你的应用中，实现了CacheService接口，并且对二级缓存的支持提供了自定义的支持，则以你的实现为准。

@@ -17,7 +17,7 @@
 		（2）要求后台将数据加密后返回。<br/>
 		<div class="subContentDiv">
 			这个好处理，要返回什么样的，自己在BusinessLogic里定义一个处理返回结果的action，然后对output里需要加密的字段值进行加密<br/>
-			或者为特殊的交易定制一个MvcController，然后在postHandle方法对返回结果进行整体加密。
+			或者为特殊的交易定制一个RequestPresenter，然后在postHandle方法对返回结果进行整体加密。
 		</div>
 	</div>
 </body>

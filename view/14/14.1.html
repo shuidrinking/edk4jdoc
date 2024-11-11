@@ -31,8 +31,8 @@
 	<div class="tabTitleDiv">以何种方式返回异常信息</div>
 	<div class="tabTitleLine"></div>
 	<div class="contentDiv">
-		如果在交易的mvc中设置了跳转页面，并且在其对应的MvcController中使用了这句：request.setAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID, Boolean.TRUE)<br>
-		则返回ModelAndView对象，该对象携带errorCode和errorMessage，并指向在edk4jConfig.properties中定义的错误页面（配置项为application.defaultErrorPage=错误页面）<br>
+		如果在交易的api中设置了跳转页面，并且在其对应的RequestPresenter中使用了这句：request.setAttribute(BaseConstant.IS_MVC_HAS_RESPONSE_VIEW_FIELD_ID, Boolean.TRUE)<br>
+		则返回ModelAndView对象，该对象携带errorCode和errorMessage，并指向在edk4j.properties中定义的错误页面（配置项为application.defaultErrorPage=错误页面）<br>
 		否则，将errorCode和errorMessage格式化到json格式的字符串中返回
 	</div>
 </body>

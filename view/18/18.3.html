@@ -7,19 +7,19 @@
 </head>
 <body >
 	<div id="title" class="titleDiv">
-		18.3、动态新增或更新mvc
+		18.3、动态新增或更新api
 	</div>
 	<div class="contentDiv">
-	<p>edk4j支持mvc的可插拔式动态更新，可以动态的添加或者更新mvc，而不需要重启系统。</p>
-		<p><strong>请求Url</strong>：<span style="color:#3f5fbf">http://url:port/youSystemName/system/audit/updateMvc</span></p>
+	<p>edk4j支持api的可插拔式动态更新，可以动态的添加或者更新api，而不需要重启系统。</p>
+		<p><strong>请求Url</strong>：<span style="color:#3f5fbf">http://url:port/youSystemName/system/audit/updateApi</span></p>
 		<p><strong>需要用ajax</strong><strong>访问，请求参数样例</strong>：</p>
-		<p><span style="color:#3f5fbf">{&quot;auditPassword&quot;:&quot;审计密码加密值&quot;,&quot;mvcConfigFileName&quot;:&quot;someMvc.edk4jMvc&quot;,&quot;requestUrl&quot;:&quot;demo/getCheckCode&quot;}</span></p>
+		<p><span style="color:#3f5fbf">{&quot;auditPassword&quot;:&quot;审计密码加密值&quot;,&quot;apiFileName&quot;:&quot;some.api&quot;,&quot;requestUrl&quot;:&quot;demo/getCheckCode&quot;}</span></p>
 		<p>&nbsp;</p>
 		<p><strong>参数说明</strong>：</p>
 		<p><span style="color:#3f5fbf">auditPassword </span>必输</p>
-		<p><span style="color:#3f5fbf">mvcConfigFileName</span>非必输</p>
+		<p><span style="color:#3f5fbf">apiFileName</span>非必输</p>
 		<p><span style="color:#3f5fbf">requestUrl</span>非必输</p>
-		<p>当 <span style="color:#3f5fbf">mvcConfigFileName</span>为空而<span style="color:#3f5fbf">requestUrl</span>不为空时，会只更新这一个mvc；当<span style="color:#3f5fbf">requestUrl</span>为空而<span style="color:#3f5fbf">mvcConfigFileName</span>不为空时，会更新配置文件中所有的mvc；当两者都不能空时，会更新这一个mvc。</p>
+		<p>当 <span style="color:#3f5fbf">apiFileName</span>为空而<span style="color:#3f5fbf">requestUrl</span>不为空时，会只更新这一个api；当<span style="color:#3f5fbf">requestUrl</span>为空而<span style="color:#3f5fbf">apiFileName</span>不为空时，会更新配置文件中所有的api；当两者都不能空时，会更新这一个api。</p>
 		返回如下结果表示处理成功：
 		<div style="border:1px solid #eeeeee">
 			<p>{</p>
