@@ -68,7 +68,7 @@ function resetFontSize(increment){
 		return;
 	}
 	var documentElement = document.documentElement;
-	var resizeTimeout;
+	//var resizeTimeout;
 	var reSizeEvent = typeof window.onorientationchange === "object" ? "orientationchange" : "resize";
 	var resetBaseFontSize = function() {
 		var clientWidth = document.documentElement.clientWidth;
@@ -206,7 +206,7 @@ Client.remove = function(element) {
 Client.windowScrollTo = function(element) {
 	var x = element.x ? element.x : element.offsetLeft;
 	var y = element.y ? element.y : element.offsetTop;
-	window.scrollTo(x, y);
+	window.scrollTo({left: x, top: y, behavior: "smooth"});
 }
 /**
  * 拖动某元素
@@ -401,23 +401,53 @@ sdMasker.loading.hidden = function() {
 
 
 /**
- * 更改被点击的tr的背景色
+ * 更改被点击的tr的背景色，如果参数中未指定新颜色，则默认使用淡橙色
+ * dom.css中有同等效果的table专用的样式table-highlight-active-tr二者区别：
+ * （1）纯css使用时需要为table中所有的td设置tabindex="-1"属性
+ * （2）纯css局限于tr获得焦点，一旦点击其他地方则效果消失
+ * （3）本方法实现高亮后不会因为鼠标点了事发行所属table外的地方而消失效果
+ * （4）本方法能够提供对多表格区分高亮着色互不干扰的支持
  */
 var sdTabel={};
-sdTabel._clickedTr=null;
-sdTabel._clickedTrOldBgcolor=null;
-sdTabel.changeTrBgcolor = function (_tr){
+sdTabel._actorMap=new Map(); //原型{_oldTr : 上次点击的tr, oldBgColor: 上次点击的tr的原背景色}
+sdTabel.autoId=1;
+sdTabel.changeTrBgcolor = function (_tr, highlightColor){
 	if(!_tr){
 		return;
 	}
-	if(sdTabel._clickedTr){
-		sdTabel._clickedTr.style.backgroundColor=sdTabel._clickedTrOldBgcolor;
+	
+	/**如果tr的parentNode没有id时，自动为其设置id */
+	let _parentNode = _tr.parentNode;
+	if(!_parentNode.getAttribute("id")){
+		_parentNode.setAttribute("id", "sdtabel-autoid-" + (sdTabel.autoId++));
 	}
-	sdTabel._clickedTrOldBgcolor = _tr.style.backgroundColor;
-	_tr.style.backgroundColor="#fff0c8";
-	sdTabel._clickedTr = _tr;
+	
+	let actorId=_parentNode.getAttribute("id");
+	let _oneActor=null;
+	
+	//恢复同一个table里的上次变过底色的tr
+	if(sdTabel._actorMap.has(actorId)){
+		_oneActor = sdTabel._actorMap.get(actorId);
+		//恢复上一次点击过的tr的背景色
+		_oneActor._oldTr.style.backgroundColor = _oneActor.oldBgColor;
+	}
+	else{
+		_oneActor={};
+	}
+	
+	_oneActor.oldBgColor=_tr.style.backgroundColor;
+	_oneActor._oldTr = _tr;
+	//如果有指定新颜色，则使用，否则使用默认色
+	if(highlightColor){
+		_tr.style.backgroundColor=highlightColor;
+	}
+	else{
+		_tr.style.backgroundColor="#fff0c8";
+	}
+	
+	//更新“上一次点击的tr”
+	sdTabel._actorMap.set(actorId , _oneActor);
 }
-
 /**
  * 关闭页面
  */
@@ -448,9 +478,10 @@ function closeWindow() {
 	};
 	return true;
 }();
+
 /**
- * 获取url参数，并以map形式返回
- * @returns
+ * 获取url参数，返回一个对象，参数提取后作为对象的属性
+ * @returns {key1:value1, key2:value2 ...}
  */
 function getQueryParams(){
 	var urlParamStr=document.location.search.substring(1);
@@ -465,6 +496,16 @@ function getQueryParams(){
 	}
 	return queryParamMap;
 }
+
+/**
+ * 获取url参数，返回URLSearchParams类型的map
+ * @returns URLSearchParams
+ */
+function getUrlSearchParams(){
+	let url = new URL(document.location.href);
+	return url.searchParams;
+}
+
 /**
  * 复制元素内的文本
  * @param elementId
@@ -491,8 +532,18 @@ function doCopyText(elementId) {
 		//无法复制
 		return;
 	}
+	/*
+	document.execCommand不是标准函数，已经被废弃
 	document.execCommand('Copy');
 	alert('复制成功');
+	*/
+	navigator.clipboard.writeText(_ele.textContent).then(()=>{
+		alert('复制成功');
+	},
+	()=>{
+		alert('复制失败');
+	},
+	);
 }
 
 /**
