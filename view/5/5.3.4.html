@@ -36,6 +36,10 @@
 #application
 #edk4j的配置根目录，这个字段可以不配置，若不配置该项，它的默认值为 edk4j/
 application.configRootPathInClassPath=edk4j/
+#脱敏配置的字段值敏感数据AES加解密的key（必须是16位）
+application.configValueCryptoKey
+#脱敏配置的字段值AES加解密的向量填充值（必须是16位）
+application.configValueCryptoIv
 #本服务器的id，在集群情况下用于区分单台服务器，如果未设置，则系统会自动生成
 application.serverId;
 #当使用系统审计功能时，必须在json提交的参数中添加auditPassword字段，它是审计密码，否则拒绝使用，若项目里不设置，那么它的默认值为audit123456Pass的md5加密值9d2076c6cbc77729ae413ab3fb247e0b
