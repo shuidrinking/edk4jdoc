@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/sd-button-pc.css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/sdTabControl.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/SDTabControl.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		5.3.14、对敏感数据加密配置的处理手法
+	</div>
+	<div id="tabs" class="sd_tab">
+			<div class="sd_tab_in" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),1);">加密手法</div>
+			<div class="sd_tab_out" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),2);">解密手法1：提供EnvironmentPostProcessor</div>
+			<div class="sd_tab_out" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),3);">解密手法2：在配置实体类的set方法中解谜</div>
+		</div>
+	<div id="tabContents" class="tabContentDiv">
+		<div>
+				<div class="subTitleDiv addArrow">
+					明确配置文件中哪些配置项的值需要被加密后存储在文件中
+				</div>
+				<div class="subTitleDiv addArrow">
+					需要将密钥配置到edk4j/edk4j.properties或者application.properties中，配置项为：application.configValueCryptoKey以及application.configValueCryptoIv，配置值长度必须为16个字符
+				</div>
+				<div class="subTitleDiv addArrow">
+					被加密的值需要被MASK()标注，范式：配置项key=MASK(加密值value)
+				</div>
+				<div class="subTitleDiv addArrow">
+					在上线前提前在工具网页里利用aes加解密插件进行加密，或者，手工编写加密工具类调用com.edk4j.core.util.AESUtil.encrypt方法进行加密
+				</div>
+		</div>
+		<div style="display:none">
+			<div class="tabTitleDiv">1、手法套路</div>
+				<div class="tabTitleLine"></div>
+				<div class="contentDiv">
+					<div class="subTitleDiv addArrow">实现org.springframework.boot.env.EnvironmentPostProcessor接口，EnvironmentPostProcessor 用于在 Spring 应用程序的环境准备阶段执行一些自定义的环境处理逻辑，可以在项目启动之前从非标准springboot配置文件中读取相关的配置并填充到springboot上下文中。它允许你在Spring应用程序的Environment（环境）被创建和配置之后，但在应用程序上下文被刷新之前，对其进行编程式的修改。这个接口的一个常见用途是解密配置值，特别是在配置值被加密存储（例如，在配置文件或环境变量中）时。</div>
+					<div class="subTitleDiv addArrow">在springboot3之前的版本中，
+					<a href="https://docs.spring.io/spring-boot/docs/2.7.18/reference/htmlsingle/#howto.application.customize-the-environment-or-application-context" target="_blank">官方文档</a>
+					通过spring.factories文件配置这个接口的实现类：</div>
+					<pre class="prettyprint lang-properties" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+org.springframework.boot.env.EnvironmentPostProcessor=com.xxx.SafetyEncryptProcessor
+					</pre>
+					<div class="subTitleDiv addArrow">在springboot3之后的版本中，弃用spring.factories文件，自定义的EnvironmentPostProcessor注册手法包括但不限于：<br>
+						（1）直接在你的EnvironmentPostProcessor类上添加 @Component或@Configuration 注解<br>
+						（2）在配置类中或者主类中通过@Bean注解注册
+					</div>
+				</div>
+				<div class="tabTitleDiv">2、样例类</div>
+				<div class="tabTitleLine"></div>
+				<div class="contentDiv">
+					<div class="bigButton deepBlueButton" onclick="doCopyText('codeShow2');" style="position:absolute;top:6.2rem;right:0.5rem;">点此复制</div>
+					<pre class="prettyprint lang-java" id="codeShow2" style="font-weight:bold;color:#3f7f5f;line-height:0.15rem;">
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.env.OriginTrackedMapPropertySource;
+import org.springframework.boot.env.PropertiesPropertySourceLoader;
+import org.springframework.boot.logging.DeferredLogFactory;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MapPropertySource;
+import org.springframework.core.env.PropertySource;
+import org.springframework.core.env.SimpleCommandLinePropertySource;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
+import com.edk4j.core.constant.BaseConstant;
+import com.edk4j.core.util.AESUtil;
+import com.edk4j.core.util.Base64Util;
+
+/**
+ * spring环境准备环节，对特定加密过的配置字段值预先解密处理&lt;br&gt;
+ * 对配置值提前加密的套路：&lt;br&gt;
+ * （1）调用com.edk4j.core.util.AESUtil.encrypt方法进行加密；或者在网页里利用aes加解密插件进行加密&lt;br&gt;
+ * （2）加密值存储在配置文件中的范式：配置项key=MASK(加密值value)&lt;br&gt;
+ * （3）加密的密钥和解密的密钥必须一致&lt;br&gt;
+ * （4）需要将密钥配置到edk4j/edk4j.properties或者application.properties中，配置项为：application.configValueCryptoKey以及application.configValueCryptoIv，配置值长度必须为16个字符&lt;br&gt;
+ * （5）在springboot2.x的版本中，必须在spring.factories文件中申明本类
+ * @author liuxiaosong(shuidrinking@126.com)
+ * @since jdk1.8
+ * @version 2024年12月29日
+ */
+public class ConfigValueDecryptEnvironmentPostProcessor implements EnvironmentPostProcessor {
+	private PropertiesPropertySourceLoader configFileLoader = new PropertiesPropertySourceLoader();
+	private Log logger = null;
+	
+	/**
+	 * 构造方法
+	 * @param deferredLogFactory 本类的运行时间在环境的准备阶段，此时slf4j等都尚未初始化，需要使用延迟日志记录器
+	 */
+	public ConfigValueDecryptEnvironmentPostProcessor(DeferredLogFactory deferredLogFactory) {
+		logger=deferredLogFactory.getLog(ConfigValueDecryptEnvironmentPostProcessor.class);
+	}
+	@Override
+	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application){
+		String itemOfAesKey="application.configValueCryptoKey";
+		String itemOfAesIv="application.configValueCryptoIv";
+		
+		/**
+		 * 获取aes密钥和向量填充值
+		 */
+		String aesKey = null;
+		String aesIv = null;
+		/**
+		 * 首先从命令行中获取
+		 */
+		for(PropertySource&lt;?&gt; ps : environment.getPropertySources()){
+			if(ps instanceof SimpleCommandLinePropertySource){
+				SimpleCommandLinePropertySource source = (SimpleCommandLinePropertySource) ps;
+				aesKey = source.getProperty(itemOfAesKey);
+				aesIv = source.getProperty(itemOfAesIv);
+				break;
+			}
+		}
+		/**
+		 * 命令行中为空时，从edk4j.properties配置文件获取
+		 */
+		if(aesKey==null || aesIv==null || aesKey.length()==0 || aesIv.length()==0) {
+			Resource path = new ClassPathResource("edk4j/edk4j.properties");
+			try{
+				PropertySource&lt;?&gt; propertySource = configFileLoader.load("edk4j-config", path).get(0);
+				aesKey = (String) propertySource.getProperty(itemOfAesKey);
+				aesIv = (String) propertySource.getProperty(itemOfAesIv);
+			}
+			catch (IOException e){
+				logger.warn("classpath下未找到edk4j.properties配置文件");
+			}
+		}
+		
+		/**
+		 * edk4j.properties文件中未获取到时，可能被放到了application.properties等spring主配置文件中
+		 */
+		if(aesKey==null || aesKey.length()==0) {
+			aesKey = environment.getProperty(itemOfAesKey);
+		}
+		if(aesIv==null || aesIv.length()==0) {
+			aesIv = environment.getProperty(itemOfAesIv);
+		}
+		
+		/**
+		 * 命令行、配置文件中都未找到时，使用edk4j平台内置值
+		 */
+		if(aesKey == null || aesKey.trim().length() == 0){
+			logger.warn("命令行参数中未配置，且edk4j.properties中缺少配置值：application.configValueCryptoKey，使用默认值详见BaseConstant.DEFAULT_MASK_CONFIGVALUE_AES_KEY ");
+			aesKey = BaseConstant.DEFAULT_MASK_CONFIGVALUE_AES_KEY;
+		}
+		if(aesIv == null || aesIv.trim().length() == 0){
+			logger.warn("命令行参数中未配置，且edk4j.properties中缺少配置值：application.configValueCryptoIv，使用默认值详见BaseConstant.DEFAULT_MASK_CONFIGVALUE_AES_IV ");
+			aesIv = BaseConstant.DEFAULT_MASK_CONFIGVALUE_AES_IV;
+		}
+
+		// 获取配置并进行解密  
+		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();
+		
+		for(PropertySource&lt;?&gt; ps : environment.getPropertySources()){
+			if(ps instanceof OriginTrackedMapPropertySource){
+				OriginTrackedMapPropertySource source = (OriginTrackedMapPropertySource) ps;
+				Object value = null;
+				String strValue = null;
+				for(String name : source.getPropertyNames()){
+					value = source.getProperty(name);
+					if(value instanceof String){
+						strValue = (String) value;
+						if(strValue.startsWith("MASK(") &amp;&amp; strValue.endsWith(")")){
+							map.put(name, AESUtil.decrypt(aesKey, aesIv, Base64Util.Standard_Basic, strValue));
+						}
+					}
+				}
+			}
+		}
+
+		// 将解密后的配置添加回环境  
+		PropertySource&lt;?&gt; propertySource = new MapPropertySource("decryptedProperties", map);
+		environment.getPropertySources().addFirst(propertySource);
+		StringBuffer sb=new StringBuffer();
+		sb.append("\n特殊配置解密结果：");
+		for(Map.Entry&lt;String, Object&gt; entry : map.entrySet()) {
+			sb.append("\n").append(entry.getKey()).append("=").append(entry.getValue());
+		}
+		logger.info(sb.toString());
+		
+		/**
+		 * 对自定义的配置文件中的加密字段进行解密，并添加到spring上下文中
+		 */
+		this.loadCustomConfigFile(aesKey, aesIv, "edk4j/business.config", "business-config", environment);
+	}
+	
+	/**
+	 * 加载并解密其中的特殊字段只，将该文件的所有配置内容添加到spring的上下文中
+	 * @param aesKey
+	 * @param aesIv
+	 * @param fileClassPath
+	 * @param associatedName
+	 * @param environment
+	 */
+	private void loadCustomConfigFile(String aesKey, String aesIv, String fileClassPath, String associatedName, ConfigurableEnvironment environment ) {
+		Resource path = new ClassPathResource(fileClassPath);
+		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();
+		try{
+			/*
+			 * 提取并添加
+			 */
+			PropertySource&lt;?&gt; propertySource = configFileLoader.load(associatedName, path).get(0);
+			environment.getPropertySources().addFirst(propertySource);
+			/*
+			 * 遍历并解密其中的加密值
+			 */
+			Object value = null;
+			String strValue = null;
+			for(String name : ((MapPropertySource) propertySource).getPropertyNames()){
+				value = propertySource.getProperty(name);
+				if(value instanceof String){
+					strValue = (String) value;
+					if(strValue.startsWith("MASK(") &amp;&amp; strValue.endsWith(")")){
+						map.put(name, AESUtil.decrypt(aesKey, aesIv, Base64Util.Standard_Basic, strValue));
+					}
+				}
+			}
+			propertySource = new MapPropertySource(associatedName, map);
+			environment.getPropertySources().addFirst(propertySource);
+		}
+		catch (IOException e){
+			logger.warn("classpath下未找到business.properties配置文件");
+		}
+	}
+}
+					</pre>
+				</div>
+		</div>
+		<div style="display:none;">
+			<div class="subTitleDiv addArrow">
+				在映射类中，在其set方法中调用com.edk4j.core.util.AESUtil.decrypt方法进行解密，解密后再设置到映射字段中。
+			</div>
+			<div class="subTitleDiv addArrow">
+				局限性：这种做法适用于对项目中业务配置中的字段解密，但是不能对集成第三方的配置进行解密。
+			</div>
+		</div>
+	</div>
+</body>
+</html>

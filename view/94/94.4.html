@@ -3,7 +3,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/sdTabControl.css"/>
 	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/SDTabControl.js"></script>
 	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
 	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
 	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
@@ -17,83 +19,18 @@
 	<div id="title" class="titleDiv">
 		94.4、对敏感数据加密配置的处理手法
 	</div>
-	<div class="tabTitleDiv">1、手法套路</div>
-	<div class="tabTitleLine"></div>
 	<div class="contentDiv">
-		<div class="subTitleDiv addArrow">实现org.springframework.boot.env.EnvironmentPostProcessor接口，在实现类中对加密值解密并更新其缓存</div>
-		<div class="subTitleDiv addArrow">在spring.factories中配置这个接口的实现类：</div>
-<pre class="prettyprint lang-properties" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
-org.springframework.boot.env.EnvironmentPostProcessor=\
-  com.xxx.SafetyEncryptProcessor
-</pre>
-	</div>
-	<div class="tabTitleDiv">2、样例类</div>
-	<div class="tabTitleLine"></div>
-	<div class="contentDiv">
-<pre class="prettyprint lang-java" id="codeShow2" style="font-weight:bold;color:#3f7f5f;">
-package com.baomidou.mybatisplus.autoconfigure;
-
-import com.baomidou.mybatisplus.core.toolkit.AES;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.env.EnvironmentPostProcessor;
-import org.springframework.boot.env.OriginTrackedMapPropertySource;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.PropertySource;
-import org.springframework.core.env.SimpleCommandLinePropertySource;
-
-import java.util.HashMap;
-
-/**
- * 安全加密处理器
- *
- * @author hubin
- * @since 2020-05-23
- */
-public class SafetyEncryptProcessor implements EnvironmentPostProcessor {
-
-    @Override
-    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        /**
-         * 命令行中获取密钥
-         */
-        String mpwKey = null;
-        for (PropertySource&lt;?&gt; ps : environment.getPropertySources()) {
-            if (ps instanceof SimpleCommandLinePropertySource) {
-                SimpleCommandLinePropertySource source = (SimpleCommandLinePropertySource) ps;
-                mpwKey = source.getProperty("mpw.key");
-                break;
-            }
-        }
-        /**
-         * 处理加密内容
-         */
-        if (StringUtils.isNotBlank(mpwKey)) {
-            HashMap&lt;String, Object&gt; map = new HashMap&lt;&gt;();
-            for (PropertySource&lt;?&gt; ps : environment.getPropertySources()) {
-                if (ps instanceof OriginTrackedMapPropertySource) {
-                    OriginTrackedMapPropertySource source = (OriginTrackedMapPropertySource) ps;
-                    for (String name : source.getPropertyNames()) {
-                        Object value = source.getProperty(name);
-                        if (value instanceof String) {
-                            String str = (String) value;
-                            if (str.startsWith("mpw:")) {
-                                map.put(name, AES.decrypt(str.substring(4), mpwKey));
-                            }
-                        }
-                    }
-                }
-            }
-            // 将解密的数据放入环境变量，并处于第一优先级上
-            if (CollectionUtils.isNotEmpty(map)) {
-                environment.getPropertySources().addFirst(new MapPropertySource("custom-encrypt", map));
-            }
-        }
-    }
-}
-</pre>
+		<div class="subTitleDiv addArrow">实现org.springframework.boot.env.EnvironmentPostProcessor接口，EnvironmentPostProcessor 用于在 Spring 应用程序的环境准备阶段执行一些自定义的环境处理逻辑，可以在项目启动之前从非标准springboot配置文件中读取相关的配置并填充到springboot上下文中。它允许你在Spring应用程序的Environment（环境）被创建和配置之后，但在应用程序上下文被刷新之前，对其进行编程式的修改。这个接口的一个常见用途是解密配置值，特别是在配置值被加密存储（例如，在配置文件或环境变量中）时。</div>
+		<div class="subTitleDiv addArrow">在springboot3之前的版本中，
+		<a href="https://docs.spring.io/spring-boot/docs/2.7.18/reference/htmlsingle/#howto.application.customize-the-environment-or-application-context" target="_blank">官方文档</a>
+		通过spring.factories文件配置这个接口的实现类：</div>
+		<pre class="prettyprint lang-properties" id="codeShow1" style="font-weight:bold;color:#3f7f5f;">
+org.springframework.boot.env.EnvironmentPostProcessor=com.xxx.SomeEnvironmentPostProcessor
+		</pre>
+		<div class="subTitleDiv addArrow">在springboot3之后的版本中，弃用spring.factories文件，自定义的EnvironmentPostProcessor注册手法包括但不限于：<br>
+			（1）直接在你的EnvironmentPostProcessor类上添加 @Component或@Configuration 注解<br>
+			（2）在配置类中或者主类中通过@Bean注解注册
+		</div>
 	</div>
 </body>
 </html>
