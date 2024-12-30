@@ -95,6 +95,7 @@ import com.edk4j.core.util.Base64Util;
  * @version 2024年12月29日
  */
 public class ConfigValueDecryptEnvironmentPostProcessor implements EnvironmentPostProcessor {
+
 	private PropertiesPropertySourceLoader configFileLoader = new PropertiesPropertySourceLoader();
 	private Log logger = null;
 	
@@ -107,6 +108,55 @@ public class ConfigValueDecryptEnvironmentPostProcessor implements EnvironmentPo
 	}
 	@Override
 	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application){
+		String[] aesKeys = this.getAesKeyAndIv(environment);
+		/*
+		 * 获取spring平台配置文件中的配置并对其中加密过的配置值进行解密
+		 */
+		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();
+		for(PropertySource&lt;?&gt; ps : environment.getPropertySources()){
+			if(ps instanceof OriginTrackedMapPropertySource){
+				OriginTrackedMapPropertySource source = (OriginTrackedMapPropertySource) ps;
+				Object value = null;
+				String strValue = null;
+				for(String name : source.getPropertyNames()){
+					value = source.getProperty(name);
+					if(value instanceof String){
+						strValue = (String) value;
+						if(strValue.startsWith("MASK(") &amp;&amp; strValue.endsWith(")")){
+							map.put(name, AESUtil.decrypt(aesKeys[0], aesKeys[1], Base64Util.Standard_Basic, strValue.substring(5, strValue.length()-1)));
+						}
+					}
+				}
+			}
+		}
+
+		/*
+		 * 将解密后的配置添加回环境  
+		 */
+		PropertySource&lt;?&gt; propertySource = new MapPropertySource("decryptedProperties", map);
+		environment.getPropertySources().addFirst(propertySource);
+		StringBuffer sb=new StringBuffer();
+		sb.append("\n特殊配置解密结果（仅显示首位以便核对）：");
+		String tempV = null;
+		for(Map.Entry&lt;String, Object&gt; entry : map.entrySet()) {
+			tempV=(String)entry.getValue();//将打印在日志中的内容脱敏
+			sb.append("\n").append(entry.getKey()).append("=").append(tempV.charAt(0)).append(tempV.charAt(tempV.length()-1));
+		}
+		logger.info(sb.toString());
+		
+		
+		/*
+		 * 对自定义的配置文件中的加密字段进行解密，并添加到spring上下文中
+		 */
+		//this.loadCustomConfigFile(aesKeys[0], aesKeys[1], "edk4j/business.config", "business-config", environment);
+	}
+	
+	/**
+	 * 从命令行或配置文件等环境配置中获取aes密钥对
+	 * @param environment
+	 * @return
+	 */
+	private String[] getAesKeyAndIv(ConfigurableEnvironment environment) {
 		String itemOfAesKey="application.configValueCryptoKey";
 		String itemOfAesIv="application.configValueCryptoIv";
 		
@@ -162,43 +212,8 @@ public class ConfigValueDecryptEnvironmentPostProcessor implements EnvironmentPo
 			logger.warn("命令行参数中未配置，且edk4j.properties中缺少配置值：application.configValueCryptoIv，使用默认值详见BaseConstant.DEFAULT_MASK_CONFIGVALUE_AES_IV ");
 			aesIv = BaseConstant.DEFAULT_MASK_CONFIGVALUE_AES_IV;
 		}
-
-		// 获取配置并进行解密  
-		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();
-		
-		for(PropertySource&lt;?&gt; ps : environment.getPropertySources()){
-			if(ps instanceof OriginTrackedMapPropertySource){
-				OriginTrackedMapPropertySource source = (OriginTrackedMapPropertySource) ps;
-				Object value = null;
-				String strValue = null;
-				for(String name : source.getPropertyNames()){
-					value = source.getProperty(name);
-					if(value instanceof String){
-						strValue = (String) value;
-						if(strValue.startsWith("MASK(") &amp;&amp; strValue.endsWith(")")){
-							map.put(name, AESUtil.decrypt(aesKey, aesIv, Base64Util.Standard_Basic, strValue));
-						}
-					}
-				}
-			}
-		}
-
-		// 将解密后的配置添加回环境  
-		PropertySource&lt;?&gt; propertySource = new MapPropertySource("decryptedProperties", map);
-		environment.getPropertySources().addFirst(propertySource);
-		StringBuffer sb=new StringBuffer();
-		sb.append("\n特殊配置解密结果：");
-		for(Map.Entry&lt;String, Object&gt; entry : map.entrySet()) {
-			sb.append("\n").append(entry.getKey()).append("=").append(entry.getValue());
-		}
-		logger.info(sb.toString());
-		
-		/**
-		 * 对自定义的配置文件中的加密字段进行解密，并添加到spring上下文中
-		 */
-		this.loadCustomConfigFile(aesKey, aesIv, "edk4j/business.config", "business-config", environment);
+		return new String[] {aesKey, aesIv};
 	}
-	
 	/**
 	 * 加载并解密其中的特殊字段只，将该文件的所有配置内容添加到spring的上下文中
 	 * @param aesKey
@@ -207,7 +222,7 @@ public class ConfigValueDecryptEnvironmentPostProcessor implements EnvironmentPo
 	 * @param associatedName
 	 * @param environment
 	 */
-	private void loadCustomConfigFile(String aesKey, String aesIv, String fileClassPath, String associatedName, ConfigurableEnvironment environment ) {
+	public void loadCustomConfigFile(String aesKey, String aesIv, String fileClassPath, String associatedName, ConfigurableEnvironment environment ) {
 		Resource path = new ClassPathResource(fileClassPath);
 		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();
 		try{
@@ -226,7 +241,7 @@ public class ConfigValueDecryptEnvironmentPostProcessor implements EnvironmentPo
 				if(value instanceof String){
 					strValue = (String) value;
 					if(strValue.startsWith("MASK(") &amp;&amp; strValue.endsWith(")")){
-						map.put(name, AESUtil.decrypt(aesKey, aesIv, Base64Util.Standard_Basic, strValue));
+						map.put(name, AESUtil.decrypt(aesKey, aesIv, Base64Util.Standard_Basic, strValue.substring(5, strValue.length()-1)));
 					}
 				}
 			}
@@ -234,7 +249,7 @@ public class ConfigValueDecryptEnvironmentPostProcessor implements EnvironmentPo
 			environment.getPropertySources().addFirst(propertySource);
 		}
 		catch (IOException e){
-			logger.warn("classpath下未找到business.properties配置文件");
+			logger.warn("classpath下未找到配置文件[ "+fileClassPath+" ]");
 		}
 	}
 }
