@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css"  rel="stylesheet" href="../../css/dom.css"/>
+	<link type="text/css"  rel="stylesheet" href="../../css/sdTabControl.css"/>
+	<script type="text/javascript" src="../../javascript/core/domUtil.js"></script>
+	<script type="text/javascript" src="../../javascript/components/SDTabControl.js"></script>
+	
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="../../javascript/components/google-code-prettify/util.js"></script>
+	<link rel="stylesheet" href="../../javascript/components/google-code-prettify/prettify.css" type="text/css"/>
+	<script type="text/javascript">
+		function init(){
+			PR.prettyPrint();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div id="title" class="titleDiv">
+		25.1、开发热部署api的网页脚手架
+	</div>
+	<div style="margin:0.05rem;">
+		<div id="tabs" class="sd_tab">
+			<div class="sd_tab_in" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),1);">引入依赖</div>
+			<div class="sd_tab_out" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),2);">访问页面</div>
+			<div class="sd_tab_out" onclick="SDTab.altTab(document.getElementById('tabs'), document.getElementById('tabContents'),3);">用法说明</div>
+		</div>
+		<div id="tabContents" class="tabContentDiv">
+			<div>
+				<pre class="prettyprint lang-xml" id="codeShow1">
+&lt;dependency&gt;
+	&lt;groupId&gt;com.edk4j&lt;/groupId&gt;
+	&lt;artifactId&gt;edk4j-debug&lt;/artifactId&gt;
+	&lt;version&gt;2.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+				</pre>
+			</div>
+			<div style="display:none;">
+				${host}:${port}/${your_app}/view/debug/api-manage.html
+			</div>
+			<div style="display:none;">
+				<div>
+					进入页面后，首先输入右下角的后台地址，其次输入审计密码，即可在页面中对指定的元件进行热部署。
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
